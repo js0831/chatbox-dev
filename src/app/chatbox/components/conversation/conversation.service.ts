@@ -23,7 +23,14 @@ export class ConversationService {
   }
 
   getConversation(members: string[]) {
-    return this.http.get(`conversation/id/${members[0]}/${members[1]}`).pipe(
+    return this.http.get(
+      `conversation/id/${members[0]}/${members[1]}`,
+      {
+        headers: {
+          loading: 'background'
+        }
+      }
+    ).pipe(
       map((res: any) => {
         const data = res.data || {_id: null, members: []};
         return {
