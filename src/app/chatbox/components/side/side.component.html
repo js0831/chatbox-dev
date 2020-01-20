@@ -1,0 +1,28 @@
+
+<app-profile></app-profile>
+<div class="search">
+    <input [(ngModel)]="searchKey" type="text" placeholder="Search" (keyup)="searchChanged()">
+    <svg>
+        <use xlink:href="assets/images/icons.svg#icon-search"></use>
+    </svg> 
+</div>
+
+<app-friends class="custom-scroll"></app-friends>
+
+
+<div class="tab">
+    <a *ngIf="activeTab.value !== 'request'" class="add" (click)="add()"> + </a>
+    <ul>
+        <li 
+            (click)="selectTab(t)"
+            *ngFor="let t of tabs" [ngClass]="{'active': t.value === activeTab.value}">
+            {{t.label}}
+
+            <span 
+                class="requestCount"
+                *ngIf="t.value === 'request' && userRequestCount > 0">
+                {{userRequestCount}}
+            </span>
+        </li>
+    </ul>    
+</div>

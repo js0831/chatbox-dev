@@ -1,0 +1,36 @@
+<svg class="close" (click)="close()">
+    <use xlink:href="assets/images/icons.svg#icon-clearclose"></use>
+</svg> 
+
+<div class="content">
+    <div class="search">
+        <input [(ngModel)]="searchKey" type="text" placeholder="Search" (keyup)="search()">
+        
+        <svg *ngIf="!isLoading">
+            <use xlink:href="assets/images/icons.svg#icon-search"></use>
+        </svg> 
+        <svg class="rotating" *ngIf="isLoading">
+            <use xlink:href="assets/images/icons.svg#icon-spinner3"></use>
+        </svg> 
+        
+    </div>
+    
+    <div class="people custom-scroll">
+        <ul>
+            <li *ngFor="let res of results">
+                <img _ngcontent-our-c7="" alt="" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg">
+                <div>
+                    <h1>{{res.firstname}} {{res.lastname}}</h1>
+                    <span>{{res.email}}</span>
+                </div>
+                
+                <div class="action" *ngIf="!(invited.indexOf(res._id) >= 0)">
+                    <a (click)="invite(res)">invite</a>
+                </div>
+            </li>
+            <li *ngIf="results?.length === 0">
+                No results found!
+            </li>
+        </ul>
+    </div>
+</div>

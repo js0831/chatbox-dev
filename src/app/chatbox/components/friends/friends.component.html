@@ -1,0 +1,28 @@
+<ul *ngIf="activeTab === 'friends'">
+    <ng-container *ngTemplateOutlet="userList; context: {type: 'friends'}"></ng-container>
+</ul>
+
+<ul *ngIf="activeTab === 'request'">
+    <li class="title">Invites ( {{people.invitations.length}} )</li>
+    <ng-container *ngTemplateOutlet="userList; context: {type: 'invitations'}"></ng-container>
+    <li class="title">Friend Request ( {{people.confirmations.length}} )</li>
+    <ng-container *ngTemplateOutlet="userList; context: {type: 'confirmations'}"></ng-container>
+</ul>
+
+
+<ng-template #userList let-type="type">
+    <li 
+        (click)="selectFriend(f, type)"
+        *ngFor="let f of people[type] | userFilter : searchKey">
+        <img src="./assets/images/avatar.svg" alt="">
+        <div>
+            <label>{{f.firstname}} {{f.lastname}}</label>
+            <span class="online">Online</span>
+        </div>
+        
+        <app-message-notification 
+            (conversation)="conversationLoaded(f.id, $event)"
+            [user]="f.id"
+        ></app-message-notification>
+    </li>    
+</ng-template>

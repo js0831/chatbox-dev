@@ -1,0 +1,21 @@
+
+<img alt="" src="./assets/images/avatar.svg">
+
+<div>
+    <h1>{{friend.firstname}} {{friend.lastname}}</h1>
+    <label>Online</label>
+</div>
+
+<button (blur)="hideActions()" (click)="showActions = true">
+    <svg>
+        <use xlink:href="assets/images/icons.svg#icon-more_vert"></use>
+    </svg>
+
+    <ul *ngIf="showActions">
+        <li 
+            (click)="doAction(a)"
+            *ngFor="let a of actions">
+            {{a.label}}
+        </li>
+    </ul>
+</button>
