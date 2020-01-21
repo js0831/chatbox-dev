@@ -19,13 +19,14 @@ import { Router } from '@angular/router';
 import { JkWaitService } from 'jk-wait';
 import { JkAlertService } from 'jk-alert';
 import { UserService } from 'src/app/landing/user.service';
+import { SessionService } from 'src/app/v2/shared/services/session.service';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
 
   public loading: JkWaitService;
   public jkAlert: JkAlertService;
-  public userService: UserService;
+  public sessionSV: SessionService;
 
   constructor(
     private injector: Injector,
@@ -40,13 +41,13 @@ export class HttpInterceptorService implements HttpInterceptor {
     const loadingType = req.headers.get('loading') || 'default';
     this.loading = this.loading || this.injector.get(JkWaitService);
     this.jkAlert = this.jkAlert || this.injector.get(JkAlertService);
-    this.userService = this.userService || this.injector.get(UserService);
+    this.sessionSV = this.sessionSV || this.injector.get(SessionService);
 
     if (loadingType !== 'background') {
       this.loading.start();
     }
 
-    const token = this.userService.currentUser.token || '';
+    const token = this.sessionSV.data.token || '';
     const withTokenRequest = req.clone({
       setHeaders: {
         Authorization : `Bearer ${token}`,
@@ -60,7 +61,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 403) {
           this.jkAlert.error('Session Expired');
-          this.userService.logout();
+          this.sessionSV.logout();
           this.route.navigate(['']);
         } else {
           this.jkAlert.error(error.message);

@@ -32,4 +32,9 @@ export class SessionService {
       this.save(JSON.parse(currentUserSession));
     }
   }
+
+  logout() {
+    localStorage.removeItem('session');
+    this.userSession.next(null);
+  }
 }
