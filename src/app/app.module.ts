@@ -12,11 +12,14 @@ import { HttpInterceptorService } from './shared/interceptors/http-interceptor.s
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { ChatboxxModule } from './v2/chatboxx/chatboxx.module';
+import { HomeComponent } from './v2/home/home.component';
 const config: SocketIoConfig = { url: environment.apiURL, options: {}};
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,8 @@ const config: SocketIoConfig = { url: environment.apiURL, options: {}};
     ChatboxModule,
     JkWaitModule,
     JkAlertModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    ChatboxxModule
   ],
   providers: [
     {
