@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DropdownActionInterface } from 'src/app/v2/shared/interfaces/dropdown-action.interface';
+import { ActionService } from 'src/app/shared/services/action.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,13 +17,8 @@ export class ProfileComponent implements OnInit {
       icon: 'profile'
     },
     {
-      label: 'Settings',
-      value: 'SETTINGS',
-      icon: 'settings'
-    },
-    {
       label: 'Friends',
-      value: 'Friends',
+      value: 'FRIENDS',
       icon: 'users'
     },
     {
@@ -32,7 +28,9 @@ export class ProfileComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(
+    private actionSV: ActionService
+  ) { }
 
   ngOnInit() {
   }
@@ -40,10 +38,11 @@ export class ProfileComponent implements OnInit {
   action(value: string) {
     switch (value) {
       case 'LOGOUT':
-        alert('A');
+        break;
+      case 'FRIENDS':
+        this.actionSV.dispatch({name: 'FRIENDS_SHOW', data: true});
         break;
       default:
-        alert('B');
         break;
     }
   }

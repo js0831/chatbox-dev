@@ -1,0 +1,131 @@
+:host{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+.content{
+    width: 95%;
+    max-width: 50rem;
+    background: #fff; 
+    margin: auto;
+    margin-top: 5rem;
+    border-radius: 2px;
+    position: relative;
+
+    .close{
+        position: absolute;
+        top: -30px;
+        right: -5px;
+        fill: #fff;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+    }
+
+    .tab{
+        padding: 1rem 1rem 0;
+        ul{
+            display: flex;
+        }
+        li{
+            padding: 1rem;
+            flex:1;
+            background: #eee;
+            border-right: 1px solid #ddd;
+            border-bottom: 0;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #383838;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            &.active{
+                background: #ddd;
+                font-weight: 600;
+            }
+
+            &:hover{
+                background: #eee;
+            }
+
+            span{
+                background: #5d5d5d;
+                color: #fff;
+                font-weight: 500;
+                padding: .25rem .5rem;
+                border-radius: 5px;
+                font-size: 1rem;
+                margin-left: .5rem;
+            }
+        }
+    }
+
+    .search{
+        padding: 1rem;
+        position: relative;
+    
+        input{
+            border-radius: 2px;
+            padding: 1rem;
+            width: 100%;
+            background: #eee; 
+            border: 1px solid #ddd;
+            transition: all .25s ease;
+    
+            &::placeholder{
+                color: #c1c1c1;
+            } 
+        }
+        svg{
+            fill: #929292;
+            width: 2.5rem;
+            height: 2.5rem;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.6rem;
+            pointer-events: none; 
+            transition: all .25s ease;
+        }
+    }
+
+    .list{
+        padding: 0 1rem;
+        max-height: calc(100vh - 18rem);
+        overflow-y: auto;
+        li{
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px dotted #ddd;
+
+            img{
+                width: 4rem;
+                height: 4rem;
+                margin-right: .5rem;
+            }
+
+            label{
+                font-size: 1.25rem;
+            }
+
+            button{
+                margin-left: auto;
+                padding: .5rem;
+                border: none;
+                background: #2b5784;
+                cursor: pointer;
+                border-radius: 3px;
+                color: #fff;
+                font-size: 1.1rem;
+            }
+        }
+    }
+}

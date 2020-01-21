@@ -6,10 +6,25 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    position: relative;
 }
 .avatar{
     width: 6rem;
     height: 6rem;
+}
+
+.notifications{
+    width: 1.75rem;
+    height: 1.75rem;
+    background: red;
+    fill: #fff;
+    position: absolute;
+    border-radius: 50%;
+
+    left: 6px;
+    top: 15px;
+    box-shadow: 0 0 0 1.5px #fff;
+    cursor: pointer;
 }
 
 .user{
