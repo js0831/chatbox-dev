@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActionService } from 'src/app/shared/services/action.service';
 import { Subscription } from 'rxjs';
+import { SessionService } from '../shared/services/session.service';
 
 @Component({
   selector: 'app-chatboxx',
@@ -13,7 +14,8 @@ export class ChatboxxComponent implements OnInit, OnDestroy {
   subs: Subscription[];
 
   constructor(
-    private actionSV: ActionService
+    private actionSV: ActionService,
+    private sessionSV: SessionService
   ) { }
 
   ngOnInit() {

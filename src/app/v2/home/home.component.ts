@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { SessionInterface } from '../shared/interfaces/session.interface';
 import { SessionService } from '../shared/services/session.service';
 import { Router } from '@angular/router';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private sessionSV: SessionService,
-    private router: Router
+    private router: Router,
+    private userSV: UserService
   ) { }
 
   ngOnInit() {
@@ -59,7 +61,7 @@ export class HomeComponent implements OnInit {
     const session: SessionInterface = {
       token: data.token,
       user: {
-        id: data.user._id,
+        accountId: data.user._id,
         username,
         email,
         firstname,
@@ -67,7 +69,19 @@ export class HomeComponent implements OnInit {
       }
     };
     this.sessionSV.save(session);
-    this.router.navigate(['v2/chat']);
+
+    this.userSV.createUser({
+      username,
+      email,
+      firstname,
+      lastname,
+      accountId: data.user._id
+    }).subscribe( x => {
+      alert(x);
+      session.user = x.data;
+      this.sessionSV.save(session);
+      this.router.navigate(['v2/chat']);
+    });
   }
 
   private submitAppID() {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
+import { UserInterface } from '../v2/shared/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class UserService {
     }
   }
 
-  createUser(user: any) {
+  createUser(user: UserInterface) {
     return this.http.post('user', user).pipe(
       map( (x: any) => {
         const data = {

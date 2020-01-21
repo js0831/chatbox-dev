@@ -47,7 +47,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       this.loading.start();
     }
 
-    const token = this.sessionSV.data.token || '';
+    const token = this.sessionSV.data ? this.sessionSV.data.token : '';
     const withTokenRequest = req.clone({
       setHeaders: {
         Authorization : `Bearer ${token}`,
@@ -59,13 +59,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     return next.handle(withTokenRequest).pipe(
       // retry(1),
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 403) {
-          this.jkAlert.error('Session Expired');
-          this.sessionSV.logout();
-          this.route.navigate(['']);
-        } else {
-          this.jkAlert.error(error.message);
-        }
+        this.showErrorMessage(error);
         return throwError(error);
       }),
       finalize(() => {
@@ -88,5 +82,24 @@ export class HttpInterceptorService implements HttpInterceptor {
         return event;
       })
     );
+  }
+
+
+  showErrorMessage(response: HttpErrorResponse) {
+    switch (response.status) {
+      case 403:
+        this.jkAlert.error('Session Expired');
+        this.sessionSV.logout();
+        this.route.navigate(['']);
+        break;
+      case 400:
+        const constraits = response.error.message[0].constraints;
+        const keys = Object.keys(constraits);
+        this.jkAlert.error(constraits[keys[0]]); 
+        break;
+      default:
+        this.jkAlert.error(response.message);
+        break;
+    }
   }
 }
