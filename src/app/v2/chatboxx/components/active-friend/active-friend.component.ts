@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ActionService } from 'src/app/shared/services/action.service';
 import { JkAlertService } from 'jk-alert';
-import { UserService } from 'src/app/landing/user.service'; 
+import { UserService } from 'src/app/landing/user.service';
 import { DropdownActionInterface } from 'src/app/v2/shared/interfaces/dropdown-action.interface';
+import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
   selector: 'app-active-friend',
@@ -18,7 +17,7 @@ export class ActiveFriendComponent implements OnInit {
     {
       label: 'Unfriend',
       value: 'unfriend',
-      icon: 'user-x'
+      icon: 'user-delete'
     },
     {
       label: 'View profile',
@@ -45,5 +44,11 @@ export class ActiveFriendComponent implements OnInit {
     setTimeout( x => {
       this.showActions = false;
     }, 200);
+  }
+
+  showMenu() {
+    this.action.dispatch({
+      action: 'MENU_SHOW'
+    });
   }
 }

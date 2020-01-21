@@ -10,6 +10,15 @@
 }
 html{
     font-size: 62.5%;
+
+    
+    @media (max-width:414px) {
+        font-size: 58%;
+    };
+
+    @media (max-width:320px) {
+        font-size: 50%;
+    };
 }
 
 body{
