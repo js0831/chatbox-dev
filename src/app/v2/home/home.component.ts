@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SessionInterface } from '../shared/interfaces/session.interface';
 import { SessionService } from '../shared/services/session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ export class HomeComponent implements OnInit {
   win: any;
 
   constructor(
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -65,6 +67,7 @@ export class HomeComponent implements OnInit {
       }
     };
     this.sessionSV.save(session);
+    this.router.navigate(['v2/chat']);
   }
 
   private submitAppID() {

@@ -1,0 +1,15 @@
+:host{
+    width: 28rem;
+    background: #093058;
+    display: flex;
+    flex-flow: column;
+    z-index: 1;
+    
+    @media (max-width:750px) {
+        position: absolute;
+        height: 100vh;
+        top: 0;
+    };
+}
+
+ 
