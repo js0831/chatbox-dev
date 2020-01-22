@@ -8,7 +8,12 @@ const initialState: FriendState = {
     },
     users: {
         type: null,
-        list: []
+        list: [],
+        pagination: {
+            page: 0,
+            limit: 10,
+            total: 0
+        }
     }
 };
 
@@ -19,12 +24,13 @@ export function friendReducer(state = initialState, action: actions.Actions) {
     switch (type) {
         case actions.FRIEND_LOAD_USER_LIST:
             returnState = {
+                ...state,
                 action: {
                     name: type
                 },
                 users: {
-                    type: FriendsType.FRIENDS,
-                    list: []
+                    ...state.users,
+                    pagination: payload.pagination
                 }
             };
             break;
@@ -35,8 +41,13 @@ export function friendReducer(state = initialState, action: actions.Actions) {
                     name: type
                 },
                 users: {
+                    ...state.users,
                     type: payload.type,
-                    list: payload.response.data
+                    list: payload.response.data.list,
+                    pagination: {
+                        ...state.users.pagination,
+                        total: payload.response.data.total
+                    }
                 }
             };
             break;

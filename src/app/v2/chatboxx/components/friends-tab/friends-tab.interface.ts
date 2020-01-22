@@ -1,5 +1,7 @@
+import { FriendsType } from '../../store/friends/friends-type.enum';
+
 export interface FriendsTabInterface {
     label: string;
-    value: string;
-    count: number;
+    value: FriendsType;
+    count?: number;
 }

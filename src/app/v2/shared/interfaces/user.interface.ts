@@ -5,4 +5,6 @@ export interface UserInterface {
     email: string;
     firstname: string;
     lastname?: string;
+    invites?: UserInterface[];
+    friendRequest?: UserInterface[];
 }

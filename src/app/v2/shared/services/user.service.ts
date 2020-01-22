@@ -11,6 +11,7 @@ import { AppState } from '../../chatboxx/store/app.state';
 import { FriendState } from '../../chatboxx/store/friends/friend.state';
 import { FriendsType } from '../../chatboxx/store/friends/friends-type.enum';
 import { FriendLoadUserList } from '../../chatboxx/store/friends/friends.action';
+import { PaginationInterface } from '../interfaces/pagination.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -48,15 +49,54 @@ export class UserService {
     );
   }
 
-  getUsers(id: string): Observable<ResponseInterface<UserInterface[]>> {
-    return this.http.get(`user/${id}`) as Observable<ResponseInterface<UserInterface[]>>;
+  getUsers(id: string, pagination: PaginationInterface): Observable<ResponseInterface<UserInterface[]>> {
+    return this.http.get(`user/${id}/${pagination.page}/${pagination.limit}`) as Observable<ResponseInterface<UserInterface[]>>;
   }
 
+  inviteUser(userId: string, byUserId: string): Observable<ResponseInterface<UserInterface>> {
+    return this.http.post('user/invite', {
+      userId,
+      byUserId
+    }) as Observable<ResponseInterface<UserInterface>>;
+  }
+
+  cancelInvite(by: string, to: string) {
+    return this.http.post('user/invite/cancel', {
+      by,
+      to
+    });
+  }
+
+  respondToFriendRequest(by: string, to: string, respond: string) {
+    return this.http.post(`user/friend/request/${respond}`, {
+      by,
+      to
+    });
+  }
+
+  getFriendRequest(id: string): Observable<ResponseInterface<UserInterface[]>> {
+    return this.http.get(`user/${id}/friend/request`) as Observable<ResponseInterface<UserInterface[]>>;
+  }
+
+  getFriends(id: string): Observable<ResponseInterface<UserInterface[]>> {
+    return this.http.get(`user/${id}/friends`) as Observable<ResponseInterface<UserInterface[]>>;
+  }
+
+  unfriend(who: string, by: string) {
+    return this.http.post(`user/unfriend`, {
+      who,
+      by
+    });
+  }
+
+  /**
+   * STATE START
+   */
   get friendState(): Observable<FriendState> {
     return this.store.select('friendState');
   }
 
-  getFriends(id: string, type: FriendsType) {
-    this.store.dispatch(new FriendLoadUserList({id, type}));
+  stateGetFriends(id: string, type: FriendsType, pagination: PaginationInterface) {
+    this.store.dispatch(new FriendLoadUserList({id, type, pagination}));
   }
 }

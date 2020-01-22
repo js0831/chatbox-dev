@@ -1,5 +1,5 @@
 export enum FriendsType {
     FRIENDS,
-    INVITES,
+    INVITE,
     FRIEND_REQUEST,
 }

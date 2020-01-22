@@ -12,32 +12,39 @@
         </svg> 
     </div>
 
-    <ul class="list custom-scroll">
-        <li>
+    <ul class="list custom-scroll" *ngIf="friendState">
+        <li *ngFor="let u of friendState.users.list">
             <img class="avatar" alt="" src="./assets/images/avatar.svg">
-            <label>Jener Sigua</label>
+            <label>{{u.firstname}} {{u.lastname}}</label>
 
-            <button>Unfriend</button>
+
+            <div class="action" >
+                <ng-container *ngIf="friendState.users.type === friendType.FRIEND_REQUEST">   
+                    <ng-container *ngIf="u.invites.indexOf(currentUser._id) >= 0; else cancel">
+                        <button (click)="doFriendAction('reject', u._id)">Reject</button>
+                        <button (click)="doFriendAction('accept', u._id)">Accept</button>
+                    </ng-container>
+                    <ng-template #cancel>
+                        <button (click)="doFriendAction('cancel', u._id)">Cancel Invitation</button>
+                    </ng-template>
+                </ng-container>
+
+                <button *ngIf="friendState.users.type === friendType.INVITE" (click)="doFriendAction('invite', u._id)">Invite</button>
+                <button *ngIf="friendState.users.type === friendType.FRIENDS" (click)="doFriendAction('unfriend', u._id)">Unfriend</button>    
+            </div>
         </li>
-        <li>
-            <img class="avatar" alt="" src="./assets/images/avatar.svg">
-            <label>Jener Sigua</label>
-            <button>Unfriend</button>            
-        </li>
-        <li>
-            <img class="avatar" alt="" src="./assets/images/avatar.svg">
-            <label>Jener Sigua</label>
-            <button>Unfriend</button>            
-        </li>
-        <li>
-            <img class="avatar" alt="" src="./assets/images/avatar.svg">
-            <label>Jener Sigua</label>
-            <button>Unfriend</button>            
-        </li>
-        <li>
-            <img class="avatar" alt="" src="./assets/images/avatar.svg">
-            <label>Jener Sigua</label>
-            <button>Unfriend</button>
+        <li *ngIf="friendState.users.list.length === 0">
+            No Results found!
         </li>
     </ul>
+    
+    <!-- TODO: CREATE SEPARATE COMPONENT -->
+    <div class="pagination">
+        <svg (click)="paginate(-1)">
+            <use xlink:href="assets/images/icons.svg#icon-prev"></use>
+        </svg>    
+        <svg (click)="paginate(1)">
+            <use xlink:href="assets/images/icons.svg#icon-next"></use>
+        </svg>    
+    </div>
 </div>
