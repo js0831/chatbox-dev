@@ -1,20 +1,9 @@
 <div class="content">
     <svg class="close" (click)="close()">
         <use xlink:href="assets/images/icons.svg#icon-clearclose"></use>
-    </svg> 
-    <div class="tab">
-        <ul>
-            <li class="active">
-                Friends <span>10</span>
-            </li>
-            <li>
-                Invites <span>10</span>
-            </li>
-            <li>
-                Friend Request <span>10</span>
-            </li>
-        </ul>
-    </div>
+    </svg>     
+    
+    <app-friends-tab></app-friends-tab>
 
     <div class="search">
         <input type="text" placeholder="Search">

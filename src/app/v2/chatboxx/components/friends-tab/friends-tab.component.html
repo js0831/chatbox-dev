@@ -1,0 +1,9 @@
+
+<ul>
+    <li 
+        (click)="selectTab(t)"
+        [ngClass]="{'active': t.value === activeTab.value}" 
+        *ngFor="let t of tabs">
+        {{t.label}} <span>{{t.count}}</span>
+    </li>
+</ul>

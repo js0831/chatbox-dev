@@ -77,7 +77,6 @@ export class HomeComponent implements OnInit {
       lastname,
       accountId: data.user._id
     }).subscribe( x => {
-      alert(x);
       session.user = x.data;
       this.sessionSV.save(session);
       this.router.navigate(['v2/chat']);

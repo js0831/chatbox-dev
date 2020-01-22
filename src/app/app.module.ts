@@ -14,6 +14,10 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { ChatboxxModule } from './v2/chatboxx/chatboxx.module';
 import { HomeComponent } from './v2/home/home.component';
+import { StoreModule } from '@ngrx/store';
+import { friendReducer } from './v2/chatboxx/store/friends/friends.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { FriendsEffects } from './v2/chatboxx/store/friends/friends.effects';
 const config: SocketIoConfig = { url: environment.apiURL, options: {}};
 
 @NgModule({
@@ -30,7 +34,14 @@ const config: SocketIoConfig = { url: environment.apiURL, options: {}};
     JkWaitModule,
     JkAlertModule,
     SocketIoModule.forRoot(config),
-    ChatboxxModule
+    ChatboxxModule,
+
+    StoreModule.forRoot({
+      friendState: friendReducer
+    }),
+    EffectsModule.forRoot([
+      FriendsEffects
+    ])
   ],
   providers: [
     {

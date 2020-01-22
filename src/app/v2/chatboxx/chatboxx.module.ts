@@ -11,6 +11,7 @@ import { SendMessageComponent } from './components/send-message/send-message.com
 import { FormsModule } from '@angular/forms';
 import { ActiveFriendComponent } from './components/active-friend/active-friend.component';
 import { FriendsComponent } from './components/friends/friends.component';
+import { FriendsTabComponent } from './components/friends-tab/friends-tab.component';
 
 
 
@@ -25,7 +26,8 @@ import { FriendsComponent } from './components/friends/friends.component';
     ConversationComponent,
     SendMessageComponent,
     ActiveFriendComponent,
-    FriendsComponent
+    FriendsComponent,
+    FriendsTabComponent
   ],
   imports: [
     CommonModule,
