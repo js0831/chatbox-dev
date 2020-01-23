@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { FRIEND_LOAD_USER_LIST_FINISH } from '../../store/friends/friends.action';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { JkAlertService } from 'jk-alert';
-import { FriendState } from '../../store/friends/friend.state';
+import { FriendState } from '../../store/friends/friend.state'; 
 
 @Component({
   selector: 'app-friends',
@@ -19,7 +19,6 @@ export class FriendsComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
   friendType = FriendsType;
   currentUser: UserInterface;
-
   friendState: FriendState;
 
   constructor(
@@ -89,17 +88,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
     this.friendState.users.list = this.friendState.users.list.filter( u => u._id !== id);
   }
 
-  paginate(todo: number) {
-    const currentPage = this.friendState.users.pagination.page;
-
-    const pagination = this.friendState.users.pagination;
-    const maxPage = Math.ceil(pagination.total / pagination.limit) - 1;
-    if (
-      (currentPage === 0 && todo === -1) ||
-      (maxPage === currentPage && todo === 1)
-    ) { return; }
-
-    this.friendState.users.pagination.page = currentPage + todo;
+  pageChanged(page: number) {
     this.userSV.stateGetFriends(this.sessionSV.data.user._id, this.friendState.users.type, this.friendState.users.pagination);
   }
 

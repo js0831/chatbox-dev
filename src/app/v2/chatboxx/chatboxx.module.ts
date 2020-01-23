@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { ActiveFriendComponent } from './components/active-friend/active-friend.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { FriendsTabComponent } from './components/friends-tab/friends-tab.component';
+import { PaginationComponent } from '../shared/components/pagination/pagination.component';
 
 
 
@@ -27,7 +28,8 @@ import { FriendsTabComponent } from './components/friends-tab/friends-tab.compon
     SendMessageComponent,
     ActiveFriendComponent,
     FriendsComponent,
-    FriendsTabComponent
+    FriendsTabComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule,

@@ -18,6 +18,7 @@ import { StoreModule } from '@ngrx/store';
 import { friendReducer } from './v2/chatboxx/store/friends/friends.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { FriendsEffects } from './v2/chatboxx/store/friends/friends.effects';
+import { PaginationComponent } from './v2/shared/components/pagination/pagination.component';
 const config: SocketIoConfig = { url: environment.apiURL, options: {}};
 
 @NgModule({

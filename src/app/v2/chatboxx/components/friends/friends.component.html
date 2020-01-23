@@ -38,13 +38,10 @@
         </li>
     </ul>
     
-    <!-- TODO: CREATE SEPARATE COMPONENT -->
     <div class="pagination">
-        <svg (click)="paginate(-1)">
-            <use xlink:href="assets/images/icons.svg#icon-prev"></use>
-        </svg>    
-        <svg (click)="paginate(1)">
-            <use xlink:href="assets/images/icons.svg#icon-next"></use>
-        </svg>    
+        <app-pagination 
+            [options]="friendState?.users.pagination" 
+            (pageChanged)="pageChanged($event)"    
+        ></app-pagination>
     </div>
 </div>
