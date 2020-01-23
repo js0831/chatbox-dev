@@ -20,6 +20,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
   friendType = FriendsType;
   currentUser: UserInterface;
   friendState: FriendState;
+  searchKey = '';
+  searhTimer: any;
 
   constructor(
     private actionSV: ActionService,
@@ -33,6 +35,23 @@ export class FriendsComponent implements OnInit, OnDestroy {
     this.subs = [
       this.watchFriendState()
     ];
+  }
+
+  iSearch() {
+    if (this.searhTimer) { clearTimeout(this.searhTimer); }
+    this.searhTimer = setTimeout( x => {
+      const params = {
+        id: this.currentUser._id,
+        type: this.friendState.users.type,
+        pagination: {
+          ...this.friendState.users.pagination,
+          page: 0
+        },
+        search: this.searchKey
+      };
+
+      this.userSV.stateGetFriends(params);
+    }, 1000);
   }
 
   private watchFriendState() {
@@ -89,7 +108,14 @@ export class FriendsComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(page: number) {
-    this.userSV.stateGetFriends(this.sessionSV.data.user._id, this.friendState.users.type, this.friendState.users.pagination);
+    const params = {
+      id: this.currentUser._id,
+      type: this.friendState.users.type,
+      pagination: this.friendState.users.pagination,
+      search: this.friendState.users.search
+    };
+
+    this.userSV.stateGetFriends(params);
   }
 
   ngOnDestroy() {

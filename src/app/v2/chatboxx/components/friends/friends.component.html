@@ -6,7 +6,7 @@
     <app-friends-tab></app-friends-tab>
 
     <div class="search">
-        <input type="text" placeholder="Search">
+        <input type="text" placeholder="Search" (keyup)="iSearch()" [(ngModel)]="searchKey">
         <svg>
             <use xlink:href="assets/images/icons.svg#icon-search"></use>
         </svg> 

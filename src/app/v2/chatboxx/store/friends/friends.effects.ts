@@ -25,7 +25,8 @@ export class FriendsEffects {
             const payload = action.payload;
             switch (action.payload.type) {
                 case FriendsType.INVITE:
-                    req = this.userSV.getUsers(payload.id, payload.pagination);
+                    const {id, pagination, search} = payload;
+                    req = this.userSV.getUsers({id, search, pagination});
                     break;
                 case FriendsType.FRIEND_REQUEST:
                     req = this.userSV.getFriendRequest(payload.id);

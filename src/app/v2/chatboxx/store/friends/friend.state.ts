@@ -8,6 +8,7 @@ export interface FriendState {
     users: {
         type: FriendsType;
         list: UserInterface[],
-        pagination: PaginationInterface
+        pagination: PaginationInterface,
+        search?: string;
     };
 }

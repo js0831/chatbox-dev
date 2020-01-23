@@ -3,6 +3,7 @@ import { FriendsTabInterface } from './friends-tab.interface';
 import { FriendsType } from '../../store/friends/friends-type.enum';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserService } from 'src/app/v2/shared/services/user.service';
+import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-friends-tab',
@@ -28,6 +29,7 @@ export class FriendsTabComponent implements OnInit {
     }
   ];
   activeTab: FriendsTabInterface;
+  currentUser: UserInterface;
 
   constructor(
     private userSV: UserService,
@@ -36,19 +38,24 @@ export class FriendsTabComponent implements OnInit {
 
   ngOnInit() {
     this.activeTab = this.tabs[1];
-
-    this.userSV.stateGetFriends(this.sessionSV.data.user._id, this.activeTab.value, {
-      page: 0,
-      limit: 1
-    });
+    this.currentUser = this.sessionSV.data.user;
+    this.userSV.stateGetFriends(this.params);
   }
 
   selectTab(t: FriendsTabInterface) {
     this.activeTab = t;
-    this.userSV.stateGetFriends(this.sessionSV.data.user._id, this.activeTab.value, {
-      page: 0,
-      limit: 1
-    });
+    this.userSV.stateGetFriends(this.params);
   }
 
+  private get params() {
+    return {
+      id: this.currentUser._id,
+      pagination: {
+        page: 0,
+        limit: 1
+      },
+      type: this.activeTab.value,
+      search: '',
+    };
+  }
 }

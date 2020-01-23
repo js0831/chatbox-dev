@@ -49,8 +49,15 @@ export class UserService {
     );
   }
 
-  getUsers(id: string, pagination: PaginationInterface): Observable<ResponseInterface<UserInterface[]>> {
-    return this.http.get(`user/${id}/${pagination.page}/${pagination.limit}`) as Observable<ResponseInterface<UserInterface[]>>;
+  getUsers(params: {
+    id: string,
+    search?: string,
+    pagination: PaginationInterface
+  }): Observable<ResponseInterface<UserInterface[]>> {
+    const {id, search, pagination } = params;
+    const searchParam = search ? `${search}/` : '';
+    const url = `user/${id}/${searchParam}${pagination.page}/${pagination.limit}`;
+    return this.http.get(url) as Observable<ResponseInterface<UserInterface[]>>;
   }
 
   inviteUser(userId: string, byUserId: string): Observable<ResponseInterface<UserInterface>> {
@@ -96,7 +103,13 @@ export class UserService {
     return this.store.select('friendState');
   }
 
-  stateGetFriends(id: string, type: FriendsType, pagination: PaginationInterface) {
-    this.store.dispatch(new FriendLoadUserList({id, type, pagination}));
+  stateGetFriends(params: {
+    id: string,
+    type: FriendsType,
+    pagination: PaginationInterface,
+    search?: string
+  }) {
+    const {id, type, pagination, search} = params;
+    this.store.dispatch(new FriendLoadUserList({id, type, pagination, search}));
   }
 }

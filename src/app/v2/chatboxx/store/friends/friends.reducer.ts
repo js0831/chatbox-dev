@@ -9,6 +9,7 @@ const initialState: FriendState = {
     users: {
         type: null,
         list: [],
+        search: '',
         pagination: {
             page: 0,
             limit: 10,
@@ -30,7 +31,8 @@ export function friendReducer(state = initialState, action: actions.Actions) {
                 },
                 users: {
                     ...state.users,
-                    pagination: payload.pagination
+                    pagination: payload.pagination,
+                    search: payload.search
                 }
             };
             break;
