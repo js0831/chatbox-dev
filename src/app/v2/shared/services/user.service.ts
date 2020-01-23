@@ -55,7 +55,7 @@ export class UserService {
     pagination: PaginationInterface
   }): Observable<ResponseInterface<UserInterface[]>> {
     const {id, search, pagination } = params;
-    const searchParam = search ? `${search}/` : '';
+    const searchParam = search ? `${search}/` : '%20/';
     const url = `user/${id}/${searchParam}${pagination.page}/${pagination.limit}`;
     return this.http.get(url) as Observable<ResponseInterface<UserInterface[]>>;
   }
@@ -81,8 +81,15 @@ export class UserService {
     });
   }
 
-  getFriendRequest(id: string): Observable<ResponseInterface<UserInterface[]>> {
-    return this.http.get(`user/${id}/friend/request`) as Observable<ResponseInterface<UserInterface[]>>;
+  getFriendRequest(params: {
+    id: string,
+    search?: string,
+    pagination: PaginationInterface
+  }): Observable<ResponseInterface<UserInterface[]>> {
+    const {id, search, pagination } = params;
+    const searchParam = search ? `${search}/` : '%20/';
+    const url = `user/${id}/friend/request/${searchParam}${pagination.page}/${pagination.limit}`;
+    return this.http.get(url) as Observable<ResponseInterface<UserInterface[]>>;
   }
 
   getFriends(id: string): Observable<ResponseInterface<UserInterface[]>> {

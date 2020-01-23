@@ -8,6 +8,7 @@ import { FRIEND_LOAD_USER_LIST_FINISH } from '../../store/friends/friends.action
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { JkAlertService } from 'jk-alert';
 import { FriendState } from '../../store/friends/friend.state'; 
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-friends',
@@ -22,6 +23,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
   friendState: FriendState;
   searchKey = '';
   searhTimer: any;
+
+  removeActionButton: string[] = [];
 
   constructor(
     private actionSV: ActionService,
@@ -58,6 +61,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
     return this.userSV.friendState.subscribe( x => {
       if (x.action.name === FRIEND_LOAD_USER_LIST_FINISH) {
         this.friendState = x;
+        this.searchKey = x.users.search;
+        this.removeActionButton = [];
       }
     });
   }
@@ -70,7 +75,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'invite':
         this.userSV.inviteUser(userId, this.currentUser._id).subscribe( x => {
-          this.removeUserOnList(userId);
+          this.disableActionButton(userId);
         });
         break;
       case 'cancel':
@@ -78,7 +83,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
         break;
       case 'unfriend':
         this.userSV.unfriend(userId, this.currentUser._id).subscribe( x => {
-          this.removeUserOnList(userId);
+          this.disableActionButton(userId);
         });
         break;
       default:
@@ -89,7 +94,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
 
   private respondToFriendRequest(userId: string, respond: string) {
     this.userSV.respondToFriendRequest(userId, this.currentUser._id, respond).subscribe( x => {
-      console.log(x);
+      this.disableActionButton(userId);
     });
   }
 
@@ -97,14 +102,14 @@ export class FriendsComponent implements OnInit, OnDestroy {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
         this.userSV.cancelInvite(this.currentUser._id, id).subscribe( res => {
-          this.removeUserOnList(id);
+          this.disableActionButton(id);
         });
       }
     });
   }
 
-  private removeUserOnList(id: string) {
-    this.friendState.users.list = this.friendState.users.list.filter( u => u._id !== id);
+  private disableActionButton(id: string) {
+    this.removeActionButton.push(id);
   }
 
   pageChanged(page: number) {

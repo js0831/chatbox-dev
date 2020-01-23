@@ -23,13 +23,13 @@ export class FriendsEffects {
         switchMap( (action: FriendLoadUserList) => {
             let req: Observable<ResponseInterface<UserInterface[]>>;
             const payload = action.payload;
+            const {id, pagination, search} = payload;
             switch (action.payload.type) {
                 case FriendsType.INVITE:
-                    const {id, pagination, search} = payload;
                     req = this.userSV.getUsers({id, search, pagination});
                     break;
                 case FriendsType.FRIEND_REQUEST:
-                    req = this.userSV.getFriendRequest(payload.id);
+                    req = this.userSV.getFriendRequest({id, search, pagination});
                     break;
                 case FriendsType.FRIENDS:
                     req = this.userSV.getFriends(payload.id);

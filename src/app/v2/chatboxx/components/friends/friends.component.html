@@ -18,9 +18,9 @@
             <label>{{u.firstname}} {{u.lastname}}</label>
 
 
-            <div class="action" >
+            <div class="action" *ngIf="!(removeActionButton.indexOf(u._id) >= 0)">
                 <ng-container *ngIf="friendState.users.type === friendType.FRIEND_REQUEST">   
-                    <ng-container *ngIf="u.invites.indexOf(currentUser._id) >= 0; else cancel">
+                    <ng-container *ngIf="u.invites && u.invites.indexOf(currentUser._id) >= 0; else cancel">
                         <button (click)="doFriendAction('reject', u._id)">Reject</button>
                         <button (click)="doFriendAction('accept', u._id)">Accept</button>
                     </ng-container>
@@ -40,6 +40,7 @@
     
     <div class="pagination">
         <app-pagination 
+            *ngIf="friendState?.users.pagination.total > 0"
             [options]="friendState?.users.pagination" 
             (pageChanged)="pageChanged($event)"    
         ></app-pagination>
