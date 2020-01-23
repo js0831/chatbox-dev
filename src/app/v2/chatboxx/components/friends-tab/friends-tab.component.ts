@@ -52,7 +52,7 @@ export class FriendsTabComponent implements OnInit {
       id: this.currentUser._id,
       pagination: {
         page: 0,
-        limit: 1
+        limit: 10
       },
       type: this.activeTab.value,
       search: '',

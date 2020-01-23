@@ -92,8 +92,15 @@ export class UserService {
     return this.http.get(url) as Observable<ResponseInterface<UserInterface[]>>;
   }
 
-  getFriends(id: string): Observable<ResponseInterface<UserInterface[]>> {
-    return this.http.get(`user/${id}/friends`) as Observable<ResponseInterface<UserInterface[]>>;
+  getFriends(params: {
+    id: string,
+    search?: string,
+    pagination: PaginationInterface
+  }): Observable<ResponseInterface<UserInterface[]>> {
+    const {id, search, pagination } = params;
+    const searchParam = search ? `${search}/` : '%20/';
+    const url = `user/${id}/friends/${searchParam}${pagination.page}/${pagination.limit}`;
+    return this.http.get(url) as Observable<ResponseInterface<UserInterface[]>>;
   }
 
   unfriend(who: string, by: string) {

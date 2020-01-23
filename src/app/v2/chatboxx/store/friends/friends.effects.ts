@@ -22,9 +22,8 @@ export class FriendsEffects {
         ofType(FRIEND_LOAD_USER_LIST),
         switchMap( (action: FriendLoadUserList) => {
             let req: Observable<ResponseInterface<UserInterface[]>>;
-            const payload = action.payload;
-            const {id, pagination, search} = payload;
-            switch (action.payload.type) {
+            const {id, pagination, search, type} = action.payload;
+            switch (type) {
                 case FriendsType.INVITE:
                     req = this.userSV.getUsers({id, search, pagination});
                     break;
@@ -32,7 +31,7 @@ export class FriendsEffects {
                     req = this.userSV.getFriendRequest({id, search, pagination});
                     break;
                 case FriendsType.FRIENDS:
-                    req = this.userSV.getFriends(payload.id);
+                    req = this.userSV.getFriends({id, search, pagination});
                     break;
                 default:
                     break;
@@ -40,7 +39,7 @@ export class FriendsEffects {
             return req.pipe(
                     map( result => {
                         return new FriendLoadUserListFinish({
-                            type: payload.type,
+                            type,
                             response: result
                         });
                     })

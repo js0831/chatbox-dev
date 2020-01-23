@@ -7,8 +7,7 @@ import { Subscription } from 'rxjs';
 import { FRIEND_LOAD_USER_LIST_FINISH } from '../../store/friends/friends.action';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { JkAlertService } from 'jk-alert';
-import { FriendState } from '../../store/friends/friend.state'; 
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { FriendState } from '../../store/friends/friend.state';
 
 @Component({
   selector: 'app-friends',
@@ -82,9 +81,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
         this.cancelInvitation(userId);
         break;
       case 'unfriend':
-        this.userSV.unfriend(userId, this.currentUser._id).subscribe( x => {
-          this.disableActionButton(userId);
-        });
+        this.unfriendUser(userId);
         break;
       default:
         this.respondToFriendRequest(userId, action);
@@ -95,6 +92,16 @@ export class FriendsComponent implements OnInit, OnDestroy {
   private respondToFriendRequest(userId: string, respond: string) {
     this.userSV.respondToFriendRequest(userId, this.currentUser._id, respond).subscribe( x => {
       this.disableActionButton(userId);
+    });
+  }
+
+  private unfriendUser(id: string) {
+    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+      if (x === 0) {
+        this.userSV.unfriend(id, this.currentUser._id).subscribe( res => {
+          this.disableActionButton(id);
+        });
+      }
     });
   }
 
