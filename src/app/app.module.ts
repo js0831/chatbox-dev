@@ -15,10 +15,13 @@ import { environment } from 'src/environments/environment';
 import { ChatboxxModule } from './v2/chatboxx/chatboxx.module';
 import { HomeComponent } from './v2/home/home.component';
 import { StoreModule } from '@ngrx/store';
-import { friendReducer } from './v2/chatboxx/store/friends/friends.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { FriendsEffects } from './v2/chatboxx/store/friends/friends.effects';
-import { PaginationComponent } from './v2/shared/components/pagination/pagination.component';
+import { friendReducer } from './v2/chatboxx/store/friends/friends.reducer';
+// import { ConversationEffects } from './v2/chatboxx/store/conversation/conversation.effects';
+import { conversationReducer } from './v2/chatboxx/store/conversation/conversation.reducer';
+import { ConversationEffects } from './v2/chatboxx/store/conversation/conversation.effects';
+
 const config: SocketIoConfig = { url: environment.apiURL, options: {}};
 
 @NgModule({
@@ -38,10 +41,12 @@ const config: SocketIoConfig = { url: environment.apiURL, options: {}};
     ChatboxxModule,
 
     StoreModule.forRoot({
-      friendState: friendReducer
+      conversationState: conversationReducer,
+      friendState: friendReducer,
     }),
     EffectsModule.forRoot([
-      FriendsEffects
+      ConversationEffects,
+      FriendsEffects,
     ])
   ],
   providers: [

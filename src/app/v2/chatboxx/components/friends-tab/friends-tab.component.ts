@@ -37,7 +37,7 @@ export class FriendsTabComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.activeTab = this.tabs[1];
+    this.activeTab = this.tabs[0];
     this.currentUser = this.sessionSV.data.user;
     this.userSV.stateGetFriends(this.params);
   }

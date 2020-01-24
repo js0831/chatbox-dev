@@ -2,21 +2,14 @@
     <input type="text" placeholder="Search">
     <svg>
         <use xlink:href="assets/images/icons.svg#icon-search"></use>
-    </svg> 
+    </svg>
 </div>
 
-<ul class="conversations custom-scroll">
-    <li class="active">
+<ul class="conversations custom-scroll" *ngIf="conversations.length > 0">
+    <li *ngFor="let con of conversations">
         <img class="avatar" alt="" src="./assets/images/avatar.svg">
         <div class="user">
-            <label>Jener Sigua</label>
-            <span>Online</span>
-        </div>
-    </li>
-    <li>
-        <img class="avatar" alt="" src="./assets/images/avatar.svg">
-        <div class="user">
-            <label>Jener Sigua</label>
+            <label>{{con.members[0]?.firstname}} {{con.members[0]?.lastname}}</label>
             <span>Online</span>
         </div>
     </li>

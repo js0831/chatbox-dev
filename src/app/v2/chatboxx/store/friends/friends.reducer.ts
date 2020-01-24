@@ -57,7 +57,6 @@ export function friendReducer(state = initialState, action: actions.Actions) {
             returnState = state;
             break;
     }
-
     return returnState;
 }
 
