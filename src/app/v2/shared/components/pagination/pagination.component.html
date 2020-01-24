@@ -1,0 +1,9 @@
+<div class="pagination">
+    <svg [ngClass]="{'disabled': options && options.page === 0}" (click)="paginate(-1)">
+        <use xlink:href="assets/images/icons.svg#icon-prev"></use>
+    </svg>    
+    <span class="page">{{options?.page + 1}}</span>
+    <svg [ngClass]="{'disabled': isDisableNext()}" (click)="paginate(1)">
+        <use xlink:href="assets/images/icons.svg#icon-next"></use>
+    </svg>
+</div>

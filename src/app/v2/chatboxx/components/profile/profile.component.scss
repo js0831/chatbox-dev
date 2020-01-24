@@ -1,0 +1,91 @@
+:host{
+    height: 10rem;
+    background: #12385f;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    position: relative;
+}
+.avatar{
+    width: 6rem;
+    height: 6rem;
+}
+
+.notifications{
+    width: 1.75rem;
+    height: 1.75rem;
+    background: red;
+    fill: #fff;
+    position: absolute;
+    border-radius: 50%;
+
+    left: 6px;
+    top: 15px;
+    box-shadow: 0 0 0 1.5px #fff;
+    cursor: pointer;
+}
+
+.user{
+    flex:1;
+    padding: 0 .5rem;
+    h1{
+        font-weight: 500;
+        line-height: 1;
+        font-size: 1.5rem;
+        color: #fff;
+    }
+    label{
+        font-size: 1.2rem;
+        color: #b9b9b9;
+        text-decoration: underline;
+    }
+}
+
+.action{
+    position: relative;
+    button{
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+    }
+
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+        fill: #fff;
+    }
+
+    ul{
+        list-style: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: #fff;
+        border-radius: 3px;
+        overflow: hidden;
+        z-index: 1;
+
+        li{
+            padding: .75rem 1rem;
+            cursor: pointer;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            color: #797979;
+            font-weight: 500;
+
+            &:hover{
+                background: #dcdcdc;
+            }
+
+            svg{
+                fill: #656565;
+                width: 2rem;
+                height: 2rem;
+                margin-right: .5rem;
+            }
+        }
+    }
+}

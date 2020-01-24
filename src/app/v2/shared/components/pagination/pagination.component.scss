@@ -1,0 +1,33 @@
+.pagination{
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    
+    .page{
+        display: block;
+        margin: 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+        text-decoration: underline;
+    }
+
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+        cursor: pointer;        
+
+        &:hover{
+            background: #ddd;
+            fill: #333;
+        }
+
+        &.disabled{
+            fill: #c5c5c5;
+
+            &:hover{
+                background: #efefef; 
+            }
+        }
+    }
+}

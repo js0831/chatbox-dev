@@ -1,0 +1,42 @@
+:host{
+    padding: 1rem 1rem 0;
+    display: block;
+    
+    ul{
+        display: flex;
+    }
+    li{
+        padding: 1rem;
+        flex:1;
+        background: #eee;
+        border-right: 1px solid #ddd;
+        border-bottom: 0;
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: #383838;
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &.active{
+            background: #ddd;
+            font-weight: 600;
+        }
+
+        &:hover{
+            background: #eee;
+        }
+
+        span{
+            background: #5d5d5d;
+            color: #fff;
+            font-weight: 500;
+            padding: .25rem .5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-left: .5rem;
+        }
+    }
+}

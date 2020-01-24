@@ -1,0 +1,30 @@
+
+<img class="avatar" alt="" src="./assets/images/avatar.svg">
+
+<svg class="notifications">
+    <use xlink:href="assets/images/icons.svg#icon-notifications"></use>
+</svg>
+
+<div class="user">
+    <h1>{{currentUser.firstname}} {{currentUser.lastname}}</h1>
+    <label>{{currentUser.email}}</label>
+</div>
+
+
+
+<div class="action">
+    <button (blur)="hideAction()" (click)="showAction = true">
+        <svg>
+            <use xlink:href="assets/images/icons.svg#icon-more_vert"></use>
+        </svg>
+    </button>
+
+    <ul *ngIf="showAction">
+        <li (click)="action(a.value)" *ngFor="let a of actions">
+            <svg>
+                <use [attr.xlink:href]="'assets/images/icons.svg#icon-' + a.icon"></use>
+            </svg>
+            {{a.label}}
+        </li>
+    </ul>
+</div>

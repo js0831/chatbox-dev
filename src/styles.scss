@@ -10,6 +10,15 @@
 }
 html{
     font-size: 62.5%;
+
+    
+    @media (max-width:414px) {
+        font-size: 58%;
+    };
+
+    @media (max-width:320px) {
+        font-size: 50%;
+    };
 }
 
 body{
@@ -17,6 +26,10 @@ body{
     line-height: 1.7;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+}
+
+ul{
+    list-style: none;
 }
 
 .custom-scroll{

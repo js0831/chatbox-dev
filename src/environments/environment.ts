@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiURL: 'https://app-chatbox.herokuapp.com/',
-  appId: '5e15a157522bc3d4a4a0329b'
+  apiURL: 'http://localhost:3000/',
+  appId: '5e15a157522bc3d4a4a0329b',
+  loginURL: 'https://ilogin.netlify.com'
 };
 
 /*

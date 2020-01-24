@@ -1,0 +1,119 @@
+:host{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+.content{
+    width: 95%;
+    max-width: 50rem;
+    background: #fff; 
+    margin: auto;
+    margin-top: 5rem;
+    border-radius: 2px;
+    position: relative;
+
+    .close{
+        position: absolute;
+        top: -30px;
+        right: -5px;
+        fill: #fff;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+    }
+
+    .search{
+        padding: 1rem;
+        position: relative;
+    
+        input{
+            border-radius: 2px;
+            padding: 1rem;
+            width: 100%;
+            background: #eee; 
+            border: 1px solid #ddd;
+            transition: all .25s ease;
+    
+            &::placeholder{
+                color: #c1c1c1;
+            } 
+        }
+        svg{
+            fill: #929292;
+            width: 2.5rem;
+            height: 2.5rem;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.6rem;
+            pointer-events: none; 
+            transition: all .25s ease;
+        }
+    }
+
+    .list{
+        padding: 0 1rem;
+        max-height: calc(100vh - 18rem);
+        overflow-y: auto;
+        li{
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px dotted #ddd;
+
+            img{
+                width: 4rem;
+                height: 4rem;
+                margin-right: .5rem;
+            }
+
+            label{
+                font-size: 1.25rem;
+            }
+
+            .action{
+                margin-left: auto;
+                
+                button{
+                    padding: .5rem;
+                    border: none;
+                    background: #2b5784;
+                    cursor: pointer;
+                    border-radius: 3px;
+                    color: #fff;
+                    font-size: 1.1rem;
+                    margin-left: .5rem;
+                }                
+            }
+
+        }
+    }
+}
+
+.pagination{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.pagination1{
+    display: flex;
+    padding: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+        cursor: pointer;
+        margin-left: 1rem;
+
+        &:hover{
+            background: #ddd;
+            fill: #333;
+        }
+    }
+}
