@@ -13,6 +13,11 @@ ul{
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        position: relative;
+        
+        &:not(:last-child){
+            border-right: 1px solid #254c73;
+        }
 
         &.active{
             background: #1d3f61;
@@ -26,6 +31,22 @@ ul{
             width: 2.5rem;
             height: 2.5rem;            
             fill: #fff;
+        }
+
+        .count{
+            width: 2.25rem;
+            height: 2.25rem;
+            color: #fff;
+            border-radius: 50%;
+            background: red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            font-weight: 600;
+            box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.5);
         }
     }
 }

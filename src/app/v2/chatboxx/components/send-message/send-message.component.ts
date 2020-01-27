@@ -1,9 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-import { UserService } from 'src/app/landing/user.service';
-import { ActionService } from 'src/app/shared/services/action.service';
 import { Subscription } from 'rxjs';
-import { ChatService } from 'src/app/shared/services/chat.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
 import { JkAlertService } from 'jk-alert';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 import { CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
@@ -13,6 +9,8 @@ import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
+import { NotificationService } from 'src/app/v2/shared/services/notification.service';
+import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 
 @Component({
   selector: 'app-send-message',
@@ -36,7 +34,8 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     private conversationSV: ConversationService,
     private formBuilder: FormBuilder,
     private sessionSV: SessionService,
-    private websocketSV: WebSocketService
+    private websocketSV: WebSocketService,
+    private notifService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -103,9 +102,21 @@ export class SendMessageComponent implements OnInit, OnDestroy {
         message,
       }
     ).toPromise();
+
+    this.createNotifications();
     this.form.get('message').patchValue('');
   }
 
+  private createNotifications() {
+    this.selectedConversation.members.forEach( x => {
+      this.notifService.create({
+        reference: this.selectedConversation._id,
+        type: NotificationType.MESSAGE,
+        user: x._id,
+        message: `New Message from ${this.currentUser.firstname} ${this.currentUser.lastname}`,
+      }).toPromise();
+    });
+  }
   private buildForm() {
     this.form = this.formBuilder.group({
       message: ['', Validators.required]

@@ -6,6 +6,10 @@ import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type
 import { Subscription } from 'rxjs';
 import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
+import { NotificationService } from 'src/app/v2/shared/services/notification.service';
+import { NOTIFICATION_LIST_LOAD_FINISH } from '../../store/notification/notification.action';
+import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
+import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 
 @Component({
   selector: 'app-conversations',
@@ -18,10 +22,12 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
   conversations: any[] = [];
   selectedConversation: ConversationInterface;
+  notifications: NotificationInterface[] = [];
 
   constructor(
     private conversationSV: ConversationService,
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    public notificationSV: NotificationService,
   ) { }
 
   ngOnInit() {
@@ -29,6 +35,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
     this.subs = [
       this.watchConversationState(),
+      this.watchNotificationState()
     ];
 
     this.conversationSV.stateLoadConversations({
@@ -38,6 +45,26 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       pagination: {
         limit: 10,
         page: 0
+      }
+    });
+  }
+
+  countNotification(reference: string) {
+    return this.notifications.filter( x => {
+      return x.user === this.currentUser._id &&
+        NotificationType.MESSAGE === x.type &&
+        reference === x.reference;
+    }).length;
+  }
+
+  private watchNotificationState() {
+    return this.notificationSV.notificationState.subscribe( x => {
+      switch (x.action.name) {
+        case NOTIFICATION_LIST_LOAD_FINISH:
+          this.notifications = x.notification.list;
+          break;
+        default:
+          break;
       }
     });
   }

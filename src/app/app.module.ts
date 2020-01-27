@@ -21,6 +21,8 @@ import { friendReducer } from './v2/chatboxx/store/friends/friends.reducer';
 // import { ConversationEffects } from './v2/chatboxx/store/conversation/conversation.effects';
 import { conversationReducer } from './v2/chatboxx/store/conversation/conversation.reducer';
 import { ConversationEffects } from './v2/chatboxx/store/conversation/conversation.effects';
+import { notificationReducer } from './v2/chatboxx/store/notification/notification.reducer';
+import { NotificationEffects } from './v2/chatboxx/store/notification/notification.effects';
 
 const config: SocketIoConfig = { url: environment.apiURL, options: {}};
 
@@ -43,10 +45,12 @@ const config: SocketIoConfig = { url: environment.apiURL, options: {}};
     StoreModule.forRoot({
       conversationState: conversationReducer,
       friendState: friendReducer,
+      notificationState: notificationReducer
     }),
     EffectsModule.forRoot([
       ConversationEffects,
       FriendsEffects,
+      NotificationEffects
     ])
   ],
   providers: [

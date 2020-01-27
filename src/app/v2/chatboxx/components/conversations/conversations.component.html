@@ -15,5 +15,6 @@
             <label>{{con.members[0]?.firstname}} {{con.members[0]?.lastname}}</label>
             <span>Online</span>
         </div>
+        <span class="notifications" *ngIf="countNotification(con._id) > 0">{{countNotification(con._id)}}</span>
     </li>
 </ul>

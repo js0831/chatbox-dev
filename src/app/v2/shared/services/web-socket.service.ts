@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { SessionService } from './session.service';
-import { type } from 'os';
 import { WebsocketEventType } from '../enums/websocket-event-type.enum';
 
 @Injectable({
