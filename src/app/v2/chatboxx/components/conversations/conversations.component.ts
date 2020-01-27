@@ -10,6 +10,8 @@ import { NotificationService } from 'src/app/v2/shared/services/notification.ser
 import { NOTIFICATION_LIST_LOAD_FINISH } from '../../store/notification/notification.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
+import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 
 @Component({
   selector: 'app-conversations',
@@ -20,14 +22,16 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
   currentUser: UserInterface;
   subs: Subscription[] = [];
-  conversations: any[] = [];
+  conversations: ConversationInterface[] = [];
   selectedConversation: ConversationInterface;
   notifications: NotificationInterface[] = [];
+  liveNotificationCount: any = {};
 
   constructor(
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
-    public notificationSV: NotificationService,
+    private notificationSV: NotificationService,
+    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
@@ -54,7 +58,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       return x.user === this.currentUser._id &&
         NotificationType.MESSAGE === x.type &&
         reference === x.reference;
-    }).length;
+    }).length + (this.liveNotificationCount[reference] || 0);
   }
 
   private watchNotificationState() {
@@ -69,6 +73,19 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private watchWebSocket() {
+    this.conversations.forEach( x => {
+      this.liveNotificationCount[x._id] = 0;
+      this.subs.push(
+        this.websocketSV.listen(WebsocketEventType.MESSAGE, x._id).subscribe(ws => {
+          if (this.selectedConversation._id !== x._id) {
+            this.liveNotificationCount[x._id] += 1;
+          }
+        })
+      );
+    });
+  }
+
   selectConversation(conversation: ConversationInterface) {
     this.selectedConversation = conversation;
     this.conversationSV.stateSelectConversation(conversation);
@@ -79,7 +96,6 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       switch (x.action.name) {
         case CONVERSATION_LIST_LOAD_FINISH:
           this.filterConversationMembers(x.conversation.list);
-          break;
           break;
         default:
           break;
@@ -96,6 +112,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       });
       return con;
     });
+    this.watchWebSocket();
   }
 
   ngOnDestroy() {

@@ -42,7 +42,8 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
       this.watchConversationState(),
-      this.watchWebSocket()
+      this.watchWebSocketTyping(),
+      this.watchWebSocketMessage()
     ];
     this.buildForm();
   }
@@ -60,7 +61,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private watchWebSocket() {
+  private watchWebSocketTyping() {
     return this.websocketSV.listen(
       WebsocketEventType.TYPING,
       this.selectedConversation._id
@@ -72,6 +73,15 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       this.typingTimerView = setTimeout( z => {
         this.typing = '';
       }, 2000);
+    });
+  }
+
+  private watchWebSocketMessage() {
+    return this.websocketSV.listen(
+      WebsocketEventType.MESSAGE,
+      this.selectedConversation._id
+    ).subscribe( x => {
+      this.typing = '';
     });
   }
 
@@ -105,6 +115,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
     this.createNotifications();
     this.form.get('message').patchValue('');
+    this.messageElement.nativeElement.focus();
   }
 
   private createNotifications() {
@@ -125,7 +136,9 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
   userIsTyping(e) {
     if (e.which === 13) {
+      e.preventDefault();
       this.sendMessage();
+      return;
     }
 
     if (this.typingTimer) {
