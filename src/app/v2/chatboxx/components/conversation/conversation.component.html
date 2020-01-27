@@ -1,4 +1,4 @@
-<div class="message">
+<!-- <div class="message">
     <div class="details">
         <span class="bullet"></span>
         <label class="user">Aiza Cimanis</label>
@@ -13,4 +13,21 @@
         <span class="time">Today 01:00 PM</span>
     </div>
     <div class="content">meron.. piso per bug</div>
-</div>
+</div> -->
+<ng-container *ngIf="messages">
+    <div class="message" 
+        [ngClass]="{'you': isYou(msg.from._id)}" 
+        *ngFor="let msg of messages">
+
+        <div class="details">
+            <span class="bullet"></span>
+            <label class="user">{{msg.from.firstname}}</label>
+
+            <span class="time" *ngIf="!isToday(msg.date)">{{msg.date | date : 'MM/dd/yy hh:mm a'}}</span>
+            <span class="time" *ngIf="isToday(msg.date)">Today {{msg.date | date : 'hh:mm a'}}</span>
+
+        </div>
+        <div class="content">{{msg.message}}</div>
+    </div>
+</ng-container>
+

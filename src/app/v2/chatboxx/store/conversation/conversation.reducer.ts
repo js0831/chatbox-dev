@@ -51,6 +51,31 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+        case actions.CONVERSATION_LOAD_MESSAGES:
+            returnState = {
+                action: {
+                    name: type
+                },
+                conversation: {
+                    ...state.conversation,
+                    messages: payload.data
+                }
+            };
+            break;
+        case actions.CONVERSATION_SEND_MESSAGE:
+            returnState = {
+                action: {
+                    name: type
+                },
+                conversation: {
+                    ...state.conversation,
+                    messages: [
+                        ...state.conversation.messages,
+                        payload
+                    ]
+                }
+            };
+            break;
         default:
             returnState = state;
             break;

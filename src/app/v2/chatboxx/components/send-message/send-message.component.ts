@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/landing/user.service';
 import { ActionService } from 'src/app/shared/services/action.service';
 import { Subscription } from 'rxjs';
@@ -24,6 +24,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   form: FormGroup;
   currentUser: UserInterface;
+  @ViewChild('message', {static: true}) messageElement: ElementRef;
 
   constructor(
     private conversationSV: ConversationService,
@@ -44,6 +45,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       switch (x.action.name) {
         case CONVERSATION_SELECT:
           this.selectedConversation = x.conversation.selected;
+          this.messageElement.nativeElement.focus();
           break;
         default:
           break;
@@ -53,13 +55,24 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.form.invalid || !this.selectedConversation) { return; }
+    const message = this.form.value.message;
+
+    // append to msgs list
+    this.conversationSV.stateSendMessage({
+      from: this.currentUser,
+      message,
+      date: new Date().toString()
+    });
+
+    // save on DB
     this.conversationSV.sendMessage(
       this.selectedConversation._id,
       {
         from: this.currentUser._id,
-        message: this.form.value.message
+        message,
       }
     ).toPromise();
+    this.form.get('message').patchValue('');
   }
 
   private buildForm() {

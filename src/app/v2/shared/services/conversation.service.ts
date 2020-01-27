@@ -7,7 +7,7 @@ import { AppState } from '../../chatboxx/store/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ConversationState } from '../../chatboxx/store/conversation/conversation.state';
-import { ConversationListLoad, ConversationSelect } from '../../chatboxx/store/conversation/conversation.action';
+import { ConversationListLoad, ConversationSelect, ConversationSendMessage } from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
 
@@ -54,6 +54,10 @@ export class ConversationService {
     this.store.dispatch(new ConversationSelect(con));
   }
 
+  stateSendMessage(msg: any) {
+    this.store.dispatch(new ConversationSendMessage(msg));
+  }
+
   sendMessage(conversationId: string, data: MessageInterface) {
     const url = 'conversation/message';
     return this.http.post(url, {
@@ -65,5 +69,11 @@ export class ConversationService {
         loading: 'background'
       }
     });
+  }
+
+  getMessages(conversationId: string):
+  Observable<ResponseInterface<MessageInterface[]>> {
+    const url = `conversation/${conversationId}/messages`;
+    return this.http.get(url) as Observable<ResponseInterface<MessageInterface[]>>;
   }
 }

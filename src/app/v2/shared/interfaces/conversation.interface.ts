@@ -5,6 +5,6 @@ import { UserInterface } from './user.interface';
 export interface ConversationInterface {
     _id?: string;
     type: ConversationType;
-    members: string[] | UserInterface[];
+    members: string[];
     messages: MessageInterface[];
 }
