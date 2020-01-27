@@ -40,6 +40,17 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+        case actions.CONVERSATION_SELECT:
+            returnState = {
+                action: {
+                    name: type
+                },
+                conversation: {
+                    ...state.conversation,
+                    selected: payload
+                }
+            };
+            break;
         default:
             returnState = state;
             break;

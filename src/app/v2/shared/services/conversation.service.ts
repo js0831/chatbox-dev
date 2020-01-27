@@ -7,8 +7,9 @@ import { AppState } from '../../chatboxx/store/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ConversationState } from '../../chatboxx/store/conversation/conversation.state';
-import { ConversationListLoad } from '../../chatboxx/store/conversation/conversation.action';
+import { ConversationListLoad, ConversationSelect } from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
+import { MessageInterface } from '../interfaces/message.interface';
 
 
 @Injectable({
@@ -45,7 +46,24 @@ export class ConversationService {
     }));
   }
 
-  conversationState(): Observable<ConversationState> {
+  get conversationState(): Observable<ConversationState> {
     return this.store.select('conversationState');
+  }
+
+  stateSelectConversation(con: ConversationInterface) {
+    this.store.dispatch(new ConversationSelect(con));
+  }
+
+  sendMessage(conversationId: string, data: MessageInterface) {
+    const url = 'conversation/message';
+    return this.http.post(url, {
+      conversationId,
+      from: data.from,
+      message: data.message
+    }, {
+      headers: {
+        loading: 'background'
+      }
+    });
   }
 }

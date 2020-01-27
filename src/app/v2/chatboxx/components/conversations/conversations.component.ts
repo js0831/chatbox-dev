@@ -4,7 +4,7 @@ import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 import { Subscription } from 'rxjs';
-import { CONVERSATION_LIST_LOAD_FINISH } from '../../store/conversation/conversation.action';
+import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 
 @Component({
@@ -17,6 +17,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   currentUser: UserInterface;
   subs: Subscription[] = [];
   conversations: any[] = [];
+  selectedConversation: ConversationInterface;
 
   constructor(
     private conversationSV: ConversationService,
@@ -41,16 +42,32 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     });
   }
 
+  selectConversation(conversation: ConversationInterface) {
+    this.selectedConversation = conversation;
+    this.conversationSV.stateSelectConversation(conversation);
+  }
+
   private watchConversationState() {
-    return this.conversationSV.conversationState().subscribe( x => {
-      if (x.action.name === CONVERSATION_LIST_LOAD_FINISH) {
-        this.conversations = x.conversation.list.map( con => {
-          con.members = con.members.filter((u: any) => {
-            return u._id !== this.currentUser._id;
-          });
-          return con;
-        });
+    return this.conversationSV.conversationState.subscribe( x => {
+      switch (x.action.name) {
+        case CONVERSATION_LIST_LOAD_FINISH:
+          this.filterConversationMembers(x.conversation.list);
+          break;
+          break;
+        default:
+          break;
       }
+
+
+    });
+  }
+
+  private filterConversationMembers(conversations: ConversationInterface[]) {
+    this.conversations = conversations.map( con => {
+      con.members = con.members.filter((u: any) => {
+        return u._id !== this.currentUser._id;
+      });
+      return con;
     });
   }
 

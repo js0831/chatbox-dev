@@ -7,6 +7,7 @@ export interface ConversationState {
     action: ActionState;
     conversation: {
         type: ConversationType,
-        list: ConversationInterface[]
+        list: ConversationInterface[],
+        selected?: ConversationInterface
     };
 }

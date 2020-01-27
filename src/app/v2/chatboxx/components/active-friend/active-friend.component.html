@@ -5,8 +5,8 @@
 
 <img alt="" src="./assets/images/avatar.svg">
 
-<div>
-    <h1>Jener Sigua</h1>
+<div *ngIf="friend">
+    <h1>{{friend.firstname}} {{friend.lastname}}</h1>
     <label>Online</label>
 </div>
 

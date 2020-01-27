@@ -1,4 +1,8 @@
-<textarea placeholder="Message"></textarea>
+<form [formGroup]="form" (submit)="sendMessage()">
+    <textarea 
+        (keyup)="onEnter($event)"
+        formControlName="message" placeholder="Message"></textarea>
+</form>
 <div>
     <svg>
         <use xlink:href="assets/images/icons.svg#icon-emoji_emotions"></use>
@@ -7,6 +11,6 @@
         <use xlink:href="assets/images/icons.svg#icon-collectionsphoto_library"></use>
     </svg>
 
-    <a class="send">Send</a>
+    <a class="send" (click)="sendMessage()">Send</a>
 </div>
 <!-- <span class="typing" *ngIf="typing">{{typing}} is typing . . .</span> -->

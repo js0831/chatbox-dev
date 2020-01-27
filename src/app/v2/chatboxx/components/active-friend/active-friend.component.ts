@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { JkAlertService } from 'jk-alert';
 import { UserService } from 'src/app/landing/user.service';
 import { DropdownActionInterface } from 'src/app/v2/shared/interfaces/dropdown-action.interface';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
+import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
+import { Subscription } from 'rxjs';
+import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
+import { CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
+import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-active-friend',
   templateUrl: './active-friend.component.html',
   styleUrls: ['./active-friend.component.scss']
 })
-export class ActiveFriendComponent implements OnInit {
+export class ActiveFriendComponent implements OnInit, OnDestroy {
 
-
+  subs: Subscription[] = [];
   showActions = false;
   actions: DropdownActionInterface[] = [
     {
@@ -25,15 +30,20 @@ export class ActiveFriendComponent implements OnInit {
       icon: 'profile'
     }
   ];
+  selectedConversation: ConversationInterface;
+  friend: UserInterface;
 
   constructor(
     private action: ActionService,
     private alertService: JkAlertService,
-    private userService: UserService
+    private userService: UserService,
+    private conversationSV: ConversationService
   ) { }
 
   ngOnInit() {
-
+    this.subs = [
+      this.watchConversationState()
+    ];
   }
 
   doAction(action: any) {
@@ -50,5 +60,22 @@ export class ActiveFriendComponent implements OnInit {
     this.action.dispatch({
       action: 'MENU_SHOW'
     });
+  }
+
+  private watchConversationState() {
+    return this.conversationSV.conversationState.subscribe( x => {
+      switch (x.action.name) {
+        case CONVERSATION_SELECT:
+          this.selectedConversation = x.conversation.selected;
+          this.friend = this.selectedConversation.members[0] as UserInterface;
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach( x => x.unsubscribe());
   }
 }
