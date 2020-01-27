@@ -13,6 +13,7 @@ import { ActiveFriendComponent } from './components/active-friend/active-friend.
 import { FriendsComponent } from './components/friends/friends.component';
 import { FriendsTabComponent } from './components/friends-tab/friends-tab.component';
 import { PaginationComponent } from '../shared/components/pagination/pagination.component';
+import { ConversationFilterPipe } from '../shared/pipes/conversation-filter.pipe';
 
 
 
@@ -29,7 +30,8 @@ import { PaginationComponent } from '../shared/components/pagination/pagination.
     ActiveFriendComponent,
     FriendsComponent,
     FriendsTabComponent,
-    PaginationComponent
+    PaginationComponent,
+    ConversationFilterPipe
   ],
   imports: [
     CommonModule,
