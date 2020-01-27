@@ -28,7 +28,10 @@ export class MainComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
         case CONVERSATION_SELECT:
-          this.selectedConversation = x.conversation.selected;
+          this.selectedConversation = null;
+          setTimeout( () => {
+            this.selectedConversation = x.conversation.selected;
+          });
           break;
         default:
           break;

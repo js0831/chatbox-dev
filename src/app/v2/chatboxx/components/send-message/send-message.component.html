@@ -1,7 +1,7 @@
 <form [formGroup]="form" (submit)="sendMessage()">
     <textarea 
         #message
-        (keyup)="onEnter($event)"
+        (keyup)="userIsTyping($event)"
         formControlName="message" placeholder="Message"></textarea>
 </form>
 <div>
@@ -14,4 +14,4 @@
 
     <a class="send" (click)="sendMessage()">Send</a>
 </div>
-<!-- <span class="typing" *ngIf="typing">{{typing}} is typing . . .</span> -->
+<span class="typing" *ngIf="typing">{{typing}} is typing . . .</span>

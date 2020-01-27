@@ -5,6 +5,9 @@ import { CONVERSATION_LOAD_MESSAGES, CONVERSATION_SEND_MESSAGE } from '../../sto
 import { MessageInterface } from 'src/app/v2/shared/interfaces/message.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
+import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
+import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
+import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 
 @Component({
   selector: 'app-conversation',
@@ -16,22 +19,26 @@ export class ConversationComponent implements OnInit, OnDestroy{
   subs: Subscription[] = [];
   messages: MessageInterface[];
   currentUser: UserInterface;
+  currentConversation: ConversationInterface;
 
   constructor(
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
-      this.watchConversationState()
+      this.watchConversationState(),
+      this.watchWebSocket()
     ];
   }
 
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
+      this.currentConversation = x.conversation.selected;
       switch (x.action.name) {
         case CONVERSATION_LOAD_MESSAGES:
           this.messages = x.conversation.messages;
@@ -45,6 +52,16 @@ export class ConversationComponent implements OnInit, OnDestroy{
         default:
           break;
       }
+    });
+  }
+
+  private watchWebSocket() {
+    return this.websocketSV.listen(
+      WebsocketEventType.MESSAGE,
+      this.currentConversation._id
+    ).subscribe( x => {
+      this.messages.push(x as MessageInterface);
+      this.moveScrollToBottom();
     });
   }
 

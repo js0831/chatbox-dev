@@ -11,6 +11,8 @@ import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
+import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
+import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 
 @Component({
   selector: 'app-send-message',
@@ -24,18 +26,24 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   form: FormGroup;
   currentUser: UserInterface;
+  typing = '';
+  typingTimerView: any;
+  typingTimer: any;
+
   @ViewChild('message', {static: true}) messageElement: ElementRef;
 
   constructor(
     private conversationSV: ConversationService,
     private formBuilder: FormBuilder,
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
-      this.watchConversationState()
+      this.watchConversationState(),
+      this.watchWebSocket()
     ];
     this.buildForm();
   }
@@ -53,16 +61,39 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     });
   }
 
+  private watchWebSocket() {
+    return this.websocketSV.listen(
+      WebsocketEventType.TYPING,
+      this.selectedConversation._id
+    ).subscribe( (data: any) => {
+      if (this.typingTimerView) {
+        clearTimeout(this.typingTimerView);
+      }
+      this.typing = data;
+      this.typingTimerView = setTimeout( z => {
+        this.typing = '';
+      }, 2000);
+    });
+  }
+
   sendMessage() {
     if (this.form.invalid || !this.selectedConversation) { return; }
     const message = this.form.value.message;
-
-    // append to msgs list
-    this.conversationSV.stateSendMessage({
+    const messageData = {
       from: this.currentUser,
       message,
       date: new Date().toString()
+    };
+
+    // send to websocket
+    this.websocketSV.dispatch({
+      id: this.selectedConversation._id,
+      type: WebsocketEventType.MESSAGE,
+      data: messageData
     });
+
+    // append to msgs list
+    this.conversationSV.stateSendMessage(messageData);
 
     // save on DB
     this.conversationSV.sendMessage(
@@ -81,10 +112,21 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onEnter(e) {
+  userIsTyping(e) {
     if (e.which === 13) {
       this.sendMessage();
     }
+
+    if (this.typingTimer) {
+      clearTimeout(this.typingTimer);
+    }
+    this.typingTimer = setTimeout( x => {
+      this.websocketSV.dispatch({
+        id: this.selectedConversation._id,
+        type: WebsocketEventType.TYPING,
+        data: this.currentUser.firstname
+      });
+    }, 100);
   }
 
   ngOnDestroy() {
