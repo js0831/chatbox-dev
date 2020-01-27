@@ -64,7 +64,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
   private filterConversationMembers(conversations: ConversationInterface[]) {
     this.conversations = conversations.map( con => {
-      con.members = con.members.filter((u: any) => {
+      con.members = (con.members as UserInterface[]).filter((u: any) => {
         return u._id !== this.currentUser._id;
       });
       return con;
