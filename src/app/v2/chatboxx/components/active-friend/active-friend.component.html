@@ -1,12 +1,11 @@
-
 <svg class="menu" (click)="showMenu()">
     <use xlink:href="assets/images/icons.svg#icon-menu"></use>
 </svg>
 
 <img alt="" src="./assets/images/avatar.svg">
 
-<div *ngIf="friend">
-    <h1>{{friend.firstname}} {{friend.lastname}}</h1>
+<div>
+    <h1>{{friend?.firstname}} {{friend?.lastname}}</h1>
     <label>Online</label>
 </div>
 
