@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { JkAlertService } from 'jk-alert';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 import { CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
@@ -86,7 +85,12 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if (this.form.invalid || !this.selectedConversation) { return; }
+    if (
+      this.form.value.message.trim().length === 0 ||
+      this.form.invalid ||
+      !this.selectedConversation
+    ) { return; }
+
     const message = this.form.value.message;
     const messageData = {
       from: this.currentUser,
@@ -130,7 +134,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   }
   private buildForm() {
     this.form = this.formBuilder.group({
-      message: ['', Validators.required]
+      message: ['', [Validators.required]]
     });
   }
 

@@ -3,7 +3,7 @@ import { NotificationService } from 'src/app/v2/shared/services/notification.ser
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { Subscription } from 'rxjs';
-import { NOTIFICATION_LIST_LOAD_FINISH } from '../../store/notification/notification.action';
+import { NOTIFICATION_LIST_LOAD_FINISH, NOTIFICATION_LIVE_UPDATE, NOTIFICATION_DELETE } from '../../store/notification/notification.action';
 
 @Component({
   selector: 'app-tab',
@@ -34,6 +34,8 @@ export class TabComponent implements OnInit, OnDestroy {
     return this.notificationSV.notificationState.subscribe( x => {
       switch (x.action.name) {
         case NOTIFICATION_LIST_LOAD_FINISH:
+        case NOTIFICATION_LIVE_UPDATE:
+        case NOTIFICATION_DELETE:
           this.totalNotifs = x.notification.list.length;
           break;
         default:

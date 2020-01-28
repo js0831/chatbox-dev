@@ -35,6 +35,29 @@ export function notificationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+          case actions.NOTIFICATION_LIVE_UPDATE:
+            returnState = {
+                action: {
+                    name: type
+                },
+                notification: {
+                    ...state.notification,
+                    list: [...state.notification.list, payload]
+                }
+            };
+            break;
+
+          case actions.NOTIFICATION_DELETE:
+            returnState = {
+                action: {
+                    name: type
+                },
+                notification: {
+                    ...state.notification,
+                    list: state.notification.list.filter( n => n._id !== payload.userid && payload.reference !== n.reference)
+                }
+            };
+            break;
         default:
             returnState = state;
             break;

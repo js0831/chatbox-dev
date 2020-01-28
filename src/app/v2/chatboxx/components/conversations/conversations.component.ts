@@ -7,7 +7,9 @@ import { Subscription } from 'rxjs';
 import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
-import { NOTIFICATION_LIST_LOAD_FINISH } from '../../store/notification/notification.action';
+import { NOTIFICATION_LIST_LOAD_FINISH,
+  NOTIFICATION_LIVE_UPDATE,
+  NOTIFICATION_DELETE } from '../../store/notification/notification.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
@@ -25,7 +27,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   conversations: ConversationInterface[] = [];
   selectedConversation: ConversationInterface;
   notifications: NotificationInterface[] = [];
-  liveNotificationCount: any = {};
+  searchKey = '';
 
   constructor(
     private conversationSV: ConversationService,
@@ -58,13 +60,15 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       return x.user === this.currentUser._id &&
         NotificationType.MESSAGE === x.type &&
         reference === x.reference;
-    }).length + (this.liveNotificationCount[reference] || 0);
+    }).length;
   }
 
   private watchNotificationState() {
     return this.notificationSV.notificationState.subscribe( x => {
       switch (x.action.name) {
         case NOTIFICATION_LIST_LOAD_FINISH:
+        case NOTIFICATION_LIVE_UPDATE:
+        case NOTIFICATION_DELETE:
           this.notifications = x.notification.list;
           break;
         default:
@@ -74,12 +78,18 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   }
 
   private watchWebSocket() {
-    this.conversations.forEach( x => {
-      this.liveNotificationCount[x._id] = 0;
+    this.conversations.forEach( conversation => {
       this.subs.push(
-        this.websocketSV.listen(WebsocketEventType.MESSAGE, x._id).subscribe(ws => {
-          if (this.selectedConversation._id !== x._id) {
-            this.liveNotificationCount[x._id] += 1;
+        this.websocketSV.listen(WebsocketEventType.MESSAGE, conversation._id).subscribe((ws: any) => {
+          if (!this.selectedConversation || this.selectedConversation._id !== conversation._id) {
+            const liveNotif: NotificationInterface = {
+              _id: new Date().getTime().toString(),
+              user: this.currentUser._id,
+              type: NotificationType.MESSAGE,
+              reference: conversation._id,
+              message: `New message from ${ws.from.firstname} ${ws.from.lastname}`,
+            };
+            this.notificationSV.stateUpdateNotification(liveNotif);
           }
         })
       );
@@ -89,6 +99,13 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   selectConversation(conversation: ConversationInterface) {
     this.selectedConversation = conversation;
     this.conversationSV.stateSelectConversation(conversation);
+
+    const params = {
+      userid: this.currentUser._id,
+      reference: conversation._id
+    };
+    this.notificationSV.stateDeleteByReference(params);
+    this.notificationSV.deleteByReference(params).toPromise();
   }
 
   private watchConversationState() {
@@ -100,8 +117,6 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         default:
           break;
       }
-
-
     });
   }
 
