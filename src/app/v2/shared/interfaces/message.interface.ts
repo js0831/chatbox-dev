@@ -1,5 +1,7 @@
+import { UserInterface } from './user.interface';
+
 export interface MessageInterface {
-    from: string;
+    from: UserInterface;
     message: string;
     date?: string;
     // seen?: string[];

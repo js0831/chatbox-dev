@@ -14,6 +14,8 @@ import { FriendsComponent } from './components/friends/friends.component';
 import { FriendsTabComponent } from './components/friends-tab/friends-tab.component';
 import { PaginationComponent } from '../shared/components/pagination/pagination.component';
 import { ConversationFilterPipe } from '../shared/pipes/conversation-filter.pipe';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import { GroupsComponent } from './components/groups/groups.component';
 
 
 
@@ -31,7 +33,9 @@ import { ConversationFilterPipe } from '../shared/pipes/conversation-filter.pipe
     FriendsComponent,
     FriendsTabComponent,
     PaginationComponent,
-    ConversationFilterPipe
+    ConversationFilterPipe,
+    NotificationsComponent,
+    GroupsComponent
   ],
   imports: [
     CommonModule,

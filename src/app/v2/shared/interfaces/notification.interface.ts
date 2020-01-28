@@ -6,4 +6,5 @@ export interface NotificationInterface {
     type: NotificationType;
     reference: string;
     message: string;
+    createdDate?: string;
 }

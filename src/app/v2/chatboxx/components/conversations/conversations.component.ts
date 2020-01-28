@@ -4,7 +4,7 @@ import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 import { Subscription } from 'rxjs';
-import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
+import { CONVERSATION_LIST_LOAD_FINISH } from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NOTIFICATION_LIST_LOAD_FINISH,
@@ -12,8 +12,6 @@ import { NOTIFICATION_LIST_LOAD_FINISH,
   NOTIFICATION_DELETE } from '../../store/notification/notification.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
-import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
-import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 
 @Component({
   selector: 'app-conversations',
@@ -33,7 +31,6 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
     private notificationSV: NotificationService,
-    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
@@ -77,25 +74,6 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private watchWebSocket() {
-    this.conversations.forEach( conversation => {
-      this.subs.push(
-        this.websocketSV.listen(WebsocketEventType.MESSAGE, conversation._id).subscribe((ws: any) => {
-          if (!this.selectedConversation || this.selectedConversation._id !== conversation._id) {
-            const liveNotif: NotificationInterface = {
-              _id: new Date().getTime().toString(),
-              user: this.currentUser._id,
-              type: NotificationType.MESSAGE,
-              reference: conversation._id,
-              message: `New message from ${ws.from.firstname} ${ws.from.lastname}`,
-            };
-            this.notificationSV.stateUpdateNotification(liveNotif);
-          }
-        })
-      );
-    });
-  }
-
   selectConversation(conversation: ConversationInterface) {
     this.selectedConversation = conversation;
     this.conversationSV.stateSelectConversation(conversation);
@@ -127,11 +105,11 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       });
       return con;
     });
-    this.watchWebSocket();
   }
 
   ngOnDestroy() {
     this.conversations = [];
     this.subs.forEach( x => x.unsubscribe());
+    this.conversationSV.stateActionReset();
   }
 }

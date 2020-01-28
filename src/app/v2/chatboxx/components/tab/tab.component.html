@@ -1,19 +1,10 @@
 <ul>
-    <li class="active">
+    <li
+      (click)="selectTab(t)"
+      *ngFor="let t of tabs"  [ngClass]="{'active' : activeTab && activeTab.id === t.id}">
+        <span *ngIf="t.count > 0" class="count">{{t.count}}</span>
         <svg>
-            <use xlink:href="assets/images/icons.svg#icon-message"></use>
-        </svg>
-    </li>
-    <li>
-
-        <svg>
-            <use xlink:href="assets/images/icons.svg#icon-grouppeople"></use>
-        </svg>
-    </li>
-    <li>
-        <span *ngIf="totalNotifs > 0" class="count">{{totalNotifs}}</span>
-        <svg>
-            <use xlink:href="assets/images/icons.svg#icon-notifications"></use>
+            <use [attr.xlink:href]="'assets/images/icons.svg#icon-' + t.icon"></use>
         </svg>
     </li>
 </ul>

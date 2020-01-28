@@ -14,7 +14,7 @@ import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.scss']
 })
-export class ConversationComponent implements OnInit, OnDestroy{
+export class ConversationComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   messages: MessageInterface[];

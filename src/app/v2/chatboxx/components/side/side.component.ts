@@ -9,6 +9,7 @@ import { ActionService } from 'src/app/v2/shared/services/action.service';
 export class SideComponent implements OnInit {
 
   private open = false;
+  activeTabID = '';
 
   constructor(
     private element: ElementRef,
@@ -19,8 +20,18 @@ export class SideComponent implements OnInit {
 
   ngOnInit() {
     this.action.listen.subscribe( x => {
-      if (x.action === 'MENU_SHOW') {
-        this.toggle();
+      switch (x.action) {
+        case 'MENU_SHOW':
+          this.toggle();
+          break;
+        case 'TAB_SELECT':
+          // NOTE: Fix error ExpressionChangedAfterItHasBeenCheckedError
+          setTimeout( () => {
+            this.activeTabID = x.data.id;
+          });
+          break;
+        default:
+          break;
       }
     });
   }

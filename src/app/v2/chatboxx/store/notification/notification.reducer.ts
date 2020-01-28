@@ -31,7 +31,7 @@ export function notificationReducer(state = initialState, action: actions.Action
                 },
                 notification: {
                     ...state.notification,
-                    list: payload.data
+                    list: payload.data.reverse()
                 }
             };
             break;
@@ -42,7 +42,7 @@ export function notificationReducer(state = initialState, action: actions.Action
                 },
                 notification: {
                     ...state.notification,
-                    list: [...state.notification.list, payload]
+                    list: [payload, ...state.notification.list]
                 }
             };
             break;

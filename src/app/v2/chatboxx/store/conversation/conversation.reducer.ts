@@ -16,6 +16,14 @@ export function conversationReducer(state = initialState, action: actions.Action
     let returnState: ConversationState = null;
 
     switch (type) {
+        case actions.CONVERSATION_ACTION_RESET:
+          returnState = {
+            ...state,
+            action: {
+              name: ''
+            }
+          };
+          break;
         case actions.CONVERSATION_LIST_LOAD:
             returnState = {
                 ...state,

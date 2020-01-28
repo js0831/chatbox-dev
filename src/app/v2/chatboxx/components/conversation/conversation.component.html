@@ -15,8 +15,8 @@
     <div class="content">meron.. piso per bug</div>
 </div> -->
 <ng-container *ngIf="messages">
-    <div class="message" 
-        [ngClass]="{'you': isYou(msg.from._id)}" 
+    <div class="message"
+        [ngClass]="{'you': isYou(msg.from._id)}"
         *ngFor="let msg of messages">
 
         <div class="details">

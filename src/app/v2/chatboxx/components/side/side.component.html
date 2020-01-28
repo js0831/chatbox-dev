@@ -1,5 +1,11 @@
 <app-profile></app-profile>
-<app-conversations></app-conversations>
+
+<ng-container *ngIf="activeTabID" [ngSwitch]="activeTabID">
+  <app-conversations *ngSwitchCase="'messages'"></app-conversations>
+  <app-groups *ngSwitchCase="'groups'"></app-groups>
+  <app-notifications *ngSwitchCase="'notifications'"></app-notifications>
+</ng-container>
+
 <app-tab></app-tab>
 
 

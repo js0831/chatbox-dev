@@ -1,0 +1,53 @@
+:host{
+  flex: 1;
+  overflow-y: auto;
+
+  display: flex;
+  flex-flow: column;
+}
+
+.title{
+  padding: 0.5rem 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+ul{
+  flex: 1;
+  overflow-y: auto;
+
+  li{
+    display: flex;
+    color: #fff;
+    padding: 1rem;
+    cursor: pointer;
+    position: relative;
+    flex-flow: row;
+
+    &:not(:last-child){
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    &:hover{
+      background: #0c1e31;
+    }
+
+    div{
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+
+      label{
+        font-size: 1.25rem;
+      }
+
+    }
+
+    img{
+      width: 4rem;
+      height: 4rem;
+      margin-right: 1rem;
+    }
+  }
+}
