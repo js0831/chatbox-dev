@@ -58,6 +58,22 @@ export function notificationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+
+          case actions.NOTIFICATION_SEEN:
+            returnState = {
+                action: {
+                    name: type
+                },
+                notification: {
+                    ...state.notification,
+                    list: state.notification.list.map( n => {
+                      n.seen = true;
+                      return n;
+                    })
+                }
+            };
+            console.log(returnState);
+            break;
         default:
             returnState = state;
             break;

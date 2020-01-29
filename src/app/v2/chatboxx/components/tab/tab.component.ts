@@ -103,15 +103,17 @@ export class TabComponent implements OnInit, OnDestroy {
 
   private watchnotificationState() {
     return this.notificationSV.notificationState.subscribe( x => {
-      switch (x.action.name) {
-        case NOTIFICATION_LIST_LOAD_FINISH:
-        case NOTIFICATION_LIVE_UPDATE:
-        case NOTIFICATION_DELETE:
-          this.tabs[2].count = x.notification.list.length;
-          break;
-        default:
-          break;
-      }
+      // switch (x.action.name) {
+      //   case NOTIFICATION_LIST_LOAD_FINISH:
+      //   case NOTIFICATION_LIVE_UPDATE:
+      //   case NOTIFICATION_DELETE:
+      this.tabs[2].count = x.notification.list.filter( n => {
+        return !n.seen;
+      }).length;
+      //     break;
+      //   default:
+      //     break;
+      // }
     });
   }
 

@@ -7,4 +7,5 @@ export interface NotificationInterface {
     reference: string;
     message: string;
     createdDate?: string;
+    seen?: boolean;
 }

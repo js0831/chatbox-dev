@@ -62,15 +62,15 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
   private watchNotificationState() {
     return this.notificationSV.notificationState.subscribe( x => {
-      switch (x.action.name) {
-        case NOTIFICATION_LIST_LOAD_FINISH:
-        case NOTIFICATION_LIVE_UPDATE:
-        case NOTIFICATION_DELETE:
-          this.notifications = x.notification.list;
-          break;
-        default:
-          break;
-      }
+      // switch (x.action.name) {
+      //   case NOTIFICATION_LIST_LOAD_FINISH:
+      //   case NOTIFICATION_LIVE_UPDATE:
+      //   case NOTIFICATION_DELETE:
+      this.notifications = x.notification.list;
+      //     break;
+      //   default:
+      //     break;
+      // }
     });
   }
 

@@ -3,7 +3,12 @@ import { NotificationInterface } from '../interfaces/notification.interface';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../chatboxx/store/app.state';
-import { NotificationListLoad, NotificationLiveUpdate, NotificationDelete } from '../../chatboxx/store/notification/notification.action';
+import {
+  NotificationListLoad,
+  NotificationLiveUpdate,
+  NotificationDelete,
+  NotificationSeen
+} from '../../chatboxx/store/notification/notification.action';
 import { NotificationType } from '../enums/notification-type.enum';
 
 @Injectable({
@@ -51,6 +56,14 @@ export class NotificationService {
     });
   }
 
+  seenNotifications(userId: string) {
+    return this.http.patch(`notification/${userId}`, {}, {
+      headers: {
+        loading: 'background'
+      }
+    });
+  }
+
   get notificationState() {
     return this.store.select('notificationState');
   }
@@ -67,5 +80,9 @@ export class NotificationService {
     userid: string, reference: string
   }) {
     this.store.dispatch(new NotificationDelete(params));
+  }
+
+  stateSeenNotifications(userId: string) {
+    this.store.dispatch(new NotificationSeen(userId));
   }
 }
