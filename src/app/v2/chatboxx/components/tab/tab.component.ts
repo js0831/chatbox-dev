@@ -58,10 +58,19 @@ export class TabComponent implements OnInit, OnDestroy {
     this.subs = [
       this.watchnotificationState(),
       this.watchConversationState(),
+      this.watchAction()
     ];
 
     this.notificationSV.stateLoadNotifications(this.currentUser._id);
     this.selectTab(this.tabs[0]);
+  }
+
+  private watchAction() {
+    return this.actionSV.listen.subscribe( x => {
+      if (x.action === 'NOTIFICATION_OPEN' && x.data.type === NotificationType.MESSAGE) {
+        this.selectTab(this.tabs[0]);
+      }
+    });
   }
 
   private watchConversationState() {
@@ -93,7 +102,7 @@ export class TabComponent implements OnInit, OnDestroy {
               user: this.currentUser._id,
               type: NotificationType.MESSAGE,
               reference: conversation._id,
-              message: `New message from ${ws.from.firstname} ${ws.from.lastname}`,
+              message: `New message from ${ws.from.firstname}`,
               createdDate: ws.date
             };
             this.notificationSV.stateUpdateNotification(liveNotif);

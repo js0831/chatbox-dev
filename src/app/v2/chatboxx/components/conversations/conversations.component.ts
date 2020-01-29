@@ -12,6 +12,7 @@ import { NOTIFICATION_LIST_LOAD_FINISH,
   NOTIFICATION_DELETE } from '../../store/notification/notification.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
   selector: 'app-conversations',
@@ -31,6 +32,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
     private notificationSV: NotificationService,
+    private actionSV: ActionService
   ) { }
 
   ngOnInit() {
@@ -50,6 +52,15 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         page: 0
       }
     });
+
+  }
+
+  private openConversationFromNotifaction() {
+    if (this.actionSV.previousValue.action === 'NOTIFICATION_OPEN') {
+      const ref = this.actionSV.previousValue.data.reference;
+      const conversation = this.conversations.filter( c => c._id === ref)[0];
+      this.selectConversation(conversation);
+    }
   }
 
   countNotification(reference: string) {
@@ -93,6 +104,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         case CONVERSATION_ADD:
         case CONVERSATION_REMOVE:
           this.filterConversationMembers(x.conversation.list);
+          this.openConversationFromNotifaction();
           break;
         default:
           break;
