@@ -128,7 +128,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
         reference: this.selectedConversation._id,
         type: NotificationType.MESSAGE,
         user: x._id,
-        message: `New Message from ${this.currentUser.firstname} ${this.currentUser.lastname}`,
+        message: `New Message from ${this.currentUser.firstname}`,
       }).toPromise();
     });
   }

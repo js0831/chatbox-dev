@@ -6,6 +6,8 @@ export const CONVERSATION_SELECT = '[Conversation] SELECT';
 export const CONVERSATION_LOAD_MESSAGES = '[Conversation] Load messages';
 export const CONVERSATION_SEND_MESSAGE = '[Conversation] Send message';
 export const CONVERSATION_ACTION_RESET = '[Conversation] Action reset';
+export const CONVERSATION_ADD = '[Conversation] Add';
+export const CONVERSATION_REMOVE = '[Conversation] Remove';
 
 export class ConversationListLoad implements Action {
     readonly type = CONVERSATION_LIST_LOAD;
@@ -37,10 +39,22 @@ export class ConversationActionReset implements Action {
   constructor(public payload?: any) {}
 }
 
+export class ConversationAdd implements Action {
+  readonly type = CONVERSATION_ADD;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationRemove implements Action {
+  readonly type = CONVERSATION_REMOVE;
+  constructor(public payload?: any) {}
+}
+
 export type Actions =
 | ConversationListLoad
 | ConversationListLoadFinish
 | ConversationSelect
 | ConversationLoadMessages
 | ConversationSendMessage
-| ConversationActionReset;
+| ConversationActionReset
+| ConversationAdd
+| ConversationRemove;

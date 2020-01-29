@@ -4,7 +4,7 @@ import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 import { Subscription } from 'rxjs';
-import { CONVERSATION_LIST_LOAD_FINISH } from '../../store/conversation/conversation.action';
+import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_ADD, CONVERSATION_REMOVE } from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NOTIFICATION_LIST_LOAD_FINISH,
@@ -90,6 +90,8 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
         case CONVERSATION_LIST_LOAD_FINISH:
+        case CONVERSATION_ADD:
+        case CONVERSATION_REMOVE:
           this.filterConversationMembers(x.conversation.list);
           break;
         default:

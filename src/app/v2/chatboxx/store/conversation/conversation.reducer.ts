@@ -84,6 +84,28 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+          case actions.CONVERSATION_ADD:
+            returnState = {
+                action: {
+                    name: type
+                },
+                conversation: {
+                  ...state.conversation,
+                  list: [payload, ...state.conversation.list]
+                }
+            };
+            break;
+          case actions.CONVERSATION_REMOVE:
+            returnState = {
+                action: {
+                    name: type
+                },
+                conversation: {
+                  ...state.conversation,
+                  list: state.conversation.list.filter(con => con._id !== payload)
+                }
+            };
+            break;
         default:
             returnState = state;
             break;

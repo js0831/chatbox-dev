@@ -1,15 +1,15 @@
 <div class="content">
     <svg class="close" (click)="close()">
         <use xlink:href="assets/images/icons.svg#icon-clearclose"></use>
-    </svg>     
-    
+    </svg>
+
     <app-friends-tab></app-friends-tab>
 
     <div class="search">
         <input type="text" placeholder="Search" (keyup)="iSearch()" [(ngModel)]="searchKey">
         <svg>
             <use xlink:href="assets/images/icons.svg#icon-search"></use>
-        </svg> 
+        </svg>
     </div>
 
     <ul class="list custom-scroll" *ngIf="friendState">
@@ -19,30 +19,30 @@
 
 
             <div class="action" *ngIf="!(removeActionButton.indexOf(u._id) >= 0)">
-                <ng-container *ngIf="friendState.users.type === friendType.FRIEND_REQUEST">   
+                <ng-container *ngIf="friendState.users.type === friendType.FRIEND_REQUEST">
                     <ng-container *ngIf="u.invites && u.invites.indexOf(currentUser._id) >= 0; else cancel">
-                        <button (click)="doFriendAction('reject', u._id)">Reject</button>
-                        <button (click)="doFriendAction('accept', u._id)">Accept</button>
+                        <button (click)="doFriendAction('reject', u)">Reject</button>
+                        <button (click)="doFriendAction('accept', u)">Accept</button>
                     </ng-container>
                     <ng-template #cancel>
-                        <button (click)="doFriendAction('cancel', u._id)">Cancel Invitation</button>
+                        <button (click)="doFriendAction('cancel', u)">Cancel Invitation</button>
                     </ng-template>
                 </ng-container>
 
-                <button *ngIf="friendState.users.type === friendType.INVITE" (click)="doFriendAction('invite', u._id)">Invite</button>
-                <button *ngIf="friendState.users.type === friendType.FRIENDS" (click)="doFriendAction('unfriend', u._id)">Unfriend</button>    
+                <button *ngIf="friendState.users.type === friendType.INVITE" (click)="doFriendAction('invite', u)">Invite</button>
+                <button *ngIf="friendState.users.type === friendType.FRIENDS" (click)="doFriendAction('unfriend', u)">Unfriend</button>
             </div>
         </li>
         <li *ngIf="friendState.users.list.length === 0">
             No Results found!
         </li>
     </ul>
-    
+
     <div class="pagination">
-        <app-pagination 
+        <app-pagination
             *ngIf="friendState?.users.pagination.total > 0"
-            [options]="friendState?.users.pagination" 
-            (pageChanged)="pageChanged($event)"    
+            [options]="friendState?.users.pagination"
+            (pageChanged)="pageChanged($event)"
         ></app-pagination>
     </div>
 </div>

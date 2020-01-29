@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { switchMap, map } from 'rxjs/operators';
-import { ResponseInterface } from 'src/app/v2/shared/interfaces/reponse.interface';
 import {
   CONVERSATION_LIST_LOAD,
   ConversationListLoad,
@@ -48,5 +47,5 @@ export class ConversationEffects {
             })
           );
       })
-  );
+    );
 }

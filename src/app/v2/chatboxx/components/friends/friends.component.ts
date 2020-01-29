@@ -8,6 +8,11 @@ import { FRIEND_LOAD_USER_LIST_FINISH } from '../../store/friends/friends.action
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { JkAlertService } from 'jk-alert';
 import { FriendState } from '../../store/friends/friend.state';
+import { NotificationService } from 'src/app/v2/shared/services/notification.service';
+import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
+import { ResponseInterface } from 'src/app/v2/shared/interfaces/reponse.interface';
+import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 
 @Component({
   selector: 'app-friends',
@@ -30,6 +35,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
     private userSV: UserService,
     private sessionSV: SessionService,
     private alertSV: JkAlertService,
+    private notifSV: NotificationService,
+    private conversationSV: ConversationService
   ) { }
 
   ngOnInit() {
@@ -70,36 +77,49 @@ export class FriendsComponent implements OnInit, OnDestroy {
     this.actionSV.dispatch({name: 'FRIENDS_SHOW', data: false});
   }
 
-  doFriendAction(action: string, userId: string) {
+  doFriendAction(action: string, user: UserInterface) {
     switch (action) {
       case 'invite':
-        this.userSV.inviteUser(userId, this.currentUser._id).subscribe( x => {
-          this.disableActionButton(userId);
+        this.userSV.inviteUser(user._id, this.currentUser._id).subscribe( x => {
+          this.disableActionButton(user._id);
+          this.createFriendRequestNotifications(user._id);
         });
         break;
       case 'cancel':
-        this.cancelInvitation(userId);
+        this.cancelInvitation(user._id);
         break;
       case 'unfriend':
-        this.unfriendUser(userId);
+        this.unfriendUser(user._id);
         break;
       default:
-        this.respondToFriendRequest(userId, action);
+        this.respondToFriendRequest(user._id, action);
         break;
     }
   }
 
+  private createFriendRequestNotifications(userId: string) {
+    this.notifSV.create({
+      reference: this.currentUser._id,
+      type: NotificationType.FRIEND_REQUEST,
+      user: userId,
+      message: `${this.currentUser.firstname} sent you a friend request`,
+    }).toPromise();
+  }
+
   private respondToFriendRequest(userId: string, respond: string) {
-    this.userSV.respondToFriendRequest(userId, this.currentUser._id, respond).subscribe( x => {
+    this.userSV.respondToFriendRequest(userId, this.currentUser._id, respond)
+    .subscribe( (x: ResponseInterface<ConversationInterface>) => {
       this.disableActionButton(userId);
+      this.conversationSV.stateAddConversation(x.data);
     });
   }
 
   private unfriendUser(id: string) {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
-        this.userSV.unfriend(id, this.currentUser._id).subscribe( res => {
+        this.userSV.unfriend(id, this.currentUser._id).subscribe( (res: any) => {
           this.disableActionButton(id);
+          this.conversationSV.stateRemoveConversation(res.data._id);
         });
       }
     });

@@ -7,7 +7,13 @@ import { AppState } from '../../chatboxx/store/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ConversationState } from '../../chatboxx/store/conversation/conversation.state';
-import { ConversationListLoad, ConversationSelect, ConversationSendMessage, ConversationActionReset } from '../../chatboxx/store/conversation/conversation.action';
+import {
+  ConversationListLoad,
+  ConversationSelect,
+  ConversationSendMessage,
+  ConversationActionReset,
+  ConversationAdd,
+  ConversationRemove} from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
 
@@ -60,6 +66,14 @@ export class ConversationService {
 
   stateActionReset() {
     this.store.dispatch(new ConversationActionReset());
+  }
+
+  stateAddConversation(conversation: ConversationInterface) {
+    this.store.dispatch(new ConversationAdd(conversation));
+  }
+
+  stateRemoveConversation(conversationId: string) {
+    this.store.dispatch(new ConversationRemove(conversationId));
   }
 
   sendMessage(conversationId: string, data: MessageInterface) {
