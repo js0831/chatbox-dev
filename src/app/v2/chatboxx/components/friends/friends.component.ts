@@ -131,7 +131,11 @@ export class FriendsComponent implements OnInit, OnDestroy {
     this.userSV.respondToFriendRequest(userId, this.currentUser._id, respond)
     .subscribe( (x: ResponseInterface<ConversationInterface>) => {
       this.disableActionButton(userId);
-      this.conversationSV.stateAddConversation(x.data);
+
+      if (respond !== 'reject') {
+        this.conversationSV.stateAddConversation(x.data);
+      }
+
     });
   }
 
