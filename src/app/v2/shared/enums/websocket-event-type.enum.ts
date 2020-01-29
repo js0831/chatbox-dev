@@ -1,4 +1,5 @@
 export enum WebsocketEventType {
     MESSAGE = 'message',
-    TYPING = 'typing'
+    TYPING = 'typing',
+    FRIEND_REQUEST = 'request',
 }

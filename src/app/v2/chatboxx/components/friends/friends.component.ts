@@ -13,6 +13,9 @@ import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 import { ResponseInterface } from 'src/app/v2/shared/interfaces/reponse.interface';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
+import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
+import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
+import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 
 @Component({
   selector: 'app-friends',
@@ -36,7 +39,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
     private sessionSV: SessionService,
     private alertSV: JkAlertService,
     private notifSV: NotificationService,
-    private conversationSV: ConversationService
+    private conversationSV: ConversationService,
+    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
@@ -98,12 +102,27 @@ export class FriendsComponent implements OnInit, OnDestroy {
   }
 
   private createFriendRequestNotifications(userId: string) {
-    this.notifSV.create({
+
+    const notificationData: NotificationInterface = {
       reference: this.currentUser._id,
       type: NotificationType.FRIEND_REQUEST,
       user: userId,
       message: `${this.currentUser.firstname} sent you a friend request`,
-    }).toPromise();
+    };
+
+    // save on DB
+    this.notifSV.create(notificationData).toPromise();
+
+    // send friend notif via websocket
+    this.websocketSV.dispatch({
+      id: userId,
+      type: WebsocketEventType.FRIEND_REQUEST,
+      data: {
+        ...notificationData,
+        createdDate: new Date(),
+        seen: false
+      }
+    });
   }
 
   private respondToFriendRequest(userId: string, respond: string) {

@@ -4,6 +4,7 @@ export const NOTIFICATION_LIST_LOAD = '[Notification] list load';
 export const NOTIFICATION_LIST_LOAD_FINISH = '[Notification] list load finish';
 export const NOTIFICATION_LIVE_UPDATE = '[Notification] live update';
 export const NOTIFICATION_DELETE = '[Notification] Delete';
+export const NOTIFICATION_DELETE_BY_TYPE = '[Notification] Delete by type';
 export const NOTIFICATION_SEEN = '[Notification] Seen';
 
 export class NotificationListLoad implements Action {
@@ -31,9 +32,15 @@ export class NotificationSeen implements Action {
   constructor(public payload?: any) {}
 }
 
+export class NotificationDeleteByType implements Action {
+  readonly type = NOTIFICATION_DELETE_BY_TYPE;
+  constructor(public payload?: any) {}
+}
+
 export type Actions =
 | NotificationListLoad
 | NotificationListLoadFinish
 | NotificationLiveUpdate
 | NotificationDelete
-| NotificationSeen;
+| NotificationSeen
+| NotificationDeleteByType;

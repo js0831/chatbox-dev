@@ -59,6 +59,18 @@ export function notificationReducer(state = initialState, action: actions.Action
             };
             break;
 
+          case actions.NOTIFICATION_DELETE_BY_TYPE:
+            returnState = {
+                action: {
+                    name: type
+                },
+                notification: {
+                    ...state.notification,
+                    list: state.notification.list.filter( n => n.type !== payload.type)
+                }
+            };
+            break;
+
           case actions.NOTIFICATION_SEEN:
             returnState = {
                 action: {

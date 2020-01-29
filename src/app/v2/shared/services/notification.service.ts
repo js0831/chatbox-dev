@@ -7,7 +7,8 @@ import {
   NotificationListLoad,
   NotificationLiveUpdate,
   NotificationDelete,
-  NotificationSeen
+  NotificationSeen,
+  NotificationDeleteByType
 } from '../../chatboxx/store/notification/notification.action';
 import { NotificationType } from '../enums/notification-type.enum';
 
@@ -49,7 +50,17 @@ export class NotificationService {
   deleteByReference(params: {
     userid: string, reference: string
   }) {
-    return this.http.delete(`notification/${params.userid}/${params.reference}`, {
+    return this.http.delete(`notification/reference/${params.userid}/${params.reference}`, {
+      headers: {
+        loading: 'background'
+      }
+    });
+  }
+
+  deleteByType(params: {
+    userid: string, type: NotificationType
+  }) {
+    return this.http.delete(`notification/type/${params.userid}/${params.type}`, {
       headers: {
         loading: 'background'
       }
@@ -80,6 +91,12 @@ export class NotificationService {
     userid: string, reference: string
   }) {
     this.store.dispatch(new NotificationDelete(params));
+  }
+
+  stateDeleteByType(params: {
+    userid: string, type: NotificationType
+  }) {
+    this.store.dispatch(new NotificationDeleteByType(params));
   }
 
   stateSeenNotifications(userId: string) {

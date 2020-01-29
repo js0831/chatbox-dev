@@ -28,6 +28,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     ];
 
     this.notifSV.stateSeenNotifications(this.currentUser._id);
+    this.notifSV.seenNotifications(this.currentUser._id).toPromise();
   }
 
   private watchNotificationState() {

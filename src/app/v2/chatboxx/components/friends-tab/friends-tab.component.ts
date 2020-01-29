@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FriendsTabInterface } from './friends-tab.interface';
 import { FriendsType } from '../../store/friends/friends-type.enum';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserService } from 'src/app/v2/shared/services/user.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
+import { NotificationService } from 'src/app/v2/shared/services/notification.service';
+import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-friends-tab',
   templateUrl: './friends-tab.component.html',
   styleUrls: ['./friends-tab.component.scss']
 })
-export class FriendsTabComponent implements OnInit {
+export class FriendsTabComponent implements OnInit, OnDestroy {
 
+  subs: Subscription[] = [];
   tabs: FriendsTabInterface[] = [
     {
       label: 'Friends',
@@ -33,18 +37,44 @@ export class FriendsTabComponent implements OnInit {
 
   constructor(
     private userSV: UserService,
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    private notificationSV: NotificationService
   ) { }
 
   ngOnInit() {
     this.activeTab = this.tabs[0];
     this.currentUser = this.sessionSV.data.user;
     this.userSV.stateGetFriends(this.params);
+
+    this.subs = [
+      this.watchnotificationState()
+    ];
   }
 
   selectTab(t: FriendsTabInterface) {
     this.activeTab = t;
     this.userSV.stateGetFriends(this.params);
+
+    if (t.value === FriendsType.FRIEND_REQUEST) {
+      this.deleteFriendRequestNotifs();
+    }
+  }
+
+  private deleteFriendRequestNotifs() {
+    const params = {
+      userid: this.currentUser._id,
+      type: NotificationType.FRIEND_REQUEST
+    };
+    this.notificationSV.stateDeleteByType(params);
+    this.notificationSV.deleteByType(params).toPromise();
+  }
+
+  private watchnotificationState() {
+    return this.notificationSV.notificationState.subscribe( x => {
+      this.tabs[2].count = x.notification.list.filter( n => {
+        return n.type === NotificationType.FRIEND_REQUEST;
+      }).length;
+    });
   }
 
   private get params() {
@@ -57,5 +87,9 @@ export class FriendsTabComponent implements OnInit {
       type: this.activeTab.value,
       search: '',
     };
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach( x => x.unsubscribe());
   }
 }

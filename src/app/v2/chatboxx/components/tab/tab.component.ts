@@ -82,6 +82,8 @@ export class TabComponent implements OnInit, OnDestroy {
 
   private watchWebSocket() {
     this.webSocketSubs.forEach( x => x.unsubscribe());
+
+    // listen to all websocket message
     this.conversations.forEach( conversation => {
       this.webSocketSubs.push(
         this.websocketSV.listen(WebsocketEventType.MESSAGE, conversation._id).subscribe((ws: any) => {
@@ -99,6 +101,15 @@ export class TabComponent implements OnInit, OnDestroy {
         })
       );
     });
+
+    // listen to friend request websocket
+    this.webSocketSubs.push(
+      this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST, this.currentUser._id)
+      .subscribe(
+        (x: NotificationInterface) => {
+          this.notificationSV.stateUpdateNotification(x);
+      })
+    );
   }
 
   private watchnotificationState() {
