@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActionService } from 'src/app/shared/services/action.service';
 import { UserService } from 'src/app/v2/shared/services/user.service';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { FriendsType } from '../../store/friends/friends-type.enum';
@@ -16,6 +15,7 @@ import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation
 import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
+import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
   selector: 'app-friends',
@@ -78,7 +78,9 @@ export class FriendsComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.actionSV.dispatch({name: 'FRIENDS_SHOW', data: false});
+    this.actionSV.dispatch({action: 'FRIENDS_SHOW', data: {
+      value: false
+    }});
   }
 
   doFriendAction(action: string, user: UserInterface) {

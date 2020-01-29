@@ -8,6 +8,8 @@ import { EventInterface } from '../interfaces/event.interface';
 })
 export class ActionService {
 
+  private prevValue: EventInterface<any>;
+
   private action: BehaviorSubject<EventInterface<any>> = new BehaviorSubject({
     action: 'init'
   });
@@ -16,6 +18,7 @@ export class ActionService {
   ) { }
 
   dispatch(action: EventInterface<any>) {
+    this.prevValue = this.value;
     this.action.next(action);
   }
 
@@ -25,6 +28,10 @@ export class ActionService {
 
   get value() {
     return this.action.value;
+  }
+
+  get previousValue() {
+    return this.prevValue;
   }
 
   clear() {

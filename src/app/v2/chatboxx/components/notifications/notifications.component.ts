@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
+import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
   selector: 'app-notifications',
@@ -18,7 +19,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private notifSV: NotificationService,
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    private actionSV: ActionService
   ) { }
 
   ngOnInit() {
@@ -34,6 +36,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   private watchNotificationState() {
     return this.notifSV.notificationState.subscribe( x => {
       this.notifications = x.notification.list;
+    });
+  }
+
+  open(n: NotificationInterface) {
+    this.actionSV.dispatch({
+      action: 'NOTIFICATION_OPEN',
+      data: n
     });
   }
 

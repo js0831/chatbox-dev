@@ -7,6 +7,7 @@ import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 import { Subscription } from 'rxjs';
+import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
   selector: 'app-friends-tab',
@@ -38,17 +39,28 @@ export class FriendsTabComponent implements OnInit, OnDestroy {
   constructor(
     private userSV: UserService,
     private sessionSV: SessionService,
-    private notificationSV: NotificationService
+    private notificationSV: NotificationService,
+    private actionSV: ActionService
   ) { }
 
   ngOnInit() {
-    this.activeTab = this.tabs[0];
     this.currentUser = this.sessionSV.data.user;
+    this.selectTab(this.tabs[this.getInitialActiveTab()]);
     this.userSV.stateGetFriends(this.params);
 
     this.subs = [
       this.watchnotificationState()
     ];
+  }
+
+  private getInitialActiveTab() {
+    if (
+      this.actionSV.previousValue.action === 'NOTIFICATION_OPEN' &&
+      'FRIEND_REQUEST' === this.actionSV.previousValue.data.type
+    ) {
+      return 2;
+    }
+    return 0;
   }
 
   selectTab(t: FriendsTabInterface) {

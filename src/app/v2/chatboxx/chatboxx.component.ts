@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActionService } from 'src/app/shared/services/action.service';
 import { Subscription } from 'rxjs';
 import { SessionService } from '../shared/services/session.service';
+import { ActionService } from '../shared/services/action.service';
 
 @Component({
   selector: 'app-chatboxx',
@@ -26,9 +26,9 @@ export class ChatboxxComponent implements OnInit, OnDestroy {
 
   private watchActions() {
     return this.actionSV.listen.subscribe( x => {
-      switch (x.name) {
+      switch (x.action) {
         case 'FRIENDS_SHOW':
-          this.showFriends = x.data;
+          this.showFriends = x.data.value;
           break;
         default:
           break;

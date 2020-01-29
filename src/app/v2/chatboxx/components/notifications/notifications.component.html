@@ -1,6 +1,6 @@
 <h1 class="title">Notifications ( {{notifications.length}} ) </h1>
 <ul class="custom-scroll">
-  <li *ngFor="let n of notifications">
+  <li *ngFor="let n of notifications" (click)="open(n)">
     <img alt="" src="./assets/images/avatar.svg">
     <div class="info">
       <label>{{n.message}}</label>
