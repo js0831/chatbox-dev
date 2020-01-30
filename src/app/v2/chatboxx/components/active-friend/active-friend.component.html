@@ -1,8 +1,8 @@
-<svg class="menu" (click)="showMenu()">
+<!-- <svg class="menu" (click)="showMenu()">
     <use xlink:href="assets/images/icons.svg#icon-menu"></use>
-</svg>
+</svg> -->
 
-<img alt="" src="./assets/images/avatar.svg">
+<img (click)="showMenu()" alt="" src="./assets/images/avatar.svg">
 
 <div>
     <h1>{{friend?.firstname}} {{friend?.lastname}}</h1>
@@ -15,10 +15,10 @@
     </svg>
 
     <ul *ngIf="showActions">
-        <li 
+        <li
             (click)="doAction(a)"
             *ngFor="let a of actions">
-            
+
             <svg>
                 <use [attr.xlink:href]="'assets/images/icons.svg#icon-' + a.icon"></use>
             </svg>

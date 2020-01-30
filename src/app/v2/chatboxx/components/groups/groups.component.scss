@@ -4,11 +4,130 @@
 
   display: flex;
   flex-flow: column;
+  position: relative;
+  overflow: hidden;
 }
 
-.title{
+.top{
   padding: 0.5rem 1rem 0;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .title{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  svg{
+    fill:#fff;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+  }
 }
+
+.search{
+  padding: .5rem 1rem;
+  position: relative;
+
+  input{
+      border: 0;
+      border-radius: 2px;
+      padding: 1rem;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      transition: all .25s ease;
+
+      &::placeholder{
+          color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus{
+          background: rgba(255, 255, 255, 0.3);
+
+          svg{
+              fill: #fff;
+          }
+      }
+
+      &:focus + svg{
+          fill: #fff;
+          background: #536f8a;
+      }
+  }
+  svg{
+      fill: #929292;
+      width: 2.5rem;
+      height: 2.5rem;
+      position: absolute;
+      right: 1.5rem;
+      top: 1.1rem;
+      pointer-events: none;
+      background: #3a5979;
+      transition: all .25s ease;
+  }
+}
+
+.groups {
+  overflow-y: auto;
+
+  li{
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+
+    &:hover{
+      background: #0c1e31;
+    }
+
+    &:not(:last-child){
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .members{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 5rem;
+      height: 5rem;
+      margin-right: .25rem;
+
+      img{
+        width: 2.25rem;
+        height: 2.25rem;
+
+        border: 2px solid #fff;
+        border-radius: 50%;
+
+        &:nth-child(even){
+          margin-left: -5px;
+        }
+
+        &:last-child,&:nth-child(3){
+          margin-top: -15px;
+        }
+      }
+    }
+
+    .info{
+      display: flex;
+      justify-content: center;
+      flex-flow: column;
+      color: #fff;
+
+      label{
+        font-weight: 500;
+        font-size: 1.5rem;
+      }
+      span{
+        color: #558ac1;
+        font-size: 1.15rem;
+      }
+    }
+  }
+}
+

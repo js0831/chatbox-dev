@@ -1,1 +1,54 @@
-<h1 class="title">Groups</h1>
+<div class="top">
+  <h1 class="title">Groups</h1>
+  <svg (click)="addGroup()">
+    <use xlink:href="assets/images/icons.svg#icon-add"></use>
+  </svg>
+</div>
+
+<div class="search">
+  <input type="text" placeholder="Search" [(ngModel)]="searchKey">
+  <svg>
+      <use xlink:href="assets/images/icons.svg#icon-search"></use>
+  </svg>
+</div>
+
+<ul class="groups">
+  <li>
+    <div class="members">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+    </div>
+    <div class="info">
+      <label>AD CMT</label>
+      <span>10 members</span>
+    </div>
+  </li>
+  <li>
+    <div class="members">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+    </div>
+    <div class="info">
+      <label>AD CMT</label>
+      <span>10 members</span>
+    </div>
+  </li>
+  <li>
+    <div class="members">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+    </div>
+    <div class="info">
+      <label>AD CMT</label>
+      <span>10 members</span>
+    </div>
+  </li>
+</ul>
+
+<app-add-group *ngIf="isAddGroup"></app-add-group>

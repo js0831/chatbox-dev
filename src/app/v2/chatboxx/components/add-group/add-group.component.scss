@@ -1,0 +1,63 @@
+.add-group{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  padding: 1rem;
+  transition: all 0.25s ease;
+
+  &.hidden{
+    top: 100%;
+  }
+
+  .title{
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  input{
+    border: 0;
+    border-radius: 2px;
+    padding: 1rem;
+    width: 100%;
+    background: #fff;
+    transition: all 0.25s ease;
+    margin-bottom: 1rem;
+  }
+
+  .buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    button{
+      width: 49%;
+      border: none;
+      padding: 1rem;
+      border-radius: 2px;
+      color: #fff;
+      cursor: pointer;
+      transition: all .25s ease;
+
+      &:first-child{
+        background: #3c87d4;
+
+        &:hover{
+          background: #65a7ea;
+        }
+      }
+
+      &:last-child{
+        background: #ccc;
+        color: #333;
+
+        &:hover{
+          background: #f9f9f9;
+        }
+      }
+    }
+  }
+}

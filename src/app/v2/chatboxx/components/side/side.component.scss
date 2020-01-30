@@ -5,13 +5,13 @@
     flex-flow: column;
     z-index: 1;
     transition: all .5s ease-in-out;
-    
+
     @media (max-width:750px) {
         position: absolute;
         height: 100vh;
         top: 0;
         box-shadow: 20px 0px 30px 0px #fff;
-        
+
 
         .close-btn{
             display: block;
@@ -39,7 +39,7 @@
     cursor: pointer;
     transition: all .5s ease-in-out;
     display: none;
-    cursor: pointer; 
+    cursor: pointer;
     transform: rotate(180deg);
 }
- 
+

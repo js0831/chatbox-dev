@@ -16,6 +16,7 @@ import { PaginationComponent } from '../shared/components/pagination/pagination.
 import { ConversationFilterPipe } from '../shared/pipes/conversation-filter.pipe';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { GroupsComponent } from './components/groups/groups.component';
+import { AddGroupComponent } from './components/add-group/add-group.component';
 
 
 
@@ -35,7 +36,8 @@ import { GroupsComponent } from './components/groups/groups.component';
     PaginationComponent,
     ConversationFilterPipe,
     NotificationsComponent,
-    GroupsComponent
+    GroupsComponent,
+    AddGroupComponent
   ],
   imports: [
     CommonModule,

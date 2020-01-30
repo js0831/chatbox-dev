@@ -1,0 +1,9 @@
+<div class="add-group" [ngClass]="{'hidden' : !open}">
+  <h1 class="title">Create Group</h1>
+  <input type="text" placeholder="Group Name" [(ngModel)]="name">
+
+  <div class="buttons">
+    <button (click)="todo('save')">Save</button>
+    <button (click)="todo('cancel')">Cancel</button>
+  </div>
+</div>

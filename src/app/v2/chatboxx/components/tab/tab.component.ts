@@ -62,7 +62,7 @@ export class TabComponent implements OnInit, OnDestroy {
     ];
 
     this.notificationSV.stateLoadNotifications(this.currentUser._id);
-    this.selectTab(this.tabs[0]);
+    this.selectTab(this.tabs[1]);
   }
 
   private watchAction() {
