@@ -88,7 +88,11 @@ export class FriendsComponent implements OnInit, OnDestroy {
       case 'invite':
         this.userSV.inviteUser(user._id, this.currentUser._id).subscribe( x => {
           this.disableActionButton(user._id);
-          this.createFriendRequestNotifications(user._id);
+          this.createFriendRequestNotification({
+            userId: user._id,
+            type: 'FRIEND_REQUEST',
+            reference: this.currentUser._id
+          });
         });
         break;
       case 'cancel':
@@ -103,13 +107,40 @@ export class FriendsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createFriendRequestNotifications(userId: string) {
+  // private createFriendRequestNotifications(userId: string) {
+  //   const notificationData: NotificationInterface = {
+  //     reference: this.currentUser._id,
+  //     type: NotificationType.FRIEND_REQUEST,
+  //     user: userId,
+  //     message: `${this.currentUser.firstname} sent you a friend request`,
+  //   };
 
+  //   // save on DB
+  //   this.notifSV.create(notificationData).toPromise();
+
+  //   // send friend notif via websocket
+  //   this.websocketSV.dispatch({
+  //     id: userId,
+  //     type: WebsocketEventType.FRIEND_REQUEST,
+  //     data: {
+  //       ...notificationData,
+  //       createdDate: new Date(),
+  //       seen: false
+  //     }
+  //   });
+  // }
+
+  private createFriendRequestNotification(data: {
+    reference: string,
+    type: string,
+    userId: string
+  }) {
+    const msg = data.type === 'FRIEND_REQUEST_ACCEPT' ? ` accepted your friend request` : ` sent you a friend request`;
     const notificationData: NotificationInterface = {
-      reference: this.currentUser._id,
-      type: NotificationType.FRIEND_REQUEST,
-      user: userId,
-      message: `${this.currentUser.firstname} sent you a friend request`,
+      reference: data.reference,
+      type: NotificationType[data.type],
+      user: data.userId,
+      message: this.currentUser.firstname + msg,
     };
 
     // save on DB
@@ -117,8 +148,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
 
     // send friend notif via websocket
     this.websocketSV.dispatch({
-      id: userId,
-      type: WebsocketEventType.FRIEND_REQUEST,
+      id: data.userId,
+      type: WebsocketEventType[data.type],
       data: {
         ...notificationData,
         createdDate: new Date(),
@@ -134,6 +165,11 @@ export class FriendsComponent implements OnInit, OnDestroy {
 
       if (respond !== 'reject') {
         this.conversationSV.stateAddConversation(x.data);
+        this.createFriendRequestNotification({
+          userId,
+          type: 'FRIEND_REQUEST_ACCEPT',
+          reference: x.data._id
+        });
       }
 
     });

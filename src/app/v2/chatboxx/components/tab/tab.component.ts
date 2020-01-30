@@ -67,7 +67,11 @@ export class TabComponent implements OnInit, OnDestroy {
 
   private watchAction() {
     return this.actionSV.listen.subscribe( x => {
-      if (x.action === 'NOTIFICATION_OPEN' && x.data.type === NotificationType.MESSAGE) {
+      if (
+          x.action === 'NOTIFICATION_OPEN' &&
+          ( x.data.type === NotificationType.MESSAGE ||
+          x.data.type === NotificationType.FRIEND_REQUEST_ACCEPT )
+      ) {
         this.selectTab(this.tabs[0]);
       }
     });
@@ -114,6 +118,15 @@ export class TabComponent implements OnInit, OnDestroy {
     // listen to friend request websocket
     this.webSocketSubs.push(
       this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST, this.currentUser._id)
+      .subscribe(
+        (x: NotificationInterface) => {
+          this.notificationSV.stateUpdateNotification(x);
+      })
+    );
+
+    // listen to friend request accept
+    this.webSocketSubs.push(
+      this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST_ACCEPT, this.currentUser._id)
       .subscribe(
         (x: NotificationInterface) => {
           this.notificationSV.stateUpdateNotification(x);
