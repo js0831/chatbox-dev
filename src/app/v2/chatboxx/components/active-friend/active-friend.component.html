@@ -2,11 +2,21 @@
     <use xlink:href="assets/images/icons.svg#icon-menu"></use>
 </svg> -->
 
-<img (click)="showMenu()" alt="" src="./assets/images/avatar.svg">
+<img *ngIf="selectedConversation.type === 'PERSONAL'" (click)="showMenu()" alt="" src="./assets/images/avatar.svg">
 
-<div>
+<div *ngIf="selectedConversation.type === 'GROUP'"
+  (click)="showMenu()"
+  class="members" [ngClass]="{'size-1': selectedConversation.members.length === 1}">
+  <img *ngFor="let m of selectedConversation.members" alt="" class="avatar" src="./assets/images/avatar.svg">
+</div>
+
+<div *ngIf="selectedConversation.type === 'PERSONAL'">
     <h1>{{friend?.firstname}} {{friend?.lastname}}</h1>
     <label>Online</label>
+</div>
+<div *ngIf="selectedConversation.type === 'GROUP'">
+  <h1>{{selectedConversation.name}}</h1>
+  <label>{{selectedConversation.members.length}} member{{selectedConversation.members.length > 1 ? 's' :''}}</label>
 </div>
 
 <button (blur)="hideActions()" (click)="showActions = true">

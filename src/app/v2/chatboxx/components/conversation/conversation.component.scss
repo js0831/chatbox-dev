@@ -9,7 +9,7 @@
     display: flex;
     flex-flow: column;
     align-items: flex-start;
-    
+
     .details{
         display: flex;
         align-items: center;
@@ -43,7 +43,7 @@
         background: #58b666;
         color: #fff;
         border-radius: 5px;
-        padding: 2rem;
+        padding: 1rem;
         font-size: 1.6rem;
         width: 90%;
         position: relative;
@@ -61,7 +61,7 @@
         }
     }
 
-    &.you{            
+    &.you{
         align-items: flex-end;
         .details{
             flex-flow: row-reverse;

@@ -108,6 +108,27 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+          case actions.CONVERSATION_GROUP_CREATE:
+            returnState = {
+                ...state,
+                action: {
+                    name: type
+                }
+            };
+            break;
+          case actions.CONVERSATION_GROUP_CREATE_FINISH:
+            console.log(payload.data);
+            returnState = {
+                ...state,
+                action: {
+                    name: type
+                },
+                conversation: {
+                  ...state.conversation,
+                  list: [payload.data, ...state.conversation.list]
+                }
+            };
+            break;
         default:
             returnState = state;
             break;

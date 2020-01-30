@@ -8,6 +8,8 @@ export const CONVERSATION_SEND_MESSAGE = '[Conversation] Send message';
 export const CONVERSATION_ACTION_RESET = '[Conversation] Action reset';
 export const CONVERSATION_ADD = '[Conversation] Add';
 export const CONVERSATION_REMOVE = '[Conversation] Remove';
+export const CONVERSATION_GROUP_CREATE = '[Conversation] Group create';
+export const CONVERSATION_GROUP_CREATE_FINISH = '[Conversation] Group create finish';
 
 export class ConversationListLoad implements Action {
     readonly type = CONVERSATION_LIST_LOAD;
@@ -49,6 +51,16 @@ export class ConversationRemove implements Action {
   constructor(public payload?: any) {}
 }
 
+export class ConversationGroupCreate implements Action {
+  readonly type = CONVERSATION_GROUP_CREATE;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationGroupCreateFinish implements Action {
+  readonly type = CONVERSATION_GROUP_CREATE_FINISH;
+  constructor(public payload?: any) {}
+}
+
 export type Actions =
 | ConversationListLoad
 | ConversationListLoadFinish
@@ -57,4 +69,6 @@ export type Actions =
 | ConversationSendMessage
 | ConversationActionReset
 | ConversationAdd
-| ConversationRemove;
+| ConversationRemove
+| ConversationGroupCreate
+| ConversationGroupCreateFinish;

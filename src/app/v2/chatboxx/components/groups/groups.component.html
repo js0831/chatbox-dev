@@ -12,41 +12,17 @@
   </svg>
 </div>
 
-<ul class="groups">
-  <li>
-    <div class="members">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
+<ul class="groups custom-scroll">
+  <li
+    [ngClass]="{'active' : selectedConversation && selectedConversation._id === con._id}"
+    (click)="selectConversation(con)"
+    *ngFor="let con of conversations | conversationFilter : searchKey">
+    <div class="members" [ngClass]="{'size-1': con.members.length === 1}">
+      <img *ngFor="let m of con.members" alt="" class="avatar" src="./assets/images/avatar.svg">
     </div>
     <div class="info">
-      <label>AD CMT</label>
-      <span>10 members</span>
-    </div>
-  </li>
-  <li>
-    <div class="members">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-    </div>
-    <div class="info">
-      <label>AD CMT</label>
-      <span>10 members</span>
-    </div>
-  </li>
-  <li>
-    <div class="members">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-      <img alt="" class="avatar" src="./assets/images/avatar.svg">
-    </div>
-    <div class="info">
-      <label>AD CMT</label>
-      <span>10 members</span>
+      <label>{{con.name}}</label>
+      <span>{{con.members.length}} member{{con.members.length > 1 ? 's' :''}}</span>
     </div>
   </li>
 </ul>

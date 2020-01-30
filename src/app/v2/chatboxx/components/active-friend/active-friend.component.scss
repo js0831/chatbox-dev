@@ -6,6 +6,39 @@
     display: flex;
     align-items: center;
 
+    .members{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 8rem;
+      height: 8rem;
+      margin-right: .25rem;
+
+      img{
+        width: 3.25rem;
+        height: 3.25rem;
+
+        border: 2px solid #fff;
+        border-radius: 50%;
+
+        &:nth-child(even){
+          margin-left: -15px;
+        }
+
+        &:last-child,&:nth-child(3){
+          margin-top: -20px;
+        }
+      }
+
+      &.size-1{
+        img{
+          margin: 0;
+          width: 5rem;
+          height: 5rem;
+        }
+      }
+    }
     // .menu{
     //     width: 3rem;
     //     height: 3rem;

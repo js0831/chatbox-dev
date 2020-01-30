@@ -13,7 +13,8 @@ import {
   ConversationSendMessage,
   ConversationActionReset,
   ConversationAdd,
-  ConversationRemove} from '../../chatboxx/store/conversation/conversation.action';
+  ConversationRemove,
+  ConversationGroupCreate} from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
 
@@ -93,5 +94,13 @@ export class ConversationService {
   Observable<ResponseInterface<MessageInterface[]>> {
     const url = `conversation/${conversationId}/messages`;
     return this.http.get(url) as Observable<ResponseInterface<MessageInterface[]>>;
+  }
+
+  createGroup(conversation: ConversationInterface) {
+    return this.http.post('conversation', conversation);
+  }
+
+  stateCreateGroup(conversation: ConversationInterface) {
+    this.store.dispatch(new ConversationGroupCreate(conversation));
   }
 }

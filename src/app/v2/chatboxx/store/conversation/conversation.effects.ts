@@ -9,7 +9,10 @@ import {
   ConversationListLoadFinish,
   CONVERSATION_SELECT,
   ConversationSelect,
-  ConversationLoadMessages
+  ConversationLoadMessages,
+  CONVERSATION_GROUP_CREATE,
+  ConversationGroupCreate,
+  ConversationGroupCreateFinish
 } from './conversation.action';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 
@@ -44,6 +47,17 @@ export class ConversationEffects {
           return this.convoSV.getMessages(_id).pipe(
             map( res => {
               return new ConversationLoadMessages(res);
+            })
+          );
+      })
+    );
+
+    @Effect() createGroup: Observable<Action> = this.action$.pipe(
+      ofType(CONVERSATION_GROUP_CREATE),
+      switchMap( (action: ConversationGroupCreate) => {
+          return this.convoSV.createGroup(action.payload).pipe(
+            map( res => {
+              return new ConversationGroupCreateFinish(res);
             })
           );
       })

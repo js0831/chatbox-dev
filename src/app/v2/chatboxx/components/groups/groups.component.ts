@@ -1,26 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { Subscription } from 'rxjs';
+import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
+import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
+import { SessionService } from 'src/app/v2/shared/services/session.service';
+import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
+import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
   styleUrls: ['./groups.component.scss']
 })
-export class GroupsComponent implements OnInit {
+export class GroupsComponent implements OnInit, OnDestroy {
 
   searchKey = '';
   isAddGroup = false;
   subs: Subscription[];
+  conversations: ConversationInterface[] = [];
+  currentUser: UserInterface;
+  selectedConversation: ConversationInterface;
+
 
   constructor(
-    private actionSV: ActionService
+    private actionSV: ActionService,
+    private conversationSV: ConversationService,
+    private sessionSV: SessionService
   ) { }
 
   ngOnInit() {
+    this.currentUser =  this.sessionSV.data.user;
     this.subs = [
-      this.watchAction()
+      this.watchAction(),
+      this.watchConversationState()
     ];
+
+    this.conversationSV.stateLoadConversations({
+      id: this.currentUser._id,
+      type: ConversationType.GROUP,
+      search: '',
+      pagination: {
+        limit: 10,
+        page: 0
+      }
+    });
+  }
+
+  selectConversation(conversation: ConversationInterface) {
+    this.selectedConversation = conversation;
+    this.conversationSV.stateSelectConversation(conversation);
+
+    // const params = {
+    //   userid: this.currentUser._id,
+    //   reference: conversation._id
+    // };
+    // this.notificationSV.stateDeleteByReference(params);
+    // this.notificationSV.deleteByReference(params).toPromise();
+  }
+
+  private watchConversationState() {
+    return this.conversationSV.conversationState.subscribe( x => {
+      this.conversations = x.conversation.list;
+    });
   }
 
   private watchAction() {
@@ -33,5 +74,10 @@ export class GroupsComponent implements OnInit {
 
   addGroup() {
     this.isAddGroup = true;
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach( x => x.unsubscribe());
+    this.conversations = [];
   }
 }

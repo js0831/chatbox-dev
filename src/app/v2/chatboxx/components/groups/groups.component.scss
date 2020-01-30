@@ -79,6 +79,10 @@
     align-items: center;
     padding: .5rem 1rem;
 
+    &.active{
+      background: #204469;
+    }
+
     &:hover{
       background: #0c1e31;
     }
@@ -109,6 +113,14 @@
 
         &:last-child,&:nth-child(3){
           margin-top: -15px;
+        }
+      }
+
+      &.size-1{
+        img{
+          margin: 0;
+          width: 3.5rem;
+          height: 3.5rem;
         }
       }
     }
