@@ -62,7 +62,9 @@ export function conversationReducer(state = initialState, action: actions.Action
         case actions.CONVERSATION_LOAD_MESSAGES:
             returnState = {
                 action: {
-                    name: type
+                    name: type,
+                    message: payload.message,
+                    statusCode: payload.statusCode
                 },
                 conversation: {
                     ...state.conversation,

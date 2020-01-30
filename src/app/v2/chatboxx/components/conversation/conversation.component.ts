@@ -8,6 +8,7 @@ import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
+import { JkAlertService } from 'jk-alert';
 
 @Component({
   selector: 'app-conversation',
@@ -25,7 +26,8 @@ export class ConversationComponent implements OnInit, OnDestroy {
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
     private elRef: ElementRef,
-    private websocketSV: WebSocketService
+    private websocketSV: WebSocketService,
+    private jkAlert: JkAlertService
   ) { }
 
   ngOnInit() {
@@ -41,8 +43,14 @@ export class ConversationComponent implements OnInit, OnDestroy {
       this.currentConversation = x.conversation.selected;
       switch (x.action.name) {
         case CONVERSATION_LOAD_MESSAGES:
-          this.messages = x.conversation.messages;
-          this.moveScrollToBottom();
+
+          if (x.action.statusCode !== 200) {
+            this.jkAlert.error(x.action.message);
+          } else {
+            this.messages = x.conversation.messages;
+            this.moveScrollToBottom();
+          }
+
           break;
         case CONVERSATION_SEND_MESSAGE:
           const newMsg = x.conversation.messages[x.conversation.messages.length - 1];
