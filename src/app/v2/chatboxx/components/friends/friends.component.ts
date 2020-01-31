@@ -16,6 +16,7 @@ import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service'
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
+import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 
 @Component({
   selector: 'app-friends',
@@ -30,6 +31,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
   friendState: FriendState;
   searchKey = '';
   searhTimer: any;
+  selectedConversation: ConversationInterface;
 
   removeActionButton: string[] = [];
 
@@ -46,8 +48,15 @@ export class FriendsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
-      this.watchFriendState()
+      this.watchFriendState(),
+      this.watchConversationState()
     ];
+  }
+
+  private watchConversationState() {
+    return this.conversationSV.conversationState.subscribe( x => {
+      this.selectedConversation = x.conversation.selected;
+    });
   }
 
   iSearch() {
@@ -180,7 +189,10 @@ export class FriendsComponent implements OnInit, OnDestroy {
       if (x === 0) {
         this.userSV.unfriend(id, this.currentUser._id).subscribe( (res: any) => {
           this.disableActionButton(id);
-          this.conversationSV.stateRemoveConversation(res.data._id);
+
+          if (this.selectedConversation.type === ConversationType.PERSONAL) {
+            this.conversationSV.stateRemoveConversation(res.data._id);
+          }
         });
       }
     });

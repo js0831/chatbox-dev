@@ -3,7 +3,7 @@
 <div *ngIf="selectedConversation.type === 'GROUP'"
   (click)="showMenu()"
   class="members" [ngClass]="{'size-1': selectedConversation.members.length === 1}">
-  <img *ngFor="let m of selectedConversation.members" alt="" class="avatar" src="./assets/images/avatar.svg">
+  <img *ngFor="let m of selectedConversation.members.slice(0, 4)" alt="" class="avatar" src="./assets/images/avatar.svg">
 </div>
 
 <div *ngIf="selectedConversation.type === 'PERSONAL'">
