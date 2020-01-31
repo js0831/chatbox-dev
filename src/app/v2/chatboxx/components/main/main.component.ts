@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { Subscription } from 'rxjs';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
-import { CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
+import { CONVERSATION_SELECT, CONVERSATION_REMOVE, CONVERSATION_GROUP_DELETE_FINISH } from '../../store/conversation/conversation.action';
 
 @Component({
   selector: 'app-main',
@@ -32,6 +32,16 @@ export class MainComponent implements OnInit, OnDestroy {
           setTimeout( () => {
             this.selectedConversation = x.conversation.selected;
           });
+          break;
+
+        case CONVERSATION_REMOVE:
+        case CONVERSATION_GROUP_DELETE_FINISH:
+          const convoIDs = x.conversation.list.map( c => {
+            return c._id;
+          });
+          if (convoIDs.indexOf(this.selectedConversation._id) === -1) {
+            this.selectedConversation = null;
+          }
           break;
         default:
           break;

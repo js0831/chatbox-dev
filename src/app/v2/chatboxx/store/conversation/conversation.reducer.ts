@@ -117,7 +117,6 @@ export function conversationReducer(state = initialState, action: actions.Action
             };
             break;
           case actions.CONVERSATION_GROUP_CREATE_FINISH:
-            console.log(payload.data);
             returnState = {
                 ...state,
                 action: {
@@ -129,6 +128,46 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
+          case actions.CONVERSATION_GROUP_LEAVE:
+            returnState = {
+                ...state,
+                action: {
+                    name: type
+                }
+            };
+            break;
+          case actions.CONVERSATION_GROUP_LEAVE_FINISH:
+              returnState = {
+                  ...state,
+                  action: {
+                      name: type
+                  },
+                  conversation: {
+                    ...state.conversation,
+                    list: state.conversation.list.filter( c => c._id !== payload.conversation)
+                  }
+              };
+              break;
+          case actions.CONVERSATION_GROUP_DELETE:
+            returnState = {
+                ...state,
+                action: {
+                    name: type
+                }
+            };
+            break;
+          case actions.CONVERSATION_GROUP_DELETE_FINISH:
+              returnState = {
+                  ...state,
+                  action: {
+                      name: type
+                  },
+                  conversation: {
+                    ...state.conversation,
+                    list: state.conversation.list.filter( c => c._id !== payload)
+                  }
+              };
+              break;
         default:
             returnState = state;
             break;

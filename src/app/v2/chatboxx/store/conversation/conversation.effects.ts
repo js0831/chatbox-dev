@@ -12,7 +12,13 @@ import {
   ConversationLoadMessages,
   CONVERSATION_GROUP_CREATE,
   ConversationGroupCreate,
-  ConversationGroupCreateFinish
+  ConversationGroupCreateFinish,
+  CONVERSATION_GROUP_LEAVE,
+  ConversationGroupLeave,
+  ConversationGroupLeaveFinish,
+  CONVERSATION_GROUP_DELETE,
+  ConversationGroupDelete,
+  ConversationGroupDeleteFinish
 } from './conversation.action';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 
@@ -58,6 +64,28 @@ export class ConversationEffects {
           return this.convoSV.createGroup(action.payload).pipe(
             map( res => {
               return new ConversationGroupCreateFinish(res);
+            })
+          );
+      })
+    );
+
+    @Effect() leaveGroup: Observable<Action> = this.action$.pipe(
+      ofType(CONVERSATION_GROUP_LEAVE),
+      switchMap( (action: ConversationGroupLeave) => {
+          return this.convoSV.leaveGroup(action.payload).pipe(
+            map( res => {
+              return new ConversationGroupLeaveFinish(action.payload);
+            })
+          );
+      })
+    );
+
+    @Effect() deleteGroup: Observable<Action> = this.action$.pipe(
+      ofType(CONVERSATION_GROUP_DELETE),
+      switchMap( (action: ConversationGroupDelete) => {
+          return this.convoSV.deleteGroup(action.payload).pipe(
+            map( res => {
+              return new ConversationGroupDeleteFinish(action.payload);
             })
           );
       })

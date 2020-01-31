@@ -10,6 +10,11 @@ export const CONVERSATION_ADD = '[Conversation] Add';
 export const CONVERSATION_REMOVE = '[Conversation] Remove';
 export const CONVERSATION_GROUP_CREATE = '[Conversation] Group create';
 export const CONVERSATION_GROUP_CREATE_FINISH = '[Conversation] Group create finish';
+export const CONVERSATION_GROUP_LEAVE = '[Conversation] Group Leave';
+export const CONVERSATION_GROUP_LEAVE_FINISH = '[Conversation] Group Leave finish';
+export const CONVERSATION_GROUP_DELETE = '[Conversation] Group delete';
+export const CONVERSATION_GROUP_DELETE_FINISH = '[Conversation] Group delete finish';
+
 
 export class ConversationListLoad implements Action {
     readonly type = CONVERSATION_LIST_LOAD;
@@ -61,6 +66,27 @@ export class ConversationGroupCreateFinish implements Action {
   constructor(public payload?: any) {}
 }
 
+export class ConversationGroupLeave implements Action {
+  readonly type = CONVERSATION_GROUP_LEAVE;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationGroupLeaveFinish implements Action {
+  readonly type = CONVERSATION_GROUP_LEAVE_FINISH;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationGroupDelete implements Action {
+  readonly type = CONVERSATION_GROUP_DELETE;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationGroupDeleteFinish implements Action {
+  readonly type = CONVERSATION_GROUP_DELETE_FINISH;
+  constructor(public payload?: any) {}
+}
+
+
 export type Actions =
 | ConversationListLoad
 | ConversationListLoadFinish
@@ -71,4 +97,8 @@ export type Actions =
 | ConversationAdd
 | ConversationRemove
 | ConversationGroupCreate
-| ConversationGroupCreateFinish;
+| ConversationGroupCreateFinish
+| ConversationGroupLeave
+| ConversationGroupLeaveFinish
+| ConversationGroupDelete
+| ConversationGroupDeleteFinish;

@@ -14,7 +14,9 @@ import {
   ConversationActionReset,
   ConversationAdd,
   ConversationRemove,
-  ConversationGroupCreate} from '../../chatboxx/store/conversation/conversation.action';
+  ConversationGroupCreate,
+  ConversationGroupLeave,
+  ConversationGroupDelete} from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
 
@@ -100,7 +102,29 @@ export class ConversationService {
     return this.http.post('conversation', conversation);
   }
 
+  leaveGroup(params: {
+    conversation: string,
+    user: string
+  }) {
+    return this.http.patch('conversation/leave', params);
+  }
+
+  deleteGroup(conversation: string) {
+    return this.http.delete(`conversation/${conversation}`);
+  }
+
+  stateDeleteGroup(conversation: string) {
+    this.store.dispatch(new ConversationGroupDelete(conversation));
+  }
+
   stateCreateGroup(conversation: ConversationInterface) {
     this.store.dispatch(new ConversationGroupCreate(conversation));
+  }
+
+  stateLeaveGroup(params: {
+    conversation: string,
+    user: string
+  }) {
+    this.store.dispatch(new ConversationGroupLeave(params));
   }
 }

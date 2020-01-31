@@ -27,7 +27,7 @@
     <ul *ngIf="showActions">
         <li
             (click)="doAction(a)"
-            *ngFor="let a of actions">
+            *ngFor="let a of actions[selectedConversation.type]">
 
             <svg>
                 <use [attr.xlink:href]="'assets/images/icons.svg#icon-' + a.icon"></use>
