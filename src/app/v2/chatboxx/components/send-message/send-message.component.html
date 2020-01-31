@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="sendMessage()">
-    <textarea 
+    <textarea
         #message
         (keyup)="userIsTyping($event)"
         formControlName="message" placeholder="Message"></textarea>

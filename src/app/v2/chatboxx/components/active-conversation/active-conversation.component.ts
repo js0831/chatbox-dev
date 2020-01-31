@@ -23,9 +23,9 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   actions = {
     GROUP: [
       {
-        label: 'Members',
-        value: 'members',
-        icon: 'group_add'
+        label: 'Add Member',
+        value: 'add-member',
+        icon: 'user-plus'
       },
       {
         label: 'Leave Group',
@@ -47,7 +47,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   currentUser: UserInterface;
 
   constructor(
-    private action: ActionService,
+    private actionSV: ActionService,
     private alertSV: JkAlertService,
     private userSV: UserService,
     private conversationSV: ConversationService,
@@ -87,6 +87,12 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
       case 'delete-group':
         this.deleteGroup();
         break;
+      case 'add-member':
+        this.actionSV.dispatch({
+          action: 'ADD_MEMBER',
+          data: true
+        });
+        break;
       default:
         break;
     }
@@ -99,7 +105,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   }
 
   showMenu() {
-    this.action.dispatch({
+    this.actionSV.dispatch({
       action: 'MENU_SHOW'
     });
   }

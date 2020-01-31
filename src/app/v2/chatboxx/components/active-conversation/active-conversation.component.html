@@ -1,7 +1,3 @@
-<!-- <svg class="menu" (click)="showMenu()">
-    <use xlink:href="assets/images/icons.svg#icon-menu"></use>
-</svg> -->
-
 <img *ngIf="selectedConversation.type === 'PERSONAL'" (click)="showMenu()" alt="" src="./assets/images/avatar.svg">
 
 <div *ngIf="selectedConversation.type === 'GROUP'"

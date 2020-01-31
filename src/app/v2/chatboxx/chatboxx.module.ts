@@ -17,6 +17,7 @@ import { ConversationFilterPipe } from '../shared/pipes/conversation-filter.pipe
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { GroupsComponent } from './components/groups/groups.component';
 import { AddGroupComponent } from './components/add-group/add-group.component';
+import { AddMemberComponent } from './components/add-member/add-member.component';
 
 
 
@@ -37,7 +38,8 @@ import { AddGroupComponent } from './components/add-group/add-group.component';
     ConversationFilterPipe,
     NotificationsComponent,
     GroupsComponent,
-    AddGroupComponent
+    AddGroupComponent,
+    AddMemberComponent
   ],
   imports: [
     CommonModule,

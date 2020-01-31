@@ -1,0 +1,36 @@
+<div class="content">
+  <h1>Add Member</h1>
+  <svg class="close" (click)="close()">
+      <use xlink:href="assets/images/icons.svg#icon-clearclose"></use>
+  </svg>
+
+  <div class="search">
+      <input type="text" placeholder="Search" (keyup)="iSearch()" [(ngModel)]="searchKey">
+      <svg>
+          <use xlink:href="assets/images/icons.svg#icon-search"></use>
+      </svg>
+  </div>
+
+  <ul class="list custom-scroll" *ngIf="friendState">
+      <li *ngFor="let u of friends">
+          <img class="avatar" alt="" src="./assets/images/avatar.svg">
+          <label>{{u.firstname}} {{u.lastname}}</label>
+
+          <div class="action">
+              <button *ngIf="!isMember(u._id)">Add</button>
+              <span *ngIf="isMember(u._id)">Added</span>
+          </div>
+      </li>
+      <li *ngIf="friends.length === 0">
+          No Results found!
+      </li>
+  </ul>
+
+  <div class="pagination">
+      <app-pagination
+          *ngIf="friendState?.users.pagination.total > 0"
+          [options]="friendState?.users.pagination"
+          (pageChanged)="pageChanged($event)"
+      ></app-pagination>
+  </div>
+</div>

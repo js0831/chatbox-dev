@@ -3,6 +3,7 @@ import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation
 import { Subscription } from 'rxjs';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 import { CONVERSATION_SELECT, CONVERSATION_REMOVE, CONVERSATION_GROUP_DELETE_FINISH } from '../../store/conversation/conversation.action';
+import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
   selector: 'app-main',
@@ -13,15 +14,30 @@ export class MainComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   selectedConversation: ConversationInterface;
+  isAddMember = false;
 
   constructor(
-    private conversationSV: ConversationService
+    private conversationSV: ConversationService,
+    private actionSV: ActionService
   ) { }
 
   ngOnInit() {
     this.subs = [
-      this.watchConversationState()
+      this.watchConversationState(),
+      this.watchAction()
     ];
+  }
+
+  private watchAction() {
+    return this.actionSV.listen.subscribe( x => {
+      switch (x.action) {
+        case 'ADD_MEMBER':
+          this.isAddMember = x.data;
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   private watchConversationState() {
