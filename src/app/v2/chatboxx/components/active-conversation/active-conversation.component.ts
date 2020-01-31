@@ -10,11 +10,11 @@ import { CONVERSATION_SELECT } from '../../store/conversation/conversation.actio
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 
 @Component({
-  selector: 'app-active-friend',
-  templateUrl: './active-friend.component.html',
-  styleUrls: ['./active-friend.component.scss']
+  selector: 'app-active-conversation',
+  templateUrl: './active-conversation.component.html',
+  styleUrls: ['./active-conversation.component.scss']
 })
-export class ActiveFriendComponent implements OnInit, OnDestroy {
+export class ActiveConversationComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   showActions = false;

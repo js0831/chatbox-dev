@@ -6,7 +6,7 @@ import { ConversationService } from 'src/app/v2/shared/services/conversation.ser
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
-import { CONVERSATION_GROUP_CREATE_FINISH } from '../../store/conversation/conversation.action';
+import { CONVERSATION_GROUP_CREATE_FINISH, CONVERSATION_LIST_LOAD_FINISH } from '../../store/conversation/conversation.action';
 
 @Component({
   selector: 'app-groups',
@@ -61,10 +61,13 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
-      if (
-          x.action.name === CONVERSATION_GROUP_CREATE_FINISH
-        ) {
-        this.conversations = x.conversation.list;
+      switch (x.action.name) {
+        case CONVERSATION_GROUP_CREATE_FINISH:
+        case CONVERSATION_LIST_LOAD_FINISH:
+          this.conversations = x.conversation.list;
+          break;
+        default:
+          break;
       }
     });
   }

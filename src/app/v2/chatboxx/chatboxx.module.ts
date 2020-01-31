@@ -9,7 +9,7 @@ import { TabComponent } from './components/tab/tab.component';
 import { ConversationComponent } from './components/conversation/conversation.component';
 import { SendMessageComponent } from './components/send-message/send-message.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActiveFriendComponent } from './components/active-friend/active-friend.component';
+import { ActiveConversationComponent } from './components/active-conversation/active-conversation.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { FriendsTabComponent } from './components/friends-tab/friends-tab.component';
 import { PaginationComponent } from '../shared/components/pagination/pagination.component';
@@ -30,7 +30,7 @@ import { AddGroupComponent } from './components/add-group/add-group.component';
     TabComponent,
     ConversationComponent,
     SendMessageComponent,
-    ActiveFriendComponent,
+    ActiveConversationComponent,
     FriendsComponent,
     FriendsTabComponent,
     PaginationComponent,
