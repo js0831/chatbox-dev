@@ -168,6 +168,39 @@ export function conversationReducer(state = initialState, action: actions.Action
                   }
               };
               break;
+            case actions.CONVERSATION_GROUP_ADD_MEMBER:
+              returnState = {
+                  ...state,
+                  action: {
+                      name: type
+                  }
+              };
+              break;
+            case actions.CONVERSATION_GROUP_ADD_MEMBER_FINISH:
+                console.log(payload);
+                returnState = {
+                    ...state,
+                    action: {
+                        name: type
+                    },
+                    conversation: {
+                      ...state.conversation,
+                      selected: {
+                        ...state.conversation.selected,
+                        members: [
+                          ...state.conversation.selected.members,
+                          payload
+                        ]
+                      },
+                      list: state.conversation.list.map( c => {
+                        if (c._id === state.conversation.selected._id) {
+                          c.members.push(payload);
+                        }
+                        return c;
+                      })
+                    }
+                };
+                break;
         default:
             returnState = state;
             break;

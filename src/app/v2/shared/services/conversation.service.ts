@@ -16,9 +16,11 @@ import {
   ConversationRemove,
   ConversationGroupCreate,
   ConversationGroupLeave,
-  ConversationGroupDelete} from '../../chatboxx/store/conversation/conversation.action';
+  ConversationGroupDelete,
+  ConversationGroupAddMember} from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
+import { UserInterface } from '../interfaces/user.interface';
 
 
 @Injectable({
@@ -111,6 +113,20 @@ export class ConversationService {
 
   deleteGroup(conversation: string) {
     return this.http.delete(`conversation/${conversation}`);
+  }
+
+  addMember(params: {
+    conversation: string,
+    user: string
+  }) {
+    return this.http.patch('conversation/member', params);
+  }
+
+  stateAddMember(params: {
+    conversation: string,
+    user: UserInterface
+  }) {
+    this.store.dispatch(new ConversationGroupAddMember(params));
   }
 
   stateDeleteGroup(conversation: string) {

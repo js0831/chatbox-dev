@@ -10,7 +10,8 @@ import {
   CONVERSATION_GROUP_CREATE_FINISH,
   CONVERSATION_LIST_LOAD_FINISH,
   CONVERSATION_GROUP_LEAVE_FINISH,
-  CONVERSATION_GROUP_DELETE_FINISH
+  CONVERSATION_GROUP_DELETE_FINISH,
+  CONVERSATION_GROUP_ADD_MEMBER_FINISH
 } from '../../store/conversation/conversation.action';
 
 @Component({
@@ -71,6 +72,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
         case CONVERSATION_LIST_LOAD_FINISH:
         case CONVERSATION_GROUP_LEAVE_FINISH:
         case CONVERSATION_GROUP_DELETE_FINISH:
+        case CONVERSATION_GROUP_ADD_MEMBER_FINISH:
           this.conversations = x.conversation.list;
           break;
         default:

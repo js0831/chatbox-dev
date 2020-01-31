@@ -1,4 +1,4 @@
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType, act } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
@@ -18,7 +18,10 @@ import {
   ConversationGroupLeaveFinish,
   CONVERSATION_GROUP_DELETE,
   ConversationGroupDelete,
-  ConversationGroupDeleteFinish
+  ConversationGroupDeleteFinish,
+  CONVERSATION_GROUP_ADD_MEMBER,
+  ConversationGroupAddMember,
+  ConversationGroupAddMemberFinish
 } from './conversation.action';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 
@@ -86,6 +89,20 @@ export class ConversationEffects {
           return this.convoSV.deleteGroup(action.payload).pipe(
             map( res => {
               return new ConversationGroupDeleteFinish(action.payload);
+            })
+          );
+      })
+    );
+
+    @Effect() addMemberGroup: Observable<Action> = this.action$.pipe(
+      ofType(CONVERSATION_GROUP_ADD_MEMBER),
+      switchMap( (action: ConversationGroupAddMember) => {
+          return this.convoSV.addMember({
+            user: action.payload.user._id,
+            conversation: action.payload.conversation,
+          }).pipe(
+            map( res => {
+              return new ConversationGroupAddMemberFinish(action.payload.user);
             })
           );
       })

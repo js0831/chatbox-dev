@@ -17,7 +17,7 @@
           <label>{{u.firstname}} {{u.lastname}}</label>
 
           <div class="action">
-              <button *ngIf="!isMember(u._id)">Add</button>
+              <button *ngIf="!isMember(u._id)" (click)="add(u)">Add</button>
               <span *ngIf="isMember(u._id)">Added</span>
           </div>
       </li>

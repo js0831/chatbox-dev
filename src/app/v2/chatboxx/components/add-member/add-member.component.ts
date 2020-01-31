@@ -52,6 +52,13 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.userSV.stateGetFriends(params);
   }
 
+  add(user: UserInterface) {
+    this.conversationSV.stateAddMember({
+      conversation: this.selectedConversation._id,
+      user,
+    });
+  }
+
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       this.selectedConversation = x.conversation.selected;

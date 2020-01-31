@@ -5,7 +5,7 @@ import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { Subscription } from 'rxjs';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
-import { CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
+import { CONVERSATION_SELECT, CONVERSATION_GROUP_ADD_MEMBER_FINISH } from '../../store/conversation/conversation.action';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserService } from 'src/app/v2/shared/services/user.service';
@@ -114,6 +114,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
         case CONVERSATION_SELECT:
+        case CONVERSATION_GROUP_ADD_MEMBER_FINISH:
           this.selectedConversation = x.conversation.selected;
           this.friend = this.selectedConversation.members[0] as UserInterface;
           break;
