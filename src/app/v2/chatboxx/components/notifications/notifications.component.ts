@@ -49,6 +49,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.forEach( x => x.unsubscribe());
     this.notifSV.stateSeenNotifications(this.currentUser._id);
-    this.notifSV.seenNotifications(this.currentUser._id).toPromise();
+    if ( this.sessionSV.data ) {
+        this.notifSV.seenNotifications(this.currentUser._id).toPromise();
+    }
+
   }
 }
