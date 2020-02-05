@@ -10,6 +10,7 @@ import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service'
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 
 @Component({
   selector: 'app-send-message',
@@ -78,7 +79,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   private watchWebSocketMessage() {
     return this.websocketSV.listen(
       WebsocketEventType.MESSAGE,
-      this.selectedConversation._id
+      this.currentUser._id
     ).subscribe( x => {
       this.typing = '';
     });
@@ -99,11 +100,19 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     };
 
     // send to websocket
-    this.websocketSV.dispatch({
-      id: this.selectedConversation._id,
-      type: WebsocketEventType.MESSAGE,
-      data: messageData
+    this.selectedConversation.members.forEach( (u: any) => {
+      if (this.currentUser._id !== u._id) {
+        this.websocketSV.dispatch({
+          id: u._id,
+          type: WebsocketEventType.MESSAGE,
+          data: {
+            conversation: this.selectedConversation,
+            message: messageData
+          }
+        });
+      }
     });
+
 
     // append to msgs list
     this.conversationSV.stateSendMessage(messageData);
@@ -125,11 +134,14 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   private createNotifications() {
     this.selectedConversation.members.forEach( x => {
       if (x._id !==  this.currentUser._id) {
+        const notifMsg = this.selectedConversation.type === ConversationType.PERSONAL ? 'New message from' :
+            'New Group message from';
+
         this.notifService.create({
           reference: this.selectedConversation._id,
           type: NotificationType.MESSAGE,
           user: x._id,
-          message: `New Message from ${this.currentUser.firstname}`,
+          message: `${notifMsg} ${this.currentUser.firstname}`,
         }).toPromise();
       }
     });

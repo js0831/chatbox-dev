@@ -78,6 +78,7 @@
     display: flex;
     align-items: center;
     padding: .5rem 1rem;
+    position: relative;
 
     &.active{
       background: #204469;
@@ -139,6 +140,24 @@
         color: #558ac1;
         font-size: 1.15rem;
       }
+    }
+
+    .notifications{
+        width: 1.5rem;
+        height: 1.5rem;
+        color: #fff;
+        border-radius: 50%;
+        background: red;
+        display: -webkit-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 5px;
+        left: 7px;
+        font-weight: 600;
+        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.5);
+        z-index: 1;
     }
   }
 }

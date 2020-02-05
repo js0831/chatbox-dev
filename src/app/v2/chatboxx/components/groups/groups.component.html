@@ -24,6 +24,7 @@
       <label>{{con.name}}</label>
       <span>{{con.members.length}} member{{con.members.length > 1 ? 's' :''}}</span>
     </div>
+    <span class="notifications" *ngIf="countNotification(con._id) > 0">{{countNotification(con._id)}}</span>
   </li>
 </ul>
 

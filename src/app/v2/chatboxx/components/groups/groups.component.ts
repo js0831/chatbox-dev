@@ -13,6 +13,9 @@ import {
   CONVERSATION_GROUP_DELETE_FINISH,
   CONVERSATION_GROUP_ADD_MEMBER_FINISH
 } from '../../store/conversation/conversation.action';
+import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
+import { NotificationService } from 'src/app/v2/shared/services/notification.service';
+import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 
 @Component({
   selector: 'app-groups',
@@ -27,19 +30,22 @@ export class GroupsComponent implements OnInit, OnDestroy {
   conversations: ConversationInterface[] = [];
   currentUser: UserInterface;
   selectedConversation: ConversationInterface;
+  notifications: NotificationInterface[] = [];
 
 
   constructor(
     private actionSV: ActionService,
     private conversationSV: ConversationService,
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    private notificationSV: NotificationService
   ) { }
 
   ngOnInit() {
     this.currentUser =  this.sessionSV.data.user;
     this.subs = [
       this.watchAction(),
-      this.watchConversationState()
+      this.watchConversationState(),
+      this.watchNotificationState()
     ];
 
     this.conversationSV.stateLoadConversations({
@@ -53,16 +59,41 @@ export class GroupsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private openConversationFromNotifaction() {
+    if (this.actionSV.previousValue.action === 'NOTIFICATION_OPEN') {
+      const ref = this.actionSV.previousValue.data.reference;
+      const conversation = this.conversations.filter( c => c._id === ref);
+      if (conversation.length > 0) {
+        this.selectConversation(conversation[0]);
+      }
+
+    }
+  }
+
+  private watchNotificationState() {
+    return this.notificationSV.notificationState.subscribe( x => {
+      this.notifications = x.notification.list;
+    });
+  }
+
+  countNotification(reference: string) {
+    return this.notifications.filter( x => {
+      return x.user === this.currentUser._id &&
+        NotificationType.MESSAGE === x.type &&
+        reference === x.reference;
+    }).length;
+  }
+
   selectConversation(conversation: ConversationInterface) {
     this.selectedConversation = conversation;
     this.conversationSV.stateSelectConversation(conversation);
 
-    // const params = {
-    //   userid: this.currentUser._id,
-    //   reference: conversation._id
-    // };
-    // this.notificationSV.stateDeleteByReference(params);
-    // this.notificationSV.deleteByReference(params).toPromise();
+    const params = {
+      userid: this.currentUser._id,
+      reference: conversation._id
+    };
+    this.notificationSV.stateDeleteByReference(params);
+    this.notificationSV.deleteByReference(params).toPromise();
   }
 
   private watchConversationState() {
@@ -74,6 +105,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
         case CONVERSATION_GROUP_DELETE_FINISH:
         case CONVERSATION_GROUP_ADD_MEMBER_FINISH:
           this.conversations = x.conversation.list;
+          this.openConversationFromNotifaction();
           break;
         default:
           break;

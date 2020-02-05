@@ -81,6 +81,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       //   case NOTIFICATION_LIVE_UPDATE:
       //   case NOTIFICATION_DELETE:
       this.notifications = x.notification.list;
+      console.log(this.notifications);
       //     break;
       //   default:
       //     break;

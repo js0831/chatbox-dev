@@ -66,9 +66,11 @@ export class ConversationComponent implements OnInit, OnDestroy {
   private watchWebSocket() {
     return this.websocketSV.listen(
       WebsocketEventType.MESSAGE,
-      this.currentConversation._id
-    ).subscribe( x => {
-      this.messages.push(x as MessageInterface);
+      this.currentUser._id
+    ).subscribe( (x: {
+      message: MessageInterface
+    }) => {
+      this.messages.push(x.message);
       this.moveScrollToBottom();
     });
   }

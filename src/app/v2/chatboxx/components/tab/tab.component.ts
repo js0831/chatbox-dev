@@ -12,6 +12,8 @@ import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service'
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { MessageInterface } from 'src/app/v2/shared/interfaces/message.interface';
+import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 
 @Component({
   selector: 'app-tab',
@@ -72,7 +74,8 @@ export class TabComponent implements OnInit, OnDestroy {
           ( x.data.type === NotificationType.MESSAGE ||
           x.data.type === NotificationType.FRIEND_REQUEST_ACCEPT )
       ) {
-        this.selectTab(this.tabs[0]);
+        const tabIndex = x.data.message.indexOf('Group') >= 0 ? 1 : 0;
+        this.selectTab(this.tabs[tabIndex]);
       }
     });
   }
@@ -96,24 +99,8 @@ export class TabComponent implements OnInit, OnDestroy {
   private watchWebSocket() {
     this.webSocketSubs.forEach( x => x.unsubscribe());
 
-    // listen to all websocket message
-    this.conversations.forEach( conversation => {
-      this.webSocketSubs.push(
-        this.websocketSV.listen(WebsocketEventType.MESSAGE, conversation._id).subscribe((ws: any) => {
-          if (!this.selectedConversation || this.selectedConversation._id !== conversation._id) {
-            const liveNotif: NotificationInterface = {
-              _id: new Date().getTime().toString(),
-              user: this.currentUser._id,
-              type: NotificationType.MESSAGE,
-              reference: conversation._id,
-              message: `New message from ${ws.from.firstname}`,
-              createdDate: ws.date
-            };
-            this.notificationSV.stateUpdateNotification(liveNotif);
-          }
-        })
-      );
-    });
+    // listen to websocket message
+    this.listenToMessageLiveNotification();
 
     // listen to friend request websocket
     this.webSocketSubs.push(
@@ -130,6 +117,30 @@ export class TabComponent implements OnInit, OnDestroy {
       .subscribe(
         (x: NotificationInterface) => {
           this.notificationSV.stateUpdateNotification(x);
+      })
+    );
+  }
+
+  private listenToMessageLiveNotification() {
+    this.webSocketSubs.push(
+      this.websocketSV.listen(WebsocketEventType.MESSAGE, this.currentUser._id).subscribe( (ws: {
+        conversation: ConversationInterface,
+        message: any
+      }) => {
+          if (!this.selectedConversation || this.selectedConversation._id !== ws.conversation._id) {
+
+            const notifMsg = ws.conversation.type === ConversationType.PERSONAL ? 'New message from' :
+            'New Group message from';
+            const liveNotif: NotificationInterface = {
+              _id: new Date().getTime().toString(),
+              user: this.currentUser._id,
+              type: NotificationType.MESSAGE,
+              reference: ws.conversation._id,
+              message: `${notifMsg} ${ws.message.from.firstname}`,
+              createdDate: ws.message.date
+            };
+            this.notificationSV.stateUpdateNotification(liveNotif);
+          }
       })
     );
   }
