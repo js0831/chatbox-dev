@@ -124,12 +124,14 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
   private createNotifications() {
     this.selectedConversation.members.forEach( x => {
-      this.notifService.create({
-        reference: this.selectedConversation._id,
-        type: NotificationType.MESSAGE,
-        user: x._id,
-        message: `New Message from ${this.currentUser.firstname}`,
-      }).toPromise();
+      if (x._id !==  this.currentUser._id) {
+        this.notifService.create({
+          reference: this.selectedConversation._id,
+          type: NotificationType.MESSAGE,
+          user: x._id,
+          message: `New Message from ${this.currentUser.firstname}`,
+        }).toPromise();
+      }
     });
   }
   private buildForm() {
