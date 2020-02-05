@@ -15,6 +15,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   notifications: NotificationInterface[] = [];
+  consolidated: NotificationInterface[] = [];
+  allNotifs: NotificationInterface[] = [];
+
   currentUser: UserInterface;
 
   constructor(
@@ -35,8 +38,34 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   private watchNotificationState() {
     return this.notifSV.notificationState.subscribe( x => {
-      this.notifications = x.notification.list;
+      this.allNotifs = x.notification.list;
+      this.notifications = this.consolidateNotifications(x.notification.list);
     });
+  }
+
+  private consolidateNotifications(list: NotificationInterface[]) {
+    this.consolidated = [];
+    list.forEach(n => {
+      const notifs = this.consolidatedNotifications(n, this.consolidated);
+      if (notifs.length === 0) {
+        this.consolidated = [
+          ...this.consolidated,
+          n
+        ];
+      }
+    });
+    return this.consolidated;
+  }
+
+  countConsolidatedNotifs(n: NotificationInterface) {
+    return this.consolidatedNotifications(n, this.allNotifs).length;
+  }
+
+  private consolidatedNotifications(notif: NotificationInterface, list) {
+    const notifs = list.filter(n => {
+      return n.message === notif.message && n.reference === notif.reference;
+    });
+    return notifs;
   }
 
   open(n: NotificationInterface) {

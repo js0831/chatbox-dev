@@ -3,7 +3,12 @@
   <li *ngFor="let n of notifications" (click)="open(n)">
     <img alt="" src="./assets/images/avatar.svg">
     <div class="info">
-      <label>{{n.message}}</label>
+      <label>
+        <ng-container *ngIf="countConsolidatedNotifs(n) > 1">
+          ( {{countConsolidatedNotifs(n)}} )
+        </ng-container>
+        {{n.message}}
+      </label>
       <span>{{n.createdDate | date : 'MM/dd/yy hh:mm a'}}</span>
     </div>
   </li>
