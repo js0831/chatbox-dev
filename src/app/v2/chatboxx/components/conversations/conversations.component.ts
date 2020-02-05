@@ -58,8 +58,11 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   private openConversationFromNotifaction() {
     if (this.actionSV.previousValue.action === 'NOTIFICATION_OPEN') {
       const ref = this.actionSV.previousValue.data.reference;
-      const conversation = this.conversations.filter( c => c._id === ref)[0];
-      this.selectConversation(conversation);
+      const conversation = this.conversations.filter( c => c._id === ref);
+      if (conversation.length > 0) {
+        this.selectConversation(conversation[0]);
+      }
+
     }
   }
 
