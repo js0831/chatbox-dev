@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DropdownActionInterface } from 'src/app/v2/shared/interfaces/dropdown-action.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
@@ -13,7 +13,7 @@ import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   currentUser: UserInterface;
@@ -79,5 +79,9 @@ export class ProfileComponent implements OnInit {
     setTimeout( x => {
       this.showAction = false;
     }, 200);
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach( x => x.unsubscribe());
   }
 }
