@@ -1,6 +1,6 @@
 <ng-container *ngIf="selectedConversation">
     <app-active-conversation></app-active-conversation>
-    <app-conversation class="custom-scroll"></app-conversation>
+    <app-conversation (scroll)="onScroll($event)" class="custom-scroll"></app-conversation>
     <app-send-message></app-send-message>
     <app-add-member *ngIf="isAddMember"></app-add-member>
 </ng-container>

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { Subscription } from 'rxjs';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
-import { CONVERSATION_SELECT, CONVERSATION_REMOVE, CONVERSATION_GROUP_DELETE_FINISH, CONVERSATION_GROUP_LEAVE_FINISH } from '../../store/conversation/conversation.action';
+import * as actions from '../../store/conversation/conversation.action';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
 
 @Component({
@@ -15,6 +15,12 @@ export class MainComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
   selectedConversation: ConversationInterface;
   isAddMember = false;
+
+  isLastPage = false;
+  pagination = {
+    page: 1,
+    limit: 10
+  };
 
   constructor(
     private conversationSV: ConversationService,
@@ -43,15 +49,16 @@ export class MainComponent implements OnInit, OnDestroy {
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
-        case CONVERSATION_SELECT:
+        case actions.CONVERSATION_SELECT:
           this.selectedConversation = null;
           setTimeout( () => {
             this.selectedConversation = x.conversation.selected;
+            this.isLastPage = false;
           });
           break;
 
-        case CONVERSATION_REMOVE:
-        case CONVERSATION_GROUP_DELETE_FINISH:
+        case actions.CONVERSATION_REMOVE:
+        case actions.CONVERSATION_GROUP_DELETE_FINISH:
           const convoIDs = x.conversation.list.map( c => {
             return c._id;
           });
@@ -59,13 +66,30 @@ export class MainComponent implements OnInit, OnDestroy {
             this.selectedConversation = null;
           }
           break;
-        case CONVERSATION_GROUP_LEAVE_FINISH:
+        case actions.CONVERSATION_GROUP_LEAVE_FINISH:
           this.selectedConversation = null;
+          break;
+        case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH:
+          this.isLastPage = x.action.message === 'last';
           break;
         default:
           break;
       }
     });
+  }
+
+  onScroll(e) {
+    if (e.target.scrollTop === 0 && !this.isLastPage) {
+      this.loadHistory();
+    }
+  }
+
+  loadHistory() {
+    this.pagination.page += 1;
+    this.conversationSV.getPreviousMessage({
+      id: this.selectedConversation._id,
+      pagination: this.pagination
+    }).action();
   }
 
   ngOnDestroy(): void {

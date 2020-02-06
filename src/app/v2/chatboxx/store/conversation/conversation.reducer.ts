@@ -168,13 +168,21 @@ export function conversationReducer(state = initialState, action: actions.Action
                     }
                 };
                 break;
+
+            case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES:
+                returnState = {
+                  ...state,
+                  action: {
+                    name: type,
+                  }
+                };
+                break;
             case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH:
                 const ids = state.conversation.messages.map( x => x._id);
                 const removeDuplicates = payload.data.filter( x => {
                   return !(ids.indexOf(x._id) >= 0);
                 });
                 const isLastPage = removeDuplicates.length !== payload.data.length;
-
                 returnState = {
                     action: {
                         name: type,

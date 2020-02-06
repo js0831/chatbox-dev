@@ -22,6 +22,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
   currentUser: UserInterface;
   currentConversation: ConversationInterface;
   isLastPage = false;
+  isLoadingPrevious = false;
   pagination = {
     page: 1,
     limit: 10
@@ -47,9 +48,14 @@ export class ConversationComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
       this.currentConversation = x.conversation.selected;
       switch (x.action.name) {
+        case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES:
+          this.isLoadingPrevious = true;
+          break;
         case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH:
           this.messages = x.conversation.messages;
           this.isLastPage = x.action.message === 'last';
+          this.elRef.nativeElement.scrollTop = 120;
+          this.isLoadingPrevious = false;
           break;
         case actions.CONVERSATION_LOAD_MESSAGES:
           if (x.action.statusCode !== 200) {
@@ -96,14 +102,6 @@ export class ConversationComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.elRef.nativeElement.scrollTop = 999999;
     });
-  }
-
-  loadPrevious() {
-    this.pagination.page += 1;
-    this.conversationSV.getPreviousMessage({
-      id: this.currentConversation._id,
-      pagination: this.pagination
-    }).action();
   }
 
   ngOnDestroy() {

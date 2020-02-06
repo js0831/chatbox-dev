@@ -1,5 +1,5 @@
-<a *ngIf="!isLastPage" class="loadPrevious" (click)="loadPrevious()">
-  Load previous messages
+<a *ngIf="!isLastPage && isLoadingPrevious" class="loadPrevious">
+  Loading previous messages...
 </a>
 <ng-container *ngIf="messages">
   <div class="message"
