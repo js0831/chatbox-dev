@@ -71,7 +71,11 @@ export class ConversationService {
     return {
       http: (): Observable<ResponseInterface<MessageInterface[]>> => {
         const url = `conversation/${params.id}/messages/${params.pagination.page}/${params.pagination.limit}`;
-        return this.http.get(url) as Observable<ResponseInterface<MessageInterface[]>>;
+        return this.http.get(url, {
+          headers: {
+            loading: 'background'
+          }
+        }) as Observable<ResponseInterface<MessageInterface[]>>;
       },
       action: () => {
         this.store.dispatch(new actions.ConversationLoadPreviousMessages(params));
