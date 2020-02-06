@@ -127,7 +127,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   private leaveGroup() {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
-        this.conversationSV.stateLeaveGroup({
+        this.conversationSV.actionLeaveGroup({
           user: this.currentUser._id,
           conversation: this.selectedConversation._id
         });
@@ -138,7 +138,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   private deleteGroup() {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
-        this.conversationSV.stateDeleteGroup(this.selectedConversation._id);
+        this.conversationSV.actionDeleteGroup(this.selectedConversation._id);
       }
     });
   }
@@ -147,7 +147,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
         this.userSV.unfriend(this.friend._id, this.currentUser._id).subscribe( (res: any) => {
-          this.conversationSV.stateRemoveConversation(res.data._id);
+          this.conversationSV.actionRemoveConversation(res.data._id);
         });
       }
     });

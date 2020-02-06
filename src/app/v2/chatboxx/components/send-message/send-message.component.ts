@@ -115,7 +115,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
 
     // append to msgs list
-    this.conversationSV.stateSendMessage(messageData);
+    this.conversationSV.actionSendMessage(messageData);
 
     // save on DB
     this.conversationSV.sendMessage(

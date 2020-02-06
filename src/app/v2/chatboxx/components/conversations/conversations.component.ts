@@ -90,7 +90,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
   selectConversation(conversation: ConversationInterface) {
     this.selectedConversation = conversation;
-    this.conversationSV.stateSelectConversation(conversation);
+    this.conversationSV.actionSelectConversation(conversation);
 
     const params = {
       userid: this.currentUser._id,
@@ -127,6 +127,6 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.conversations = [];
     this.subs.forEach( x => x.unsubscribe());
-    this.conversationSV.stateActionReset();
+    this.conversationSV.actionActionReset();
   }
 }

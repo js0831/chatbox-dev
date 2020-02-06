@@ -173,7 +173,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
       this.disableActionButton(userId);
 
       if (respond !== 'reject') {
-        this.conversationSV.stateAddConversation(x.data);
+        this.conversationSV.actionAddConversation(x.data);
         this.createFriendRequestNotification({
           userId,
           type: 'FRIEND_REQUEST_ACCEPT',
@@ -191,7 +191,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
           this.disableActionButton(id);
 
           if (this.selectedConversation.type === ConversationType.PERSONAL) {
-            this.conversationSV.stateRemoveConversation(res.data._id);
+            this.conversationSV.actionRemoveConversation(res.data._id);
           }
         });
       }

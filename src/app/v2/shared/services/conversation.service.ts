@@ -7,20 +7,11 @@ import { AppState } from '../../chatboxx/store/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ConversationState } from '../../chatboxx/store/conversation/conversation.state';
-import {
-  ConversationListLoad,
-  ConversationSelect,
-  ConversationSendMessage,
-  ConversationActionReset,
-  ConversationAdd,
-  ConversationRemove,
-  ConversationGroupCreate,
-  ConversationGroupLeave,
-  ConversationGroupDelete,
-  ConversationGroupAddMember} from '../../chatboxx/store/conversation/conversation.action';
+import * as actions from '../../chatboxx/store/conversation/conversation.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
 import { UserInterface } from '../interfaces/user.interface';
+import { stringify } from 'querystring';
 
 
 @Injectable({
@@ -33,6 +24,7 @@ export class ConversationService {
     private store: Store<AppState>
   ) { }
 
+    /* HTTP REQUEST START  */
   getConversations(params: {
     id: string,
     type: ConversationType
@@ -49,7 +41,7 @@ export class ConversationService {
     search?: string
   }) {
     const { id, type, pagination, search } = params;
-    this.store.dispatch(new ConversationListLoad({
+    this.store.dispatch(new actions.ConversationListLoad({
       id,
       type,
       pagination,
@@ -57,31 +49,7 @@ export class ConversationService {
     }));
   }
 
-  get conversationState(): Observable<ConversationState> {
-    return this.store.select('conversationState');
-  }
-
-  stateSelectConversation(con: ConversationInterface) {
-    this.store.dispatch(new ConversationSelect(con));
-  }
-
-  stateSendMessage(msg: any) {
-    this.store.dispatch(new ConversationSendMessage(msg));
-  }
-
-  stateActionReset() {
-    this.store.dispatch(new ConversationActionReset());
-  }
-
-  stateAddConversation(conversation: ConversationInterface) {
-    this.store.dispatch(new ConversationAdd(conversation));
-  }
-
-  stateRemoveConversation(conversationId: string) {
-    this.store.dispatch(new ConversationRemove(conversationId));
-  }
-
-  sendMessage(conversationId: string, data: MessageInterface) {
+  sendMessage(conversationId: string, data: MessageInterface | any) {
     const url = 'conversation/message';
     return this.http.post(url, {
       conversationId,
@@ -121,26 +89,64 @@ export class ConversationService {
   }) {
     return this.http.patch('conversation/member', params);
   }
+  /* HTTP REQUEST END  */
 
-  stateAddMember(params: {
+  /* STORE  */
+  get conversationState(): Observable<ConversationState> {
+    return this.store.select('conversationState');
+  }
+
+  actionSelectConversation(con: ConversationInterface) {
+    this.store.dispatch(new actions.ConversationSelect(con));
+  }
+
+  actionSendMessage(msg: any) {
+    this.store.dispatch(new actions.ConversationSendMessage(msg));
+  }
+
+  actionActionReset() {
+    this.store.dispatch(new actions.ConversationActionReset());
+  }
+
+  actionAddConversation(conversation: ConversationInterface) {
+    this.store.dispatch(new actions.ConversationAdd(conversation));
+  }
+
+  actionRemoveConversation(conversationId: string) {
+    this.store.dispatch(new actions.ConversationRemove(conversationId));
+  }
+
+  actionAddMember(params: {
     conversation: string,
     user: UserInterface
   }) {
-    this.store.dispatch(new ConversationGroupAddMember(params));
+    this.store.dispatch(new actions.ConversationGroupAddMember(params));
   }
 
-  stateDeleteGroup(conversation: string) {
-    this.store.dispatch(new ConversationGroupDelete(conversation));
+  actionDeleteGroup(conversation: string) {
+    this.store.dispatch(new actions.ConversationGroupDelete(conversation));
   }
 
-  stateCreateGroup(conversation: ConversationInterface) {
-    this.store.dispatch(new ConversationGroupCreate(conversation));
+  actionCreateGroup(conversation: ConversationInterface) {
+    this.store.dispatch(new actions.ConversationGroupCreate(conversation));
   }
 
-  stateLeaveGroup(params: {
+  actionLeaveGroup(params: {
     conversation: string,
     user: string
   }) {
-    this.store.dispatch(new ConversationGroupLeave(params));
+    this.store.dispatch(new actions.ConversationGroupLeave(params));
+  }
+
+  getPreviousMessage(params: {id: string, pagination: PaginationInterface}) {
+    return {
+      http: (): Observable<ResponseInterface<MessageInterface[]>> => {
+        const url = `conversation/${params.id}/messages/${params.pagination.page}/${params.pagination.limit}`;
+        return this.http.get(url) as Observable<ResponseInterface<MessageInterface[]>>;
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationLoadPreviousMessages(params));
+      }
+    };
   }
 }

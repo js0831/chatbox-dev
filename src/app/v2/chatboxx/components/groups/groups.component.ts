@@ -86,7 +86,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   selectConversation(conversation: ConversationInterface) {
     this.selectedConversation = conversation;
-    this.conversationSV.stateSelectConversation(conversation);
+    this.conversationSV.actionSelectConversation(conversation);
 
     const params = {
       userid: this.currentUser._id,

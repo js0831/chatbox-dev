@@ -8,6 +8,7 @@ const initialState: ConversationState = {
     conversation: {
         type: null,
         list: [],
+        messages: []
     }
 };
 
@@ -36,7 +37,6 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
-
         case actions.CONVERSATION_LIST_LOAD_FINISH:
             returnState = {
                 action: {
@@ -108,14 +108,6 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
             };
             break;
-          case actions.CONVERSATION_GROUP_CREATE:
-            returnState = {
-                ...state,
-                action: {
-                    name: type
-                }
-            };
-            break;
           case actions.CONVERSATION_GROUP_CREATE_FINISH:
             returnState = {
                 ...state,
@@ -125,14 +117,6 @@ export function conversationReducer(state = initialState, action: actions.Action
                 conversation: {
                   ...state.conversation,
                   list: [payload.data, ...state.conversation.list]
-                }
-            };
-            break;
-          case actions.CONVERSATION_GROUP_LEAVE:
-            returnState = {
-                ...state,
-                action: {
-                    name: type
                 }
             };
             break;
@@ -148,14 +132,6 @@ export function conversationReducer(state = initialState, action: actions.Action
                   }
               };
               break;
-          case actions.CONVERSATION_GROUP_DELETE:
-            returnState = {
-                ...state,
-                action: {
-                    name: type
-                }
-            };
-            break;
           case actions.CONVERSATION_GROUP_DELETE_FINISH:
               returnState = {
                   ...state,
@@ -168,16 +144,7 @@ export function conversationReducer(state = initialState, action: actions.Action
                   }
               };
               break;
-            case actions.CONVERSATION_GROUP_ADD_MEMBER:
-              returnState = {
-                  ...state,
-                  action: {
-                      name: type
-                  }
-              };
-              break;
             case actions.CONVERSATION_GROUP_ADD_MEMBER_FINISH:
-                console.log(payload);
                 returnState = {
                     ...state,
                     action: {
@@ -198,6 +165,25 @@ export function conversationReducer(state = initialState, action: actions.Action
                         }
                         return c;
                       })
+                    }
+                };
+                break;
+            case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH:
+                const ids = state.conversation.messages.map( x => x._id);
+                const removeDuplicates = payload.data.filter( x => {
+                  return !(ids.indexOf(x._id) >= 0);
+                });
+                const isLastPage = removeDuplicates.length !== payload.data.length;
+
+                returnState = {
+                    action: {
+                        name: type,
+                        statusCode: payload.statusCode,
+                        message: !isLastPage ? payload.message : 'last'
+                    },
+                    conversation: {
+                        ...state.conversation,
+                        messages: [...removeDuplicates, ...state.conversation.messages]
                     }
                 };
                 break;

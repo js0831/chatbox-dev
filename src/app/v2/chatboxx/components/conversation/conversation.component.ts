@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 import { Subscription } from 'rxjs';
-import { CONVERSATION_LOAD_MESSAGES, CONVERSATION_SEND_MESSAGE } from '../../store/conversation/conversation.action';
+import * as actions from '../../store/conversation/conversation.action';
 import { MessageInterface } from 'src/app/v2/shared/interfaces/message.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
@@ -21,6 +21,11 @@ export class ConversationComponent implements OnInit, OnDestroy {
   messages: MessageInterface[];
   currentUser: UserInterface;
   currentConversation: ConversationInterface;
+  isLastPage = false;
+  pagination = {
+    page: 1,
+    limit: 10
+  };
 
   constructor(
     private conversationSV: ConversationService,
@@ -42,17 +47,19 @@ export class ConversationComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
       this.currentConversation = x.conversation.selected;
       switch (x.action.name) {
-        case CONVERSATION_LOAD_MESSAGES:
-
+        case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH:
+          this.messages = x.conversation.messages;
+          this.isLastPage = x.action.message === 'last';
+          break;
+        case actions.CONVERSATION_LOAD_MESSAGES:
           if (x.action.statusCode !== 200) {
             this.jkAlert.error(x.action.message);
           } else {
             this.messages = x.conversation.messages;
             this.moveScrollToBottom();
           }
-
           break;
-        case CONVERSATION_SEND_MESSAGE:
+        case actions.CONVERSATION_SEND_MESSAGE:
           const newMsg = x.conversation.messages[x.conversation.messages.length - 1];
           this.messages.push(newMsg);
           this.moveScrollToBottom();
@@ -89,6 +96,14 @@ export class ConversationComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.elRef.nativeElement.scrollTop = 999999;
     });
+  }
+
+  loadPrevious() {
+    this.pagination.page += 1;
+    this.conversationSV.getPreviousMessage({
+      id: this.currentConversation._id,
+      pagination: this.pagination
+    }).action();
   }
 
   ngOnDestroy() {

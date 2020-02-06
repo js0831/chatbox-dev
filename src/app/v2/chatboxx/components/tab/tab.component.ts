@@ -176,6 +176,6 @@ export class TabComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.forEach( x => x.unsubscribe());
     this.webSocketSubs.forEach( x => x.unsubscribe());
-    this.conversationSV.stateActionReset();
+    this.conversationSV.actionActionReset();
   }
 }
