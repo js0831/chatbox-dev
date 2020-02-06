@@ -24,31 +24,6 @@ export class ConversationService {
     private store: Store<AppState>
   ) { }
 
-  /* HTTP REQUEST START  */
-  // getConversations(params: {
-  //   id: string,
-  //   type: ConversationType
-  // }): Observable<ResponseInterface<ConversationInterface>> {
-  //   const { id, type } = params;
-  //   const url = `conversation/${id}/type/${type}`;
-  //   return this.http.get(url) as Observable<ResponseInterface<ConversationInterface>>;
-  // }
-
-  // stateLoadConversations(params: {
-  //   id: string,
-  //   type: ConversationType,
-  //   pagination?: PaginationInterface,
-  //   search?: string
-  // }) {
-  //   const { id, type, pagination, search } = params;
-  //   this.store.dispatch(new actions.ConversationListLoad({
-  //     id,
-  //     type,
-  //     pagination,
-  //     search
-  //   }));
-  // }
-
   sendMessage(conversationId: string, data: MessageInterface | any) {
     const url = 'conversation/message';
     return this.http.post(url, {
@@ -68,14 +43,6 @@ export class ConversationService {
     return this.http.get(url) as Observable<ResponseInterface<MessageInterface[]>>;
   }
 
-
-
-
-
-
-  /* HTTP REQUEST END  */
-
-  /* STORE  */
   get conversationState(): Observable<ConversationState> {
     return this.store.select('conversationState');
   }
@@ -99,8 +66,6 @@ export class ConversationService {
   actionRemoveConversation(conversationId: string) {
     this.store.dispatch(new actions.ConversationRemove(conversationId));
   }
-
-
 
   getPreviousMessage(params: {id: string, pagination: PaginationInterface}) {
     return {

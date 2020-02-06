@@ -86,7 +86,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
       userid: this.currentUser._id,
       reference: conversation._id
     };
-    this.notificationSV.stateDeleteByReference(params);
+    this.notificationSV.actionDeleteByReference(params);
     this.notificationSV.deleteByReference(params).toPromise();
   }
 

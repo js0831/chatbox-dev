@@ -62,7 +62,7 @@ export class TabComponent implements OnInit, OnDestroy {
       this.watchAction()
     ];
 
-    this.notificationSV.stateLoadNotifications(this.currentUser._id);
+    this.notificationSV.getList(this.currentUser._id).action();
     this.selectTab(this.tabs[0]);
   }
 
@@ -106,7 +106,7 @@ export class TabComponent implements OnInit, OnDestroy {
       this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST, this.currentUser._id)
       .subscribe(
         (x: NotificationInterface) => {
-          this.notificationSV.stateUpdateNotification(x);
+          this.notificationSV.actionUpdateNotification(x);
       })
     );
 
@@ -115,7 +115,7 @@ export class TabComponent implements OnInit, OnDestroy {
       this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST_ACCEPT, this.currentUser._id)
       .subscribe(
         (x: NotificationInterface) => {
-          this.notificationSV.stateUpdateNotification(x);
+          this.notificationSV.actionUpdateNotification(x);
       })
     );
   }
@@ -138,7 +138,7 @@ export class TabComponent implements OnInit, OnDestroy {
               message: `${notifMsg} ${ws.message.from.firstname}`,
               createdDate: ws.message.date
             };
-            this.notificationSV.stateUpdateNotification(liveNotif);
+            this.notificationSV.actionUpdateNotification(liveNotif);
           }
       })
     );

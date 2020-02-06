@@ -32,7 +32,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.watchNotificationState()
     ];
 
-    this.notifSV.stateSeenNotifications(this.currentUser._id);
+    this.notifSV.actionSeenNotifications(this.currentUser._id);
     this.notifSV.seenNotifications(this.currentUser._id).toPromise();
   }
 
@@ -77,7 +77,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach( x => x.unsubscribe());
-    this.notifSV.stateSeenNotifications(this.currentUser._id);
+    this.notifSV.actionSeenNotifications(this.currentUser._id);
     if ( this.sessionSV.data ) {
         this.notifSV.seenNotifications(this.currentUser._id).toPromise();
     }

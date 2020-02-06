@@ -77,7 +77,7 @@ export class FriendsTabComponent implements OnInit, OnDestroy {
       userid: this.currentUser._id,
       type: NotificationType.FRIEND_REQUEST
     };
-    this.notificationSV.stateDeleteByType(params);
+    this.notificationSV.actionDeleteByType(params);
     this.notificationSV.deleteByType(params).toPromise();
   }
 

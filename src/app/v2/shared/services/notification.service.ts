@@ -38,7 +38,14 @@ export class NotificationService {
   }
 
   getList(id: string) {
-    return this.http.get(`notification/${id}`);
+    return {
+      http: () => {
+        return this.http.get(`notification/${id}`);
+      },
+      action: () => {
+        this.store.dispatch(new actions.NotificationListLoad(id));
+      }
+    };
   }
 
   deleteByReference(params: {
@@ -73,27 +80,23 @@ export class NotificationService {
     return this.store.select('notificationState');
   }
 
-  stateLoadNotifications(id: string) {
-    this.store.dispatch(new actions.NotificationListLoad(id));
-  }
-
-  stateUpdateNotification(notif: NotificationInterface) {
+  actionUpdateNotification(notif: NotificationInterface) {
     this.store.dispatch(new actions.NotificationLiveUpdate(notif));
   }
 
-  stateDeleteByReference(params: {
+  actionDeleteByReference(params: {
     userid: string, reference: string
   }) {
     this.store.dispatch(new actions.NotificationDelete(params));
   }
 
-  stateDeleteByType(params: {
+  actionDeleteByType(params: {
     userid: string, type: NotificationType
   }) {
     this.store.dispatch(new actions.NotificationDeleteByType(params));
   }
 
-  stateSeenNotifications(userId: string) {
+  actionSeenNotifications(userId: string) {
     this.store.dispatch(new actions.NotificationSeen(userId));
   }
 }

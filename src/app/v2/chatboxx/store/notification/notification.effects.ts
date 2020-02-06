@@ -18,7 +18,7 @@ export class NotificationEffects {
     @Effect() loadList: Observable<Action> = this.action$.pipe(
         ofType(actions.NOTIFICATION_LIST_LOAD),
         switchMap( (action: actions.NotificationListLoad) => {
-            return this.notifacationSV.getList(action.payload).pipe(
+            return this.notifacationSV.getList(action.payload).http().pipe(
               map( res => {
                 return new actions.NotificationListLoadFinish(res);
               })
