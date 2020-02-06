@@ -64,6 +64,17 @@ export class ConversationEffects {
       })
     );
 
+    @Effect() removeUserOnGroup: Observable<Action> = this.action$.pipe(
+      ofType(actions.CONVERSATION_GROUP_USER_REMOVE),
+      switchMap( (action: actions.ConversationGroupUserRemove) => {
+          return this.convoSV.leaveGroup(action.payload).http().pipe(
+            map( res => {
+              return new actions.ConversationGroupUserRemoveFinish(action.payload);
+            })
+          );
+      })
+    );
+
     @Effect() deleteGroup: Observable<Action> = this.action$.pipe(
       ofType(actions.CONVERSATION_GROUP_DELETE),
       switchMap( (action: actions.ConversationGroupDelete) => {

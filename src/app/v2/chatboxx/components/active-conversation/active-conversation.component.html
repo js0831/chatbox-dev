@@ -6,13 +6,18 @@
   <img *ngFor="let m of selectedConversation.members.slice(0, 4)" alt="" class="avatar" src="./assets/images/avatar.svg">
 </div>
 
-<div *ngIf="selectedConversation.type === 'PERSONAL'">
+<div class="pm" *ngIf="selectedConversation.type === 'PERSONAL'">
     <h1>{{friend?.firstname}} {{friend?.lastname}}</h1>
     <label>Online</label>
 </div>
-<div *ngIf="selectedConversation.type === 'GROUP'">
+<div class="group" *ngIf="selectedConversation.type === 'GROUP'">
   <h1>{{selectedConversation.name}}</h1>
-  <label>{{selectedConversation.members.length}} member{{selectedConversation.members.length > 1 ? 's' :''}}</label>
+  <label (click)="showMembers()">
+    <svg>
+        <use xlink:href="assets/images/icons.svg#icon-grouppeople"></use>
+    </svg>
+    {{selectedConversation.members.length}} member{{selectedConversation.members.length > 1 ? 's' :''}}
+  </label>
 </div>
 
 <button (blur)="hideActions()" (click)="showActions = true">

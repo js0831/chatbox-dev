@@ -98,6 +98,13 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
     }
   }
 
+  showMembers() {
+    this.actionSV.dispatch({
+      action: 'SHOW_MEMBERS',
+      data: true
+    });
+  }
+
   hideActions() {
     setTimeout( x => {
       this.showActions = false;
@@ -115,6 +122,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
       switch (x.action.name) {
         case actions.CONVERSATION_SELECT:
         case actions.CONVERSATION_GROUP_ADD_MEMBER_FINISH:
+        case actions.CONVERSATION_GROUP_USER_REMOVE_FINISH:
           this.selectedConversation = x.conversation.selected;
           this.friend = this.selectedConversation.members[0] as UserInterface;
           break;

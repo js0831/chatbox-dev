@@ -92,12 +92,14 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
+
       switch (x.action.name) {
         case actions.CONVERSATION_GROUP_CREATE_FINISH:
         case actions.CONVERSATION_LIST_LOAD_FINISH:
         case actions.CONVERSATION_GROUP_LEAVE_FINISH:
         case actions.CONVERSATION_GROUP_DELETE_FINISH:
         case actions.CONVERSATION_GROUP_ADD_MEMBER_FINISH:
+        case actions.CONVERSATION_GROUP_USER_REMOVE_FINISH:
           this.conversations = x.conversation.list;
           this.openConversationFromNotifaction();
           break;

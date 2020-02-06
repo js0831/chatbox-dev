@@ -15,6 +15,7 @@ export class MainComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
   selectedConversation: ConversationInterface;
   isAddMember = false;
+  isShowMembers = false;
 
   isLastPage = false;
   pagination = {
@@ -39,6 +40,9 @@ export class MainComponent implements OnInit, OnDestroy {
       switch (x.action) {
         case 'ADD_MEMBER':
           this.isAddMember = x.data;
+          break;
+        case 'SHOW_MEMBERS':
+          this.isShowMembers = x.data;
           break;
         default:
           break;

@@ -18,7 +18,8 @@ export const CONVERSATION_GROUP_ADD_MEMBER = '[Conversation] Group add member';
 export const CONVERSATION_GROUP_ADD_MEMBER_FINISH = '[Conversation] add member finish';
 export const CONVERSATION_LOAD_PREVIOUS_MESSAGES = '[Conversation] Load previous messages';
 export const CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH = '[Conversation] Load previous messages finish';
-
+export const CONVERSATION_GROUP_USER_REMOVE = '[Conversation] Group user remove';
+export const CONVERSATION_GROUP_USER_REMOVE_FINISH = '[Conversation] user remove finish';
 
 export class ConversationListLoad implements Action {
     readonly type = CONVERSATION_LIST_LOAD;
@@ -80,6 +81,16 @@ export class ConversationGroupLeaveFinish implements Action {
   constructor(public payload?: any) {}
 }
 
+export class ConversationGroupUserRemove implements Action {
+  readonly type = CONVERSATION_GROUP_USER_REMOVE;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationGroupUserRemoveFinish implements Action {
+  readonly type = CONVERSATION_GROUP_USER_REMOVE_FINISH;
+  constructor(public payload?: any) {}
+}
+
 export class ConversationGroupDelete implements Action {
   readonly type = CONVERSATION_GROUP_DELETE;
   constructor(public payload?: any) {}
@@ -131,4 +142,6 @@ export type Actions =
 | ConversationGroupAddMember
 | ConversationGroupAddMemberFinish
 | ConversationLoadPreviousMessages
-| ConversationLoadPreviousMessagesFinish;
+| ConversationLoadPreviousMessagesFinish
+| ConversationGroupUserRemove
+| ConversationGroupUserRemoveFinish;

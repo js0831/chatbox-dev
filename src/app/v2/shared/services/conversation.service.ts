@@ -126,6 +126,20 @@ export class ConversationService {
     };
   }
 
+  removeUserOnGroup(params: {
+    conversation: string,
+    user: string
+  }) {
+    return {
+      http: () => {
+        return this.http.patch('conversation/leave', params);
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationGroupUserRemove(params));
+      }
+    };
+  }
+
   deleteGroup(conversation: string) {
     return {
       http: () => {

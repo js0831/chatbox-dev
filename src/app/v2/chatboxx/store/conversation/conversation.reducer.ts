@@ -1,5 +1,6 @@
 import * as actions from './conversation.action';
 import { ConversationState } from './conversation.state';
+import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 
 const initialState: ConversationState = {
     action: {
@@ -193,6 +194,26 @@ export function conversationReducer(state = initialState, action: actions.Action
                         ...state.conversation,
                         messages: [...removeDuplicates, ...state.conversation.messages]
                     }
+                };
+                break;
+            case actions.CONVERSATION_GROUP_USER_REMOVE_FINISH:
+                returnState = {
+                  action: {
+                    name: type
+                  },
+                  conversation: {
+                    ...state.conversation,
+                    list: state.conversation.list.map( x => {
+                      if (state.conversation.selected._id === x._id) {
+                        x.members = (x.members as UserInterface[]).filter( m => m._id !== payload.user );
+                      }
+                      return x;
+                    }),
+                    selected: {
+                      ...state.conversation.selected,
+                      members: (state.conversation.selected.members as UserInterface[]).filter( x => x._id !== payload.user )
+                    }
+                  }
                 };
                 break;
         default:
