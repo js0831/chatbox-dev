@@ -94,6 +94,15 @@ export class GroupsComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
 
       switch (x.action.name) {
+        case actions.CONVERSATION_LIST_LOAD_FINISH:
+          this.conversations = x.conversation.list;
+          this.openConversationFromNotifaction();
+
+          if (this.conversations.length > 0) {
+            this.selectConversation(this.conversations[0]);
+          }
+
+          break;
         case actions.CONVERSATION_GROUP_CREATE_FINISH:
         case actions.CONVERSATION_LIST_LOAD_FINISH:
         case actions.CONVERSATION_GROUP_LEAVE_FINISH:

@@ -93,6 +93,14 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
         case conversastionActions.CONVERSATION_LIST_LOAD_FINISH:
+          this.filterConversationMembers(x.conversation.list);
+          this.openConversationFromNotifaction();
+
+          if (x.conversation.list.length > 0) {
+            this.selectConversation(x.conversation.list[0]);
+          }
+
+          break;
         case conversastionActions.CONVERSATION_ADD:
         case conversastionActions.CONVERSATION_REMOVE:
           this.filterConversationMembers(x.conversation.list);
