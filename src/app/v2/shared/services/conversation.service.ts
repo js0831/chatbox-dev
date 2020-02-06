@@ -24,30 +24,30 @@ export class ConversationService {
     private store: Store<AppState>
   ) { }
 
-    /* HTTP REQUEST START  */
-  getConversations(params: {
-    id: string,
-    type: ConversationType
-  }): Observable<ResponseInterface<ConversationInterface>> {
-    const { id, type } = params;
-    const url = `conversation/${id}/type/${type}`;
-    return this.http.get(url) as Observable<ResponseInterface<ConversationInterface>>;
-  }
+  /* HTTP REQUEST START  */
+  // getConversations(params: {
+  //   id: string,
+  //   type: ConversationType
+  // }): Observable<ResponseInterface<ConversationInterface>> {
+  //   const { id, type } = params;
+  //   const url = `conversation/${id}/type/${type}`;
+  //   return this.http.get(url) as Observable<ResponseInterface<ConversationInterface>>;
+  // }
 
-  stateLoadConversations(params: {
-    id: string,
-    type: ConversationType,
-    pagination?: PaginationInterface,
-    search?: string
-  }) {
-    const { id, type, pagination, search } = params;
-    this.store.dispatch(new actions.ConversationListLoad({
-      id,
-      type,
-      pagination,
-      search
-    }));
-  }
+  // stateLoadConversations(params: {
+  //   id: string,
+  //   type: ConversationType,
+  //   pagination?: PaginationInterface,
+  //   search?: string
+  // }) {
+  //   const { id, type, pagination, search } = params;
+  //   this.store.dispatch(new actions.ConversationListLoad({
+  //     id,
+  //     type,
+  //     pagination,
+  //     search
+  //   }));
+  // }
 
   sendMessage(conversationId: string, data: MessageInterface | any) {
     const url = 'conversation/message';
@@ -68,27 +68,11 @@ export class ConversationService {
     return this.http.get(url) as Observable<ResponseInterface<MessageInterface[]>>;
   }
 
-  createGroup(conversation: ConversationInterface) {
-    return this.http.post('conversation', conversation);
-  }
 
-  leaveGroup(params: {
-    conversation: string,
-    user: string
-  }) {
-    return this.http.patch('conversation/leave', params);
-  }
 
-  deleteGroup(conversation: string) {
-    return this.http.delete(`conversation/${conversation}`);
-  }
 
-  addMember(params: {
-    conversation: string,
-    user: string
-  }) {
-    return this.http.patch('conversation/member', params);
-  }
+
+
   /* HTTP REQUEST END  */
 
   /* STORE  */
@@ -116,27 +100,7 @@ export class ConversationService {
     this.store.dispatch(new actions.ConversationRemove(conversationId));
   }
 
-  actionAddMember(params: {
-    conversation: string,
-    user: UserInterface
-  }) {
-    this.store.dispatch(new actions.ConversationGroupAddMember(params));
-  }
 
-  actionDeleteGroup(conversation: string) {
-    this.store.dispatch(new actions.ConversationGroupDelete(conversation));
-  }
-
-  actionCreateGroup(conversation: ConversationInterface) {
-    this.store.dispatch(new actions.ConversationGroupCreate(conversation));
-  }
-
-  actionLeaveGroup(params: {
-    conversation: string,
-    user: string
-  }) {
-    this.store.dispatch(new actions.ConversationGroupLeave(params));
-  }
 
   getPreviousMessage(params: {id: string, pagination: PaginationInterface}) {
     return {
@@ -146,6 +110,74 @@ export class ConversationService {
       },
       action: () => {
         this.store.dispatch(new actions.ConversationLoadPreviousMessages(params));
+      }
+    };
+  }
+
+  getConversations(params: {
+      id: string,
+      type: ConversationType,
+      pagination?: PaginationInterface,
+      search?: string
+    }) {
+    return {
+      http: (): Observable<ResponseInterface<ConversationInterface>> => {
+        const { id, type } = params;
+        const url = `conversation/${id}/type/${type}`;
+        return this.http.get(url) as Observable<ResponseInterface<ConversationInterface>>;
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationListLoad(params));
+      }
+    };
+  }
+
+  createGroup(conversation: ConversationInterface) {
+    return {
+      http: () => {
+        return this.http.post('conversation', conversation);
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationGroupCreate(conversation));
+      }
+    };
+  }
+
+  leaveGroup(params: {
+    conversation: string,
+    user: string
+  }) {
+    return {
+      http: () => {
+        return this.http.patch('conversation/leave', params);
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationGroupLeave(params));
+      }
+    };
+  }
+
+  deleteGroup(conversation: string) {
+    return {
+      http: () => {
+        return this.http.delete(`conversation/${conversation}`);
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationGroupDelete(conversation));
+      }
+    };
+  }
+
+  addMember(params: {
+    conversation: string,
+    user: string | UserInterface
+  }) {
+    return {
+      http: () => {
+        return this.http.patch('conversation/member', params);
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationGroupAddMember(params));
       }
     };
   }

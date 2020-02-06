@@ -53,10 +53,10 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   add(user: UserInterface) {
-    this.conversationSV.actionAddMember({
+    this.conversationSV.addMember({
       conversation: this.selectedConversation._id,
       user,
-    });
+    }).action();
   }
 
   private watchConversationState() {

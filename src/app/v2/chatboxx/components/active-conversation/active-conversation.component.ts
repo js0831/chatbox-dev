@@ -127,10 +127,10 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   private leaveGroup() {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
-        this.conversationSV.actionLeaveGroup({
+        this.conversationSV.leaveGroup({
           user: this.currentUser._id,
           conversation: this.selectedConversation._id
-        });
+        }).action();
       }
     });
   }
@@ -138,7 +138,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   private deleteGroup() {
     this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
       if (x === 0) {
-        this.conversationSV.actionDeleteGroup(this.selectedConversation._id);
+        this.conversationSV.deleteGroup(this.selectedConversation._id).action();
       }
     });
   }

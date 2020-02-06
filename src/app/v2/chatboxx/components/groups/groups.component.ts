@@ -42,7 +42,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
       this.watchNotificationState()
     ];
 
-    this.conversationSV.stateLoadConversations({
+    this.conversationSV.getConversations({
       id: this.currentUser._id,
       type: ConversationType.GROUP,
       search: '',
@@ -50,7 +50,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
         limit: 10,
         page: 0
       }
-    });
+    }).action();
   }
 
   private openConversationFromNotifaction() {

@@ -68,7 +68,7 @@ export class AddGroupComponent implements OnInit, OnDestroy {
       type: ConversationType.GROUP,
       messages: []
     };
-    this.conversationSV.actionCreateGroup(conversation);
+    this.conversationSV.createGroup(conversation).action();
   }
 
   ngOnDestroy() {

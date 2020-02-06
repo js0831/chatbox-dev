@@ -40,7 +40,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
       this.watchNotificationState()
     ];
 
-    this.conversationSV.stateLoadConversations({
+    this.conversationSV.getConversations({
       id: this.currentUser._id,
       type: ConversationType.PERSONAL,
       search: '',
@@ -48,7 +48,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         limit: 10,
         page: 0
       }
-    });
+    }).action();
 
   }
 
