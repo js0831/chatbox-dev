@@ -71,7 +71,9 @@ export class TabComponent implements OnInit, OnDestroy {
       if (
           x.action === 'NOTIFICATION_OPEN' &&
           ( x.data.type === NotificationType.MESSAGE ||
-          x.data.type === NotificationType.FRIEND_REQUEST_ACCEPT )
+            x.data.type === NotificationType.FRIEND_REQUEST_ACCEPT ||
+            x.data.type === NotificationType.GROUP_MEMBER_ADD
+          )
       ) {
         const tabIndex = x.data.message.indexOf('Group') >= 0 ? 1 : 0;
         this.selectTab(this.tabs[tabIndex]);
@@ -98,26 +100,22 @@ export class TabComponent implements OnInit, OnDestroy {
   private watchWebSocket() {
     this.webSocketSubs.forEach( x => x.unsubscribe());
 
+    this.webSocketSubs = [
+      // friend request
+      this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST, this.currentUser._id)
+      .subscribe((x: NotificationInterface) => this.notificationSV.actionUpdateNotification(x)),
+
+      // friend request accept
+      this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST_ACCEPT, this.currentUser._id)
+      .subscribe((x: NotificationInterface) => this.notificationSV.actionUpdateNotification(x)),
+
+      // added group
+      this.websocketSV.listen(WebsocketEventType.GROUP_MEMBER_ADD, this.currentUser._id)
+      .subscribe((x: NotificationInterface) => this.notificationSV.actionUpdateNotification(x))
+    ];
+
     // listen to websocket message
     this.listenToMessageLiveNotification();
-
-    // listen to friend request websocket
-    this.webSocketSubs.push(
-      this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST, this.currentUser._id)
-      .subscribe(
-        (x: NotificationInterface) => {
-          this.notificationSV.actionUpdateNotification(x);
-      })
-    );
-
-    // listen to friend request accept
-    this.webSocketSubs.push(
-      this.websocketSV.listen(WebsocketEventType.FRIEND_REQUEST_ACCEPT, this.currentUser._id)
-      .subscribe(
-        (x: NotificationInterface) => {
-          this.notificationSV.actionUpdateNotification(x);
-      })
-    );
   }
 
   private listenToMessageLiveNotification() {
