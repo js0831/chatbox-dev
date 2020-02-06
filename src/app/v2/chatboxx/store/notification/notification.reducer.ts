@@ -15,15 +15,6 @@ export function notificationReducer(state = initialState, action: actions.Action
     let returnState: NotificationState = null;
 
     switch (type) {
-        case actions.NOTIFICATION_LIST_LOAD:
-            returnState = {
-                ...state,
-                action: {
-                    name: type
-                }
-            };
-            break;
-
         case actions.NOTIFICATION_LIST_LOAD_FINISH:
             returnState = {
                 action: {
@@ -84,7 +75,6 @@ export function notificationReducer(state = initialState, action: actions.Action
                     })
                 }
             };
-            console.log(returnState);
             break;
         default:
             returnState = state;
