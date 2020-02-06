@@ -135,6 +135,11 @@
       label{
         font-weight: 500;
         font-size: 1.5rem;
+
+        width: 19rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       span{
         color: #558ac1;

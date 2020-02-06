@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { JkAlertService } from 'jk-alert';
 import { DropdownActionInterface } from 'src/app/v2/shared/interfaces/dropdown-action.interface';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
@@ -17,6 +17,8 @@ import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type
   styleUrls: ['./active-conversation.component.scss']
 })
 export class ActiveConversationComponent implements OnInit, OnDestroy {
+
+  @ViewChild('groupName', {static: false}) groupNameElement: ElementRef;
 
   subs: Subscription[] = [];
   showActions = false;
@@ -45,6 +47,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   friend: UserInterface;
   currentUser: UserInterface;
+  isAdmin = false;
 
   constructor(
     private actionSV: ActionService,
@@ -55,11 +58,10 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.currentUser = this.sessionSV.data.user;
     this.subs = [
       this.watchConversationState()
     ];
-    this.currentUser = this.sessionSV.data.user;
-
     this.appendDeleteGroupAction();
   }
 
@@ -74,6 +76,13 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
         this.actions.GROUP[1] = action;
       }
     }
+  }
+
+  updateName() {
+    this.conversationSV.renameGroup({
+      id: this.selectedConversation._id,
+      name: this.groupNameElement.nativeElement.textContent.trim()
+    }).all();
   }
 
   doAction(action: any) {
@@ -125,6 +134,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
         case actions.CONVERSATION_GROUP_USER_REMOVE_FINISH:
           this.selectedConversation = x.conversation.selected;
           this.friend = this.selectedConversation.members[0] as UserInterface;
+          this.isAdmin = this.currentUser._id === this.selectedConversation.createdBy;
           break;
         default:
           break;

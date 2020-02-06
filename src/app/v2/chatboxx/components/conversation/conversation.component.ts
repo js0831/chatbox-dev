@@ -54,7 +54,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
         case actions.CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH:
           this.messages = x.conversation.messages;
           this.isLastPage = x.action.message === 'last';
-          this.elRef.nativeElement.scrollTop = 120;
+          this.elRef.nativeElement.scrollTop = this.isLastPage ? 0 : 120;
           this.isLoadingPrevious = false;
           break;
         case actions.CONVERSATION_LOAD_MESSAGES:

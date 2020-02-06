@@ -216,6 +216,28 @@ export function conversationReducer(state = initialState, action: actions.Action
                   }
                 };
                 break;
+
+            case actions.CONVERSATION_GROUP_RENAME:
+                returnState = {
+                  ...state,
+                  action: {
+                    name: type,
+                  },
+                  conversation: {
+                    ...state.conversation,
+                    list: state.conversation.list.map( x => {
+                      if (state.conversation.selected._id === x._id) {
+                        x.name = payload.name;
+                      }
+                      return x;
+                    }),
+                    selected: {
+                      ...state.conversation.selected,
+                      name: payload.name
+                    }
+                  }
+                };
+                break;
         default:
             returnState = state;
             break;

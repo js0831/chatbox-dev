@@ -164,4 +164,29 @@ export class ConversationService {
       }
     };
   }
+
+  renameGroup(params: {
+    id: string,
+    name: string
+  }) {
+    return {
+      http: () => {
+        return this.http.patch(`conversation/rename`, params,
+        {
+          headers: {
+            loading: 'background'
+          }
+        });
+      },
+      action: () => {
+        this.store.dispatch(new actions.ConversationGroupRename(params));
+      },
+      all: () => {
+        this.renameGroup(params).http().toPromise();
+        this.renameGroup(params).action();
+      }
+    };
+  }
+
+
 }

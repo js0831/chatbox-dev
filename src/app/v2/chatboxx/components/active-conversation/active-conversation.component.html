@@ -7,11 +7,13 @@
 </div>
 
 <div class="pm" *ngIf="selectedConversation.type === 'PERSONAL'">
-    <h1>{{friend?.firstname}} {{friend?.lastname}}</h1>
+    <h1 class="title">{{friend?.firstname}} {{friend?.lastname}}</h1>
     <label>Online</label>
 </div>
 <div class="group" *ngIf="selectedConversation.type === 'GROUP'">
-  <h1>{{selectedConversation.name}}</h1>
+  <div #groupName (blur)="updateName()" [attr.contenteditable]="isAdmin" class="title">
+      {{selectedConversation.name}}
+  </div>
   <label (click)="showMembers()">
     <svg>
         <use xlink:href="assets/images/icons.svg#icon-grouppeople"></use>
