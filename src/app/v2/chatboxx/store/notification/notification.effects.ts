@@ -3,12 +3,7 @@ import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { switchMap, map } from 'rxjs/operators';
-import { ResponseInterface } from 'src/app/v2/shared/interfaces/reponse.interface';
-import {
-  NOTIFICATION_LIST_LOAD,
-  NotificationListLoad,
-  NotificationListLoadFinish,
-} from './notification.action';
+import * as actions from './notification.action';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 
 
@@ -21,11 +16,11 @@ export class NotificationEffects {
     ) { }
 
     @Effect() loadList: Observable<Action> = this.action$.pipe(
-        ofType(NOTIFICATION_LIST_LOAD),
-        switchMap( (action: NotificationListLoad) => {
+        ofType(actions.NOTIFICATION_LIST_LOAD),
+        switchMap( (action: actions.NotificationListLoad) => {
             return this.notifacationSV.getList(action.payload).pipe(
               map( res => {
-                return new NotificationListLoadFinish(res);
+                return new actions.NotificationListLoadFinish(res);
               })
             );
         })

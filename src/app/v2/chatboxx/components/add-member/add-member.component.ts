@@ -4,7 +4,7 @@ import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { FriendState } from '../../store/friends/friend.state';
 import { UserService } from 'src/app/v2/shared/services/user.service';
 import { FriendsType } from '../../store/friends/friends-type.enum';
-import { FRIEND_LOAD_USER_LIST_FINISH } from '../../store/friends/friends.action';
+import * as actions from '../../store/friends/friends.action';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
@@ -68,7 +68,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   private watchFriendState() {
     return this.userSV.friendState.subscribe( x => {
-      if (x.action.name === FRIEND_LOAD_USER_LIST_FINISH) {
+      if (x.action.name === actions.FRIEND_LOAD_USER_LIST_FINISH) {
         this.friendState = x;
         this.searchKey = x.users.search;
         this.friends = x.users.list;

@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../chatboxx/store/app.state';
 import { FriendState } from '../../chatboxx/store/friends/friend.state';
 import { FriendsType } from '../../chatboxx/store/friends/friends-type.enum';
-import { FriendLoadUserList } from '../../chatboxx/store/friends/friends.action';
+import * as actions from '../../chatboxx/store/friends/friends.action';
 import { PaginationInterface } from '../interfaces/pagination.interface';
 
 @Injectable({
@@ -124,6 +124,6 @@ export class UserService {
     search?: string
   }) {
     const {id, type, pagination, search} = params;
-    this.store.dispatch(new FriendLoadUserList({id, type, pagination, search}));
+    this.store.dispatch(new actions.FriendLoadUserList({id, type, pagination, search}));
   }
 }

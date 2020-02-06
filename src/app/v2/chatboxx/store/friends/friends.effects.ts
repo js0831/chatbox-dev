@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { UserService } from 'src/app/v2/shared/services/user.service';
-import { FRIEND_LOAD_USER_LIST, FriendLoadUserList, FriendLoadUserListFinish } from './friends.action';
+import * as actions from './friends.action';
 import { switchMap, map } from 'rxjs/operators';
 import { FriendsType } from './friends-type.enum';
 import { ResponseInterface } from 'src/app/v2/shared/interfaces/reponse.interface';
@@ -19,8 +19,8 @@ export class FriendsEffects {
     ) { }
 
     @Effect() loadFriendList: Observable<Action> = this.action$.pipe(
-        ofType(FRIEND_LOAD_USER_LIST),
-        switchMap( (action: FriendLoadUserList) => {
+        ofType(actions.FRIEND_LOAD_USER_LIST),
+        switchMap( (action: actions.FriendLoadUserList) => {
             let req: Observable<ResponseInterface<UserInterface[]>>;
             const {id, pagination, search, type} = action.payload;
             switch (type) {
@@ -38,7 +38,7 @@ export class FriendsEffects {
             }
             return req.pipe(
                     map( result => {
-                        return new FriendLoadUserListFinish({
+                        return new actions.FriendLoadUserListFinish({
                             type,
                             response: result
                         });

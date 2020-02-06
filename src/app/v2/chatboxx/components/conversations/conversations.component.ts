@@ -4,12 +4,9 @@ import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 import { Subscription } from 'rxjs';
-import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_ADD, CONVERSATION_REMOVE } from '../../store/conversation/conversation.action';
+import * as conversastionActions from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
-import { NOTIFICATION_LIST_LOAD_FINISH,
-  NOTIFICATION_LIVE_UPDATE,
-  NOTIFICATION_DELETE } from '../../store/notification/notification.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
@@ -76,15 +73,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
   private watchNotificationState() {
     return this.notificationSV.notificationState.subscribe( x => {
-      // switch (x.action.name) {
-      //   case NOTIFICATION_LIST_LOAD_FINISH:
-      //   case NOTIFICATION_LIVE_UPDATE:
-      //   case NOTIFICATION_DELETE:
       this.notifications = x.notification.list;
-      //     break;
-      //   default:
-      //     break;
-      // }
     });
   }
 
@@ -103,9 +92,9 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
-        case CONVERSATION_LIST_LOAD_FINISH:
-        case CONVERSATION_ADD:
-        case CONVERSATION_REMOVE:
+        case conversastionActions.CONVERSATION_LIST_LOAD_FINISH:
+        case conversastionActions.CONVERSATION_ADD:
+        case conversastionActions.CONVERSATION_REMOVE:
           this.filterConversationMembers(x.conversation.list);
           this.openConversationFromNotifaction();
           break;

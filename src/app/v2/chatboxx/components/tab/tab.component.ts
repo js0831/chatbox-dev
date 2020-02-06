@@ -3,10 +3,9 @@ import { NotificationService } from 'src/app/v2/shared/services/notification.ser
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { Subscription } from 'rxjs';
-import { NOTIFICATION_LIST_LOAD_FINISH, NOTIFICATION_LIVE_UPDATE, NOTIFICATION_DELETE } from '../../store/notification/notification.action';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
-import { CONVERSATION_LIST_LOAD_FINISH, CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
+import * as actions from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
@@ -83,11 +82,11 @@ export class TabComponent implements OnInit, OnDestroy {
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
-        case CONVERSATION_LIST_LOAD_FINISH:
+        case actions.CONVERSATION_LIST_LOAD_FINISH:
           this.conversations = x.conversation.list;
           this.watchWebSocket();
           break;
-        case CONVERSATION_SELECT:
+        case actions.CONVERSATION_SELECT:
           this.selectedConversation = x.conversation.selected;
           break;
         default:

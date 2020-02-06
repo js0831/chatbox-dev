@@ -1,6 +1,5 @@
 import * as actions from './friends.action';
 import { FriendState } from './friend.state';
-import { FriendsType } from './friends-type.enum';
 
 const initialState: FriendState = {
     action: {

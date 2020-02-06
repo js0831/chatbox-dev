@@ -6,7 +6,7 @@ import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 import { Subscription } from 'rxjs';
-import { CONVERSATION_GROUP_CREATE_FINISH } from '../../store/conversation/conversation.action';
+import * as actions from '../../store/conversation/conversation.action';
 
 @Component({
   selector: 'app-add-group',
@@ -39,7 +39,7 @@ export class AddGroupComponent implements OnInit, OnDestroy {
 
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
-      if (x.action.name === CONVERSATION_GROUP_CREATE_FINISH) {
+      if (x.action.name === actions.CONVERSATION_GROUP_CREATE_FINISH) {
         this.todo('cancel');
       }
     });

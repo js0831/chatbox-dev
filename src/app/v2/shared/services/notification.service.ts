@@ -3,13 +3,7 @@ import { NotificationInterface } from '../interfaces/notification.interface';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../chatboxx/store/app.state';
-import {
-  NotificationListLoad,
-  NotificationLiveUpdate,
-  NotificationDelete,
-  NotificationSeen,
-  NotificationDeleteByType
-} from '../../chatboxx/store/notification/notification.action';
+import * as actions from '../../chatboxx/store/notification/notification.action';
 import { NotificationType } from '../enums/notification-type.enum';
 
 @Injectable({
@@ -80,26 +74,26 @@ export class NotificationService {
   }
 
   stateLoadNotifications(id: string) {
-    this.store.dispatch(new NotificationListLoad(id));
+    this.store.dispatch(new actions.NotificationListLoad(id));
   }
 
   stateUpdateNotification(notif: NotificationInterface) {
-    this.store.dispatch(new NotificationLiveUpdate(notif));
+    this.store.dispatch(new actions.NotificationLiveUpdate(notif));
   }
 
   stateDeleteByReference(params: {
     userid: string, reference: string
   }) {
-    this.store.dispatch(new NotificationDelete(params));
+    this.store.dispatch(new actions.NotificationDelete(params));
   }
 
   stateDeleteByType(params: {
     userid: string, type: NotificationType
   }) {
-    this.store.dispatch(new NotificationDeleteByType(params));
+    this.store.dispatch(new actions.NotificationDeleteByType(params));
   }
 
   stateSeenNotifications(userId: string) {
-    this.store.dispatch(new NotificationSeen(userId));
+    this.store.dispatch(new actions.NotificationSeen(userId));
   }
 }

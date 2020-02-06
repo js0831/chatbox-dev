@@ -6,13 +6,7 @@ import { ConversationService } from 'src/app/v2/shared/services/conversation.ser
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
-import {
-  CONVERSATION_GROUP_CREATE_FINISH,
-  CONVERSATION_LIST_LOAD_FINISH,
-  CONVERSATION_GROUP_LEAVE_FINISH,
-  CONVERSATION_GROUP_DELETE_FINISH,
-  CONVERSATION_GROUP_ADD_MEMBER_FINISH
-} from '../../store/conversation/conversation.action';
+import * as actions from '../../store/conversation/conversation.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
@@ -99,11 +93,11 @@ export class GroupsComponent implements OnInit, OnDestroy {
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
-        case CONVERSATION_GROUP_CREATE_FINISH:
-        case CONVERSATION_LIST_LOAD_FINISH:
-        case CONVERSATION_GROUP_LEAVE_FINISH:
-        case CONVERSATION_GROUP_DELETE_FINISH:
-        case CONVERSATION_GROUP_ADD_MEMBER_FINISH:
+        case actions.CONVERSATION_GROUP_CREATE_FINISH:
+        case actions.CONVERSATION_LIST_LOAD_FINISH:
+        case actions.CONVERSATION_GROUP_LEAVE_FINISH:
+        case actions.CONVERSATION_GROUP_DELETE_FINISH:
+        case actions.CONVERSATION_GROUP_ADD_MEMBER_FINISH:
           this.conversations = x.conversation.list;
           this.openConversationFromNotifaction();
           break;

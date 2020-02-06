@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
-import { CONVERSATION_SELECT } from '../../store/conversation/conversation.action';
+import * as actions from '../../store/conversation/conversation.action';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
@@ -51,7 +51,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
-        case CONVERSATION_SELECT:
+        case actions.CONVERSATION_SELECT:
           this.selectedConversation = x.conversation.selected;
           this.messageElement.nativeElement.focus();
           break;
