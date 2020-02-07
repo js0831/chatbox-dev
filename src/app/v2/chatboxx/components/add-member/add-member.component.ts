@@ -32,6 +32,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   members: any[] = [];
   lastAddedUser: UserInterface;
+  profilePictures = [];
 
   constructor(
     private userSV: UserService,
@@ -59,6 +60,12 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       search: '',
     };
     this.userSV.stateGetFriends(params);
+  }
+
+  private getProfilePictures() {
+    this.profilePictures = this.friends.map( x => {
+      return this.userSV.getProfilePicture(x._id);
+    });
   }
 
   add(user: UserInterface) {
@@ -110,6 +117,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
         this.friendState = x;
         this.searchKey = x.users.search;
         this.friends = x.users.list;
+        this.getProfilePictures();
       }
     });
   }

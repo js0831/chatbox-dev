@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/v2/shared/services/notification.ser
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
+import { UserService } from 'src/app/v2/shared/services/user.service';
 
 @Component({
   selector: 'app-conversations',
@@ -24,12 +25,14 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   notifications: NotificationInterface[] = [];
   searchKey = '';
+  profilePictures: any = [];
 
   constructor(
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
     private notificationSV: NotificationService,
-    private actionSV: ActionService
+    private actionSV: ActionService,
+    private userSV: UserService
   ) { }
 
   ngOnInit() {
@@ -49,7 +52,14 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         page: 0
       }
     }).action();
+  }
 
+  private getProfilePictures() {
+    this.profilePictures = [];
+    this.conversations.forEach( c => {
+      const id = (c.members[0] as UserInterface)._id;
+      this.profilePictures.push(this.userSV.getProfilePicture(id));
+    });
   }
 
   private openConversationFromNotifaction() {
@@ -95,7 +105,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         case conversastionActions.CONVERSATION_LIST_LOAD_FINISH:
           this.filterConversationMembers(x.conversation.list);
           this.openConversationFromNotifaction();
-
+          this.getProfilePictures();
           if (x.conversation.list.length > 0) {
             this.selectConversation(x.conversation.list[0]);
           }
@@ -105,6 +115,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         case conversastionActions.CONVERSATION_REMOVE:
           this.filterConversationMembers(x.conversation.list);
           this.openConversationFromNotifaction();
+          this.getProfilePictures();
           break;
         default:
           break;

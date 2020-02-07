@@ -10,6 +10,7 @@ import * as actions from '../../store/conversation/conversation.action';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { UserService } from 'src/app/v2/shared/services/user.service';
 
 @Component({
   selector: 'app-groups',
@@ -25,13 +26,15 @@ export class GroupsComponent implements OnInit, OnDestroy {
   currentUser: UserInterface;
   selectedConversation: ConversationInterface;
   notifications: NotificationInterface[] = [];
+  profilePictures: any[] = [];
 
 
   constructor(
     private actionSV: ActionService,
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
-    private notificationSV: NotificationService
+    private notificationSV: NotificationService,
+    private userSV: UserService
   ) { }
 
   ngOnInit() {
@@ -51,6 +54,16 @@ export class GroupsComponent implements OnInit, OnDestroy {
         page: 0
       }
     }).action();
+  }
+
+  private getProfilePictures() {
+    this.profilePictures = [];
+    this.profilePictures = this.conversations.map( c => {
+      const members = (c.members as UserInterface[]).slice(0, 4).map( m => {
+        return this.userSV.getProfilePicture(m._id);
+      });
+      return members;
+    });
   }
 
   private openConversationFromNotifaction() {
@@ -97,7 +110,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
         case actions.CONVERSATION_LIST_LOAD_FINISH:
           this.conversations = x.conversation.list;
           this.openConversationFromNotifaction();
-
+          this.getProfilePictures();
           if (this.conversations.length > 0) {
             this.selectConversation(this.conversations[0]);
           }
@@ -110,6 +123,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
         case actions.CONVERSATION_GROUP_ADD_MEMBER_FINISH:
         case actions.CONVERSATION_GROUP_USER_REMOVE_FINISH:
           this.conversations = x.conversation.list;
+          this.getProfilePictures();
           this.openConversationFromNotifaction();
           break;
         default:

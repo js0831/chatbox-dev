@@ -8,7 +8,7 @@
 
       <div class="details">
           <span class="bullet"></span>
-          <label class="user">{{msg.from.firstname}}</label>
+          <label class="user">{{isYou(msg.from._id) ? 'You' : msg.from.firstname}}</label>
 
           <span class="time" *ngIf="!isToday(msg.date)">{{msg.date | date : 'MM/dd/yy hh:mm a'}}</span>
           <span class="time" *ngIf="isToday(msg.date)">Today {{msg.date | date : 'hh:mm a'}}</span>

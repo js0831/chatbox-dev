@@ -12,8 +12,8 @@
   </div>
 
   <ul class="list custom-scroll" *ngIf="members">
-      <li *ngFor="let m of members | userFilter : searchKey">
-          <img class="avatar" alt="" src="./assets/images/avatar.svg">
+      <li *ngFor="let m of members | userFilter : searchKey;let i = index">
+          <img class="avatar" [src]="profilePictures[i]" onerror="this.src='./assets/images/avatar.svg'">
           <label>
             {{ currentUser._id === m._id ? 'You' : (m.firstname +' '+ m.lastname)}}
 

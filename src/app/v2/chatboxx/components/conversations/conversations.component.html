@@ -10,9 +10,10 @@
 <ul class="conversations custom-scroll" *ngIf="conversations.length > 0">
     <li
         [ngClass]="{'active' : selectedConversation && selectedConversation._id === con._id}"
-        *ngFor="let con of conversations | conversationFilter : searchKey" (click)="selectConversation(con)"
+        *ngFor="let con of conversations | conversationFilter : searchKey; let i = index" (click)="selectConversation(con)"
     >
-        <img class="avatar" alt="" src="./assets/images/avatar.svg">
+        <img class="avatar" [src]="profilePictures[i]" onerror="this.src='./assets/images/avatar.svg'">
+
         <div class="user">
             <label>{{con.members[0]?.firstname}} {{con.members[0]?.lastname}}</label>
             <span>Online</span>

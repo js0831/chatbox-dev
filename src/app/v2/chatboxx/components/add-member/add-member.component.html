@@ -12,8 +12,8 @@
   </div>
 
   <ul class="list custom-scroll" *ngIf="friendState">
-      <li *ngFor="let u of friends">
-          <img class="avatar" alt="" src="./assets/images/avatar.svg">
+      <li *ngFor="let u of friends; let i = index">
+          <img class="avatar" alt="" [src]="profilePictures[i]" onerror="this.src='./assets/images/avatar.svg'">
           <label>{{u.firstname}} {{u.lastname}}</label>
 
           <div class="action">

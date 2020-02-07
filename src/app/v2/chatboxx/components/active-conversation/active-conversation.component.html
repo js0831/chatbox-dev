@@ -1,9 +1,21 @@
-<img *ngIf="selectedConversation.type === 'PERSONAL'" (click)="showMenu()" alt="" src="./assets/images/avatar.svg">
+<img
+  *ngIf="selectedConversation.type === 'PERSONAL'" (click)="showMenu()"
+  [src]="profilePicture[0]"
+  alt="" onerror="this.src='./assets/images/avatar.svg'"
+>
 
-<div *ngIf="selectedConversation.type === 'GROUP'"
+<div
+  *ngIf="selectedConversation.type === 'GROUP'"
   (click)="showMenu()"
-  class="members" [ngClass]="{'size-1': selectedConversation.members.length === 1}">
-  <img *ngFor="let m of selectedConversation.members.slice(0, 4)" alt="" class="avatar" src="./assets/images/avatar.svg">
+  class="members"
+  [ngClass]="{'size-1': selectedConversation.members.length === 1}">
+
+  <img
+    *ngFor="let m of selectedConversation.members.slice(0, 4);let i = index"
+    [src]="profilePicture[i]"
+    alt="" class="avatar"
+    onerror="this.src='./assets/images/avatar.svg'">
+
 </div>
 
 <div class="pm" *ngIf="selectedConversation.type === 'PERSONAL'">

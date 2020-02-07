@@ -48,6 +48,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   friend: UserInterface;
   currentUser: UserInterface;
   isAdmin = false;
+  profilePicture: any[] = [];
 
   constructor(
     private actionSV: ActionService,
@@ -60,9 +61,21 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
-      this.watchConversationState()
+      this.watchConversationState(),
+      this.watchAction()
     ];
     this.appendDeleteGroupAction();
+  }
+
+  private getProfilePictures() {
+    this.profilePicture = [];
+    if ( this.selectedConversation.type === ConversationType.PERSONAL ) {
+      this.profilePicture.push( this.userSV.getProfilePicture(this.friend._id) );
+    } else {
+      this.selectedConversation.members.slice(0, 4).forEach( x => {
+        this.profilePicture.push( this.userSV.getProfilePicture(x._id) );
+      });
+    }
   }
 
   private appendDeleteGroupAction() {
@@ -126,6 +139,17 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
     });
   }
 
+  private watchAction() {
+    return this.actionSV.listen.subscribe( x => {
+      switch (x.action) {
+        case 'PROFILE_PICTURE_UPDATE':
+          this.getProfilePictures();
+          break;
+        default:
+          break;
+      }
+    });
+  }
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       switch (x.action.name) {
@@ -135,6 +159,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
           this.selectedConversation = x.conversation.selected;
           this.friend = this.selectedConversation.members[0] as UserInterface;
           this.isAdmin = this.currentUser._id === this.selectedConversation.createdBy;
+          this.getProfilePictures();
           break;
         default:
           break;

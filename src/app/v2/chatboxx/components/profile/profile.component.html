@@ -1,6 +1,6 @@
 
 <div class="avatar" (click)="updateProfilePicture()">
-  <img alt="" src="./assets/images/avatar.svg">
+  <img alt="" *ngIf="updateProfilePicture" [src]="profilePicture" onerror="this.src='./assets/images/avatar.svg'">
   <svg>
     <use xlink:href="assets/images/icons.svg#icon-edit"></use>
   </svg>

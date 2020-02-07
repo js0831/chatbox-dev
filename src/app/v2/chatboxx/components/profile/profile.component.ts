@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification.interface';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
+import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
+import { UserService } from 'src/app/v2/shared/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +21,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
   currentUser: UserInterface;
   showAction = false;
+  profilePicture: any;
   actions: DropdownActionInterface[] = [
     {
       label: 'Profile',
@@ -39,7 +43,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private actionSV: ActionService,
     private sessionSV: SessionService,
-    private router: Router
+    private router: Router,
+    private userSV: UserService
   ) { }
 
   ngOnInit() {
@@ -47,14 +52,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subs = [
       this.watchAction()
     ];
+
+    this.profilePicture = this.userSV.getProfilePicture(this.currentUser._id);
   }
 
   private watchAction() {
     return this.actionSV.listen.subscribe( (x: any) => {
-      if (x.action === 'NOTIFICATION_OPEN') {
+      switch (x.action) {
+        case 'NOTIFICATION_OPEN':
           if (x.data.type === NotificationType.FRIEND_REQUEST) {
             this.action('FRIENDS');
           }
+          break;
+        case 'PROFILE_PICTURE_UPDATE':
+          this.profilePicture = this.userSV.getProfilePicture(this.currentUser._id);
+          break;
+        default:
+          break;
       }
     });
   }

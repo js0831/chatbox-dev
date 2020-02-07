@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { JkAlertService } from 'jk-alert';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
+import { UserService } from 'src/app/v2/shared/services/user.service';
+import { SessionService } from 'src/app/v2/shared/services/session.service';
+import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-profile-picture-update',
@@ -12,13 +15,18 @@ export class ProfilePictureUpdateComponent implements OnInit {
   selectedFile: File;
   imgURL: any;
   valid = false;
+  currentUser: UserInterface;
 
   constructor(
     private alertSV: JkAlertService,
-    private actionSV: ActionService
+    private actionSV: ActionService,
+    private userSV: UserService,
+    private sessionSV: SessionService
   ) { }
 
   ngOnInit() {
+    this.currentUser = this.sessionSV.data.user;
+    this.imgURL = this.userSV.getProfilePicture(this.currentUser._id);
   }
 
   close() {
@@ -29,6 +37,7 @@ export class ProfilePictureUpdateComponent implements OnInit {
   }
 
   onFileChanged(e) {
+    if ( !e.target.files ) {return; }
     this.selectedFile = e.target.files[0];
     if (!this.isValid(this.selectedFile)) {
       this.imgURL = null;
@@ -73,8 +82,15 @@ export class ProfilePictureUpdateComponent implements OnInit {
 
     const uploadData = new FormData();
     uploadData.append('file', this.selectedFile, this.selectedFile.name);
-    // this.http.post('my-backend.com/file-upload', uploadData)
-    //   .subscribe());
+    this.userSV.updateProfilePicture({
+      id: this.currentUser._id,
+      file: uploadData
+    }).subscribe( x => {
+      this.actionSV.dispatch({
+        action: 'PROFILE_PICTURE_UPDATE'
+      });
+      this.close();
+    });
   }
 
   formatBytes(bytes, decimals = 2) {

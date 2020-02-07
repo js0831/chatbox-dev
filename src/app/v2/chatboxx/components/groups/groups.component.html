@@ -16,9 +16,17 @@
   <li
     [ngClass]="{'active' : selectedConversation && selectedConversation._id === con._id}"
     (click)="selectConversation(con)"
-    *ngFor="let con of conversations | conversationFilter : searchKey">
+    *ngFor="let con of conversations | conversationFilter : searchKey; let c = index">
+
     <div class="members" [ngClass]="{'size-1': con.members.length === 1}">
-      <img *ngFor="let m of con.members.slice(0, 4)" alt="" class="avatar" src="./assets/images/avatar.svg">
+
+      <img
+        *ngFor="let m of con.members.slice(0, 4);let i = index" alt=""
+        class="avatar"
+        [src]="profilePictures[c][i]"
+        onerror="this.src='./assets/images/avatar.svg'"
+      >
+
     </div>
     <div class="info">
       <label>{{con.name}}</label>

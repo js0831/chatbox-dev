@@ -51,7 +51,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     const withTokenRequest = req.clone({
       setHeaders: {
         Authorization : `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/json'
       },
       url: `${environment.apiURL}${req.url}`
     });
@@ -72,8 +72,8 @@ export class HttpInterceptorService implements HttpInterceptor {
         //   const modEvent = event.clone({ body: camelCaseObject });
         //   return modEvent;
         // }
-        if (event instanceof HttpResponse) {
-          if (event.body.statusCode === '406' || event.body.statusCode === '405') {
+        if (event instanceof HttpResponse && event.body !== null) {
+          if ( event.body.statusCode === '406' || event.body.statusCode === '405') {
             // this.authService.logout().then( x => {
             //   this.route.navigate(['login']);
             // });

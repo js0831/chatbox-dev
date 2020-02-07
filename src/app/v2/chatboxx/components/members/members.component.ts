@@ -6,6 +6,7 @@ import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { JkAlertService } from 'jk-alert';
+import { UserService } from 'src/app/v2/shared/services/user.service';
 
 @Component({
   selector: 'app-members',
@@ -21,12 +22,14 @@ export class MembersComponent implements OnInit, OnDestroy {
   isAdmin = false;
   selectedConversation: ConversationInterface;
   currentUser: UserInterface;
+  profilePictures: any = [];
 
   constructor(
     private conversationSV: ConversationService,
     private actionSV: ActionService,
     private sessionSV: SessionService,
-    private alertSV: JkAlertService
+    private alertSV: JkAlertService,
+    private userSV: UserService
   ) { }
 
   ngOnInit() {
@@ -36,11 +39,18 @@ export class MembersComponent implements OnInit, OnDestroy {
     ];
   }
 
+  private getProfilePictures() {
+    this.profilePictures = this.members.map( m => {
+      return this.userSV.getProfilePicture(m._id);
+    });
+  }
+
   private watchConversationState() {
     return this.conversationSV.conversationState.subscribe( x => {
       this.selectedConversation = x.conversation.selected;
       this.members = this.selectedConversation.members as UserInterface[];
       this.isAdmin = this.currentUser._id === this.selectedConversation.createdBy;
+      this.getProfilePictures();
     });
   }
 

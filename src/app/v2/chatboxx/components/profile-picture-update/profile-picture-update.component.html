@@ -5,7 +5,7 @@
   </svg>
 
   <div class="avatar">
-    <img alt="" [src]="imgURL ? imgURL : './assets/images/avatar.svg'">
+    <img alt="" [src]="imgURL" onerror="this.src='./assets/images/avatar.svg'">
   </div>
 
   <div class="input-file">

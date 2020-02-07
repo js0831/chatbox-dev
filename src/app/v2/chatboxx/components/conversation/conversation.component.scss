@@ -23,7 +23,7 @@
     .bullet{
         width: 1rem;
         height: 1rem;
-        background-color: #58b666;
+        background-color: #e4e4e4;
         display: inline-block;
         border-radius: 50%;
     }
@@ -36,12 +36,12 @@
     .time{
         font-size: 1.25rem;
         font-weight: 300;
-        color: #cecece;
+        color: #9a9a9a;
     }
 
     .content{
-        background: #58b666;
-        color: #fff;
+        background: #e4e4e4;
+        color: #333;
         border-radius: 5px;
         padding: 1rem;
         font-size: 1.6rem;
@@ -54,27 +54,32 @@
             height: 0;
             border-style: solid;
             border-width: 0 10px 10px 10px;
-            border-color: transparent transparent #58b666 transparent;
+            border-color: transparent transparent #e4e4e4 transparent;
             position: absolute;
             top: -10px;
             left: 15px;
         }
     }
 
-    &.you{
+    &.you {
         align-items: flex-end;
         .details{
             flex-flow: row-reverse;
         }
         .bullet, .content{
-            background-color: #6fbced;
+            background-color: #58b666;
         }
 
-        .content:before{
-            border-color: transparent transparent #6fbced transparent;
-            right: 15px;
-            left: initial;
+        .content {
+          color: #fff;
+          &:before{
+              border-color: transparent transparent #58b666 transparent;
+              right: 15px;
+              left: initial;
+          }
         }
+
+
     }
 }
 .loadPrevious{

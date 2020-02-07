@@ -1,5 +1,5 @@
 :host{
-    background-color: #f9f9f9;
+    background-color: #348bad;
     height: 10rem;
     padding: 1rem 1rem 1rem 2rem;
 
@@ -19,7 +19,6 @@
         width: 3.25rem;
         height: 3.25rem;
 
-        border: 2px solid #fff;
         border-radius: 50%;
 
         &:nth-child(even){
@@ -43,14 +42,14 @@
     .title{
         font-weight: 500;
         font-size: 2rem;
-        color: #585858;
+        color: #fff;
         line-height: 1;
         text-transform: capitalize;
     }
 
     label{
         font-size: 1.30rem;
-        color: #8a8a8a;
+        color: #fff;
         font-weight: 500;
 
         display: flex;
@@ -83,7 +82,7 @@
         margin-right: 1rem;
         width: 5rem;
         height: 5rem;
-        box-shadow: 0 0 0 2px #868686;
+        box-shadow: 0 0 0 2px #fff;
     }
     button{
         margin-left: auto;
@@ -95,7 +94,7 @@
         > svg{
             width: 3rem;
             height: 3rem;
-            fill: #565656;
+            fill: #fff;
         }
 
         ul{
