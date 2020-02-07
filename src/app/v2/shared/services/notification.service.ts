@@ -82,6 +82,14 @@ export class NotificationService {
 
   actionUpdateNotification(notif: NotificationInterface) {
     this.store.dispatch(new actions.NotificationLiveUpdate(notif));
+    this.beepSound();
+  }
+
+  private beepSound() {
+    // tslint:disable-next-line: max-line-length
+    const snd = new Audio();
+    snd.src = './assets/sounds/beep.mp3';
+    snd.play();
   }
 
   actionDeleteByReference(params: {
