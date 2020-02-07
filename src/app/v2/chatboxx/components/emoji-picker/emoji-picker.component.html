@@ -1,0 +1,13 @@
+<a class="toggle">
+  <svg>
+    <use xlink:href="assets/images/icons.svg#icon-emoji_emotions"></use>
+  </svg>
+</a>
+
+<div class="list">
+  <input class="search" type="text" [(ngModel)]="key">
+
+  <ul class="custom-scroll" *ngIf="emojis">
+    <li [innerHTML]="e.code" *ngFor="let e of emojis | emojiFilter : key"></li>
+  </ul>
+</div>

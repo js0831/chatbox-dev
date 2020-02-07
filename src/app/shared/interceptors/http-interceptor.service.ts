@@ -39,6 +39,8 @@ export class HttpInterceptorService implements HttpInterceptor {
   ): Observable< HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
 
     const loadingType = req.headers.get('loading') || 'default';
+    const assetData = req.headers.get('assets') ? req.headers.get('assets') : 'false';
+
     this.loading = this.loading || this.injector.get(JkWaitService);
     this.jkAlert = this.jkAlert || this.injector.get(JkAlertService);
     this.sessionSV = this.sessionSV || this.injector.get(SessionService);
@@ -48,12 +50,13 @@ export class HttpInterceptorService implements HttpInterceptor {
     }
 
     const token = this.sessionSV.data ? this.sessionSV.data.token : '';
+    const finalurl = assetData === 'true' ? req.url : `${environment.apiURL}${req.url}`;
     const withTokenRequest = req.clone({
       setHeaders: {
         Authorization : `Bearer ${token}`,
         // 'Content-Type': 'application/json'
       },
-      url: `${environment.apiURL}${req.url}`
+      url: finalurl
     });
 
     return next.handle(withTokenRequest).pipe(

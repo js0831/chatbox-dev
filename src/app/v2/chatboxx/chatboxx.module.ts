@@ -21,6 +21,8 @@ import { AddMemberComponent } from './components/add-member/add-member.component
 import { MembersComponent } from './components/members/members.component';
 import { UserFilterPipe } from '../shared/pipes/user-filter.pipe';
 import { ProfilePictureUpdateComponent } from './components/profile-picture-update/profile-picture-update.component';
+import { EmojiPickerComponent } from './components/emoji-picker/emoji-picker.component';
+import { EmojiFilterPipe } from './components/emoji-picker/emoji-filter.pipe';
 
 
 
@@ -45,7 +47,9 @@ import { ProfilePictureUpdateComponent } from './components/profile-picture-upda
     AddMemberComponent,
     MembersComponent,
     UserFilterPipe,
-    ProfilePictureUpdateComponent
+    ProfilePictureUpdateComponent,
+    EmojiPickerComponent,
+    EmojiFilterPipe
   ],
   imports: [
     CommonModule,

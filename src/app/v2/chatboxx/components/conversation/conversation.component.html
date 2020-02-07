@@ -14,7 +14,7 @@
           <span class="time" *ngIf="isToday(msg.date)">Today {{msg.date | date : 'hh:mm a'}}</span>
 
       </div>
-      <div class="content">{{msg.message}}</div>
+      <div class="content" [innerHTML]="msg.message"></div>
   </div>
 </ng-container>
 
