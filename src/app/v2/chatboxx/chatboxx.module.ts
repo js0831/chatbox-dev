@@ -20,6 +20,7 @@ import { AddGroupComponent } from './components/add-group/add-group.component';
 import { AddMemberComponent } from './components/add-member/add-member.component';
 import { MembersComponent } from './components/members/members.component';
 import { UserFilterPipe } from '../shared/pipes/user-filter.pipe';
+import { ProfilePictureUpdateComponent } from './components/profile-picture-update/profile-picture-update.component';
 
 
 
@@ -43,7 +44,8 @@ import { UserFilterPipe } from '../shared/pipes/user-filter.pipe';
     AddGroupComponent,
     AddMemberComponent,
     MembersComponent,
-    UserFilterPipe
+    UserFilterPipe,
+    ProfilePictureUpdateComponent
   ],
   imports: [
     CommonModule,

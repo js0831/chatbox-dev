@@ -16,6 +16,7 @@ export class MainComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   isAddMember = false;
   isShowMembers = false;
+  isUpdateProfilePicture = false;
 
   isLastPage = false;
   pagination = {
@@ -43,6 +44,9 @@ export class MainComponent implements OnInit, OnDestroy {
           break;
         case 'SHOW_MEMBERS':
           this.isShowMembers = x.data;
+          break;
+        case 'SHOW_UPDATE_PROFILE_PICTURE':
+          this.isUpdateProfilePicture = x.data;
           break;
         default:
           break;

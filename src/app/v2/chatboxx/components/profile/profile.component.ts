@@ -75,6 +75,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateProfilePicture() {
+    this.actionSV.dispatch({
+      action: 'SHOW_UPDATE_PROFILE_PICTURE',
+      data: true
+    });
+  }
+
   hideAction() {
     setTimeout( x => {
       this.showAction = false;
