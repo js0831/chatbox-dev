@@ -9,6 +9,13 @@
     display: flex;
     flex-flow: column;
     align-items: flex-start;
+    position: relative;
+
+    &:hover{
+      app-react{
+        display: block;
+      }
+    }
 
     .details{
         display: flex;

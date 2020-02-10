@@ -23,6 +23,7 @@ import { UserFilterPipe } from '../shared/pipes/user-filter.pipe';
 import { ProfilePictureUpdateComponent } from './components/profile-picture-update/profile-picture-update.component';
 import { EmojiPickerComponent } from './components/emoji-picker/emoji-picker.component';
 import { EmojiFilterPipe } from './components/emoji-picker/emoji-filter.pipe';
+import { ReactComponent } from './components/react/react.component';
 
 
 
@@ -49,7 +50,8 @@ import { EmojiFilterPipe } from './components/emoji-picker/emoji-filter.pipe';
     UserFilterPipe,
     ProfilePictureUpdateComponent,
     EmojiPickerComponent,
-    EmojiFilterPipe
+    EmojiFilterPipe,
+    ReactComponent
   ],
   imports: [
     CommonModule,

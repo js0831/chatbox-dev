@@ -58,6 +58,7 @@ export class EmojiPickerComponent implements OnInit {
         this.animate = true;
       }, 0);
     } else {
+      this.key = '';
       this.animate = false;
       setTimeout( x => {
         this.show = false;

@@ -1,0 +1,7 @@
+<button class="toggle" (click)="toggle()" (blur)="onblur()">😐</button>
+
+<ul class="reactions" *ngIf="show">
+  <li *ngFor="let r of reactions">
+    {{r.emoji}}
+  </li>
+</ul>

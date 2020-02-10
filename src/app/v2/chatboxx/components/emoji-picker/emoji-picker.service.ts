@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { EventInterface } from 'src/app/v2/shared/interfaces/event.interface';
 import { EmojiInterface } from './emoji.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class EmojiService {
 
   private e: Subject<EventInterface<EmojiInterface>>;
   private subscriptions: any = {};
+  private cachedData: EmojiInterface[];
 
   constructor(
     private http: HttpClient
@@ -23,11 +25,20 @@ export class EmojiService {
   }
 
   load() {
+    if (this.cachedData) {
+      return of(this.cachedData);
+    }
+
     return this.http.get('./assets/json/emoji.json', {
       headers: {
         assets: 'true'
       }
-    });
+    }).pipe(
+      map((res: EmojiInterface[]) => {
+        this.cachedData = res;
+        return res;
+      })
+    );
   }
 
   selectEmoji(field: string, emoji: EmojiInterface) {
