@@ -70,7 +70,14 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     const newValue = this.emoji.newValue(this.form.value.message, emoji.code, this.caret);
     this.form.get('message').patchValue(newValue);
     this.messageElement.nativeElement.focus();
-    // BUG: set the carent position after focus
+
+    setTimeout( x => {
+      this.messageElement.nativeElement.setSelectionRange(
+        this.caret.start + 2,
+        this.caret.start + 2,
+        'none'
+      );
+    }, 0);
   }
 
   private watchConversationState() {
