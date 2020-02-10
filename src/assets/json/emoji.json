@@ -90,11 +90,6 @@
     "code": "😗"
   },
   {
-    "id": 19,
-    "name": "smiling face",
-    "code": "☺"
-  },
-  {
     "id": 20,
     "name": "kissing face with closed eyes",
     "code": "😚"
@@ -103,11 +98,6 @@
     "id": 21,
     "name": "kissing face with smiling eyes",
     "code": "😙"
-  },
-  {
-    "id": 22,
-    "name": "⊛ smiling face with tear",
-    "code": "🥲"
   },
   {
     "id": 23,
@@ -298,11 +288,6 @@
     "id": 60,
     "name": "partying face",
     "code": "🥳"
-  },
-  {
-    "id": 61,
-    "name": "⊛ disguised face",
-    "code": "🥸"
   },
   {
     "id": 62,
@@ -783,11 +768,6 @@
     "id": 157,
     "name": "OK hand",
     "code": "👌"
-  },
-  {
-    "id": 158,
-    "name": "⊛ pinched fingers",
-    "code": "🤌"
   },
   {
     "id": 159,
@@ -1563,11 +1543,6 @@
     "id": 313,
     "name": "woman guard",
     "code": "💂‍♀️"
-  },
-  {
-    "id": 314,
-    "name": "⊛ ninja",
-    "code": "🥷"
   },
   {
     "id": 315,
@@ -2440,11 +2415,6 @@
     "code": "👥"
   },
   {
-    "id": 489,
-    "name": "⊛ people hugging",
-    "code": "🫂"
-  },
-  {
     "id": 490,
     "name": "footprints",
     "code": "👣"
@@ -2835,11 +2805,6 @@
     "code": "🦉"
   },
   {
-    "id": 568,
-    "name": "⊛ feather",
-    "code": "🪶"
-  },
-  {
     "id": 569,
     "name": "flamingo",
     "code": "🦩"
@@ -3060,11 +3025,6 @@
     "code": "🌱"
   },
   {
-    "id": 613,
-    "name": "⊛ potted plant",
-    "code": "🪴"
-  },
-  {
     "id": 614,
     "name": "evergreen tree",
     "code": "🌲"
@@ -3190,11 +3150,6 @@
     "code": "🍓"
   },
   {
-    "id": 639,
-    "name": "⊛ blueberries",
-    "code": "🫐"
-  },
-  {
     "id": 640,
     "name": "kiwi fruit",
     "code": "🥝"
@@ -3203,11 +3158,6 @@
     "id": 641,
     "name": "tomato",
     "code": "🍅"
-  },
-  {
-    "id": 642,
-    "name": "⊛ olive",
-    "code": "🫒"
   },
   {
     "id": 643,
@@ -3300,11 +3250,6 @@
     "code": "🥖"
   },
   {
-    "id": 661,
-    "name": "⊛ flatbread",
-    "code": "🫓"
-  },
-  {
     "id": 662,
     "name": "pretzel",
     "code": "🥨"
@@ -3385,11 +3330,6 @@
     "code": "🌯"
   },
   {
-    "id": 678,
-    "name": "⊛ tamale",
-    "code": "🫔"
-  },
-  {
     "id": 679,
     "name": "stuffed flatbread",
     "code": "🥙"
@@ -3418,11 +3358,6 @@
     "id": 684,
     "name": "pot of food",
     "code": "🍲"
-  },
-  {
-    "id": 685,
-    "name": "⊛ fondue",
-    "code": "🫕"
   },
   {
     "id": 686,
@@ -3705,11 +3640,6 @@
     "code": "🥤"
   },
   {
-    "id": 742,
-    "name": "⊛ bubble tea",
-    "code": "🧋"
-  },
-  {
     "id": 743,
     "name": "beverage box",
     "code": "🧃"
@@ -3853,16 +3783,6 @@
     "id": 771,
     "name": "brick",
     "code": "🧱"
-  },
-  {
-    "id": 772,
-    "name": "⊛ rock",
-    "code": "🪨"
-  },
-  {
-    "id": 773,
-    "name": "⊛ wood",
-    "code": "🪵"
   },
   {
     "id": 774,
@@ -4258,11 +4178,6 @@
     "id": 852,
     "name": "skateboard",
     "code": "🛹"
-  },
-  {
-    "id": 853,
-    "name": "⊛ roller skate",
-    "code": "🛼"
   },
   {
     "id": 854,
@@ -5115,11 +5030,6 @@
     "code": "🔮"
   },
   {
-    "id": 1024,
-    "name": "⊛ magic wand",
-    "code": "🪄"
-  },
-  {
     "id": 1025,
     "name": "nazar amulet",
     "code": "🧿"
@@ -5153,16 +5063,6 @@
     "id": 1031,
     "name": "teddy bear",
     "code": "🧸"
-  },
-  {
-    "id": 1032,
-    "name": "⊛ piñata",
-    "code": "🪅"
-  },
-  {
-    "id": 1033,
-    "name": "⊛ nesting dolls",
-    "code": "🪆"
   },
   {
     "id": 1034,
@@ -5225,19 +5125,9 @@
     "code": "🧵"
   },
   {
-    "id": 1046,
-    "name": "⊛ sewing needle",
-    "code": "🪡"
-  },
-  {
     "id": 1047,
     "name": "yarn",
     "code": "🧶"
-  },
-  {
-    "id": 1048,
-    "name": "⊛ knot",
-    "code": "🪢"
   },
   {
     "id": 1049,
@@ -5365,11 +5255,6 @@
     "code": "🎒"
   },
   {
-    "id": 1074,
-    "name": "⊛ thong sandal",
-    "code": "🩴"
-  },
-  {
     "id": 1075,
     "name": "man’s shoe",
     "code": "👞"
@@ -5433,11 +5318,6 @@
     "id": 1087,
     "name": "billed cap",
     "code": "🧢"
-  },
-  {
-    "id": 1088,
-    "name": "⊛ military helmet",
-    "code": "🪖"
   },
   {
     "id": 1089,
@@ -5560,11 +5440,6 @@
     "code": "🎷"
   },
   {
-    "id": 1113,
-    "name": "⊛ accordion",
-    "code": "🪗"
-  },
-  {
     "id": 1114,
     "name": "guitar",
     "code": "🎸"
@@ -5593,11 +5468,6 @@
     "id": 1119,
     "name": "drum",
     "code": "🥁"
-  },
-  {
-    "id": 1120,
-    "name": "⊛ long drum",
-    "code": "🪘"
   },
   {
     "id": 1121,
@@ -5863,11 +5733,6 @@
     "id": 1173,
     "name": "money bag",
     "code": "💰"
-  },
-  {
-    "id": 1174,
-    "name": "⊛ coin",
-    "code": "🪙"
   },
   {
     "id": 1175,
@@ -6195,11 +6060,6 @@
     "code": "🔫"
   },
   {
-    "id": 1240,
-    "name": "⊛ boomerang",
-    "code": "🪃"
-  },
-  {
     "id": 1241,
     "name": "bow and arrow",
     "code": "🏹"
@@ -6213,11 +6073,6 @@
     "id": 1243,
     "name": "wrench",
     "code": "🔧"
-  },
-  {
-    "id": 1244,
-    "name": "⊛ screwdriver",
-    "code": "🪛"
   },
   {
     "id": 1245,
@@ -6255,11 +6110,6 @@
     "code": "⛓"
   },
   {
-    "id": 1252,
-    "name": "⊛ hook",
-    "code": "🪝"
-  },
-  {
     "id": 1253,
     "name": "toolbox",
     "code": "🧰"
@@ -6268,11 +6118,6 @@
     "id": 1254,
     "name": "magnet",
     "code": "🧲"
-  },
-  {
-    "id": 1255,
-    "name": "⊛ ladder",
-    "code": "🪜"
   },
   {
     "id": 1256,
@@ -6340,11 +6185,6 @@
     "code": "🚪"
   },
   {
-    "id": 1269,
-    "name": "⊛ elevator",
-    "code": "🛗"
-  },
-  {
     "id": 1270,
     "name": "bed",
     "code": "🛏"
@@ -6363,11 +6203,6 @@
     "id": 1273,
     "name": "toilet",
     "code": "🚽"
-  },
-  {
-    "id": 1274,
-    "name": "⊛ plunger",
-    "code": "🪠"
   },
   {
     "id": 1275,
@@ -6410,19 +6245,9 @@
     "code": "🧻"
   },
   {
-    "id": 1283,
-    "name": "⊛ bucket",
-    "code": "🪣"
-  },
-  {
     "id": 1284,
     "name": "soap",
     "code": "🧼"
-  },
-  {
-    "id": 1285,
-    "name": "⊛ toothbrush",
-    "code": "🪥"
   },
   {
     "id": 1286,
@@ -6458,11 +6283,6 @@
     "id": 1292,
     "name": "moai",
     "code": "🗿"
-  },
-  {
-    "id": 1293,
-    "name": "⊛ placard",
-    "code": "🪧"
   },
   {
     "id": 1294,

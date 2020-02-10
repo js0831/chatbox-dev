@@ -1,12 +1,15 @@
 <form [formGroup]="form" (submit)="sendMessage()">
     <textarea
+        id="message"
         #message
         (keyup)="userIsTyping($event)"
-        formControlName="message" placeholder="Message"></textarea>
+        (blur)="onBlur($event)"
+        formControlName="message" placeholder="Message"
+      ></textarea>
 </form>
 <div>
 
-    <app-emoji-picker></app-emoji-picker>
+    <app-emoji-picker field="message"></app-emoji-picker>
     <svg>
         <use xlink:href="assets/images/icons.svg#icon-collectionsphoto_library"></use>
     </svg>

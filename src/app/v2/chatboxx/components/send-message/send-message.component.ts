@@ -11,6 +11,8 @@ import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type
 import { NotificationService } from 'src/app/v2/shared/services/notification.service';
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
+import { EmojiService } from '../emoji-picker/emoji-picker.service';
+import { EmojiInterface } from '../emoji-picker/emoji.interface';
 
 @Component({
   selector: 'app-send-message',
@@ -27,6 +29,10 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   typing = '';
   typingTimerView: any;
   typingTimer: any;
+  caret: {
+    start: number,
+    end: number
+  };
 
   @ViewChild('message', {static: true}) messageElement: ElementRef;
 
@@ -35,7 +41,8 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private sessionSV: SessionService,
     private websocketSV: WebSocketService,
-    private notifService: NotificationService
+    private notifService: NotificationService,
+    private emoji: EmojiService
   ) { }
 
   ngOnInit() {
@@ -46,6 +53,24 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       this.watchWebSocketMessage()
     ];
     this.buildForm();
+
+    this.emoji.onEmojiSelect('message', (emoji) => {
+      this.appendEmoji(emoji);
+    });
+  }
+
+  onBlur(e: any) {
+    this.caret = {
+      start: e.target.selectionStart,
+      end: e.target.selectionEnd
+    };
+  }
+
+  private appendEmoji(emoji: EmojiInterface) {
+    const newValue = this.emoji.newValue(this.form.value.message, emoji.code, this.caret);
+    this.form.get('message').patchValue(newValue);
+    this.messageElement.nativeElement.focus();
+    // BUG: set the carent position after focus
   }
 
   private watchConversationState() {
