@@ -1,0 +1,67 @@
+:host{
+  position: absolute;
+  bottom: -15px;
+  right: .5rem;
+
+  &.you{
+    left:.5rem;
+    right: initial;
+  }
+}
+
+.reactions{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover{
+    li{
+      opacity: 0.5;
+    }
+  }
+
+  li{
+    background: #fff;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 6px -4px #000;
+    transition: all .25s ease;
+    cursor: pointer;
+    z-index: 1;
+
+    &:hover{
+      font-size: 5rem;
+      transform: translate(10px, -10px);
+      background: transparent;
+      opacity: 1;
+
+      & + li{
+        opacity: 0;
+      }
+
+      label{
+        display: block;
+      }
+    }
+
+    label{
+      display: none;
+      position: absolute;
+      bottom: -4.25rem;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      margin: auto;
+      background: #eee;
+      padding: 1px 10px;
+      border-radius: 14px;
+      font-weight: 600;
+      color: #333;
+      width: max-content;
+    }
+  }
+}

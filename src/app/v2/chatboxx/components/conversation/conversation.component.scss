@@ -17,6 +17,10 @@
       }
     }
 
+    &:last-child{
+      margin-bottom: 5rem;
+    }
+
     .details{
         display: flex;
         align-items: center;

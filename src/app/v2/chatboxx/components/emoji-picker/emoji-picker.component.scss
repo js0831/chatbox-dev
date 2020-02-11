@@ -33,6 +33,7 @@
   box-shadow: 0 3px 8px -2px #000;
   opacity: 0;
   transition: all .2s ease;
+  z-index: 1;
 
   &.animate{
     opacity: 1;

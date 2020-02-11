@@ -24,6 +24,7 @@ import { ProfilePictureUpdateComponent } from './components/profile-picture-upda
 import { EmojiPickerComponent } from './components/emoji-picker/emoji-picker.component';
 import { EmojiFilterPipe } from './components/emoji-picker/emoji-filter.pipe';
 import { ReactComponent } from './components/react/react.component';
+import { ReactionsComponent } from './components/reactions/reactions.component';
 
 
 
@@ -51,7 +52,8 @@ import { ReactComponent } from './components/react/react.component';
     ProfilePictureUpdateComponent,
     EmojiPickerComponent,
     EmojiFilterPipe,
-    ReactComponent
+    ReactComponent,
+    ReactionsComponent
   ],
   imports: [
     CommonModule,
