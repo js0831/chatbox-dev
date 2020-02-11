@@ -15,7 +15,12 @@
       </div>
       <div class="content">
         <span [innerHTML]="msg.message"></span>
-        <app-react (onselect)="onReact(msg._id, $event)" [ngClass]="{'you': isYou(msg.from._id)}"></app-react>
+
+        <app-react
+          *ngIf="!isTemporaryId(msg._id)"
+          (onselect)="onReact(msg._id, $event)"
+          [ngClass]="{'you': isYou(msg.from._id)}"></app-react>
+
         <app-reactions [reactions]="msg.reactions"  [ngClass]="{'you': isYou(msg.from._id)}"></app-reactions>
       </div>
 

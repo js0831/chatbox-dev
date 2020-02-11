@@ -249,7 +249,6 @@ export function conversationReducer(state = initialState, action: actions.Action
 
             case actions.CONVERSATION_MESSAGE_REACT_FINISH:
               returnState = {
-                ...state,
                 action: {
                   name: type,
                 },
@@ -278,6 +277,24 @@ export function conversationReducer(state = initialState, action: actions.Action
                 }
               };
               break;
+
+          case actions.CONVERSATION_MESSAGE_UPDATE_TEMPORARY_ID:
+            returnState = {
+              ...state,
+              action: {
+                name: type,
+              },
+              conversation: {
+                ...state.conversation,
+                messages: state.conversation.messages.map( x => {
+                  if (x._id === payload.temporary) {
+                    x._id = payload.permanent;
+                  }
+                  return x;
+                })
+              }
+            };
+            break;
         default:
             returnState = state;
             break;

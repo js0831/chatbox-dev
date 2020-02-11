@@ -124,6 +124,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       !this.selectedConversation
     ) { return; }
 
+    const tempMessageId = `temp_${new Date().getTime().toString()}`;
     const message = this.form.value.message;
     const messageData = {
       from: this.currentUser,
@@ -139,7 +140,10 @@ export class SendMessageComponent implements OnInit, OnDestroy {
           type: WebsocketEventType.MESSAGE,
           data: {
             conversation: this.selectedConversation,
-            message: messageData
+            message: {
+              ...messageData,
+              _id: tempMessageId
+            }
           }
         });
       }
@@ -147,7 +151,10 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
 
     // append to msgs list
-    this.conversationSV.actionSendMessage(messageData);
+    this.conversationSV.actionSendMessage({
+      ...messageData,
+      _id: tempMessageId
+    });
 
     // save on DB
     this.conversationSV.sendMessage(
@@ -156,7 +163,12 @@ export class SendMessageComponent implements OnInit, OnDestroy {
         from: this.currentUser._id,
         message,
       }
-    ).toPromise();
+    ).subscribe( (x: any) => {
+      this.conversationSV.actionUpdateTemporaryID({
+        temporary: tempMessageId,
+        permanent: x.data
+      });
+    });
 
     this.createNotifications();
     this.form.get('message').patchValue('');

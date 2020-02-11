@@ -99,4 +99,11 @@ export class ReactionService {
     };
   }
 
+  appendReactionFromWebSocket(params: {
+    messageId: string,
+    reaction: ReactionInterface
+  }) {
+    this.store.dispatch(new actions.ConversationMessageReactFinish(params));
+  }
+
 }

@@ -4,4 +4,5 @@ export enum WebsocketEventType {
     FRIEND_REQUEST = 'request',
     FRIEND_REQUEST_ACCEPT = 'accept',
     GROUP_MEMBER_ADD = 'group_add',
+    REACT = 'react',
 }

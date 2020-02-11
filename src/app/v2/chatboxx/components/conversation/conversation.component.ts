@@ -43,7 +43,8 @@ export class ConversationComponent implements OnInit, OnDestroy {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
       this.watchConversationState(),
-      this.watchWebSocket()
+      this.watchMessageWebSocket(),
+      this.watchMessageReactWebSocket()
     ];
   }
 
@@ -79,15 +80,44 @@ export class ConversationComponent implements OnInit, OnDestroy {
     });
   }
 
-  private watchWebSocket() {
-    return this.websocketSV.listen(
-      WebsocketEventType.MESSAGE,
-      this.currentUser._id
-    ).subscribe( (x: {
+  private sendReactionViaWebSocket(data) {
+    this.currentConversation.members.forEach( (u: any) => {
+      if (this.currentUser._id !== u._id) {
+        this.websocketSV.dispatch({
+          id: u._id,
+          type: WebsocketEventType.REACT,
+          data: {
+            conversation: this.currentConversation,
+            messageId: data.messageId,
+            reaction: data.reaction
+          }
+        });
+      }
+    });
+  }
+
+  private watchMessageWebSocket() {
+    return this.websocketSV.listen( WebsocketEventType.MESSAGE, this.currentUser._id )
+    .subscribe( (x: {
       message: MessageInterface
     }) => {
       this.messages.push(x.message);
       this.moveScrollToBottom();
+    });
+  }
+
+  private watchMessageReactWebSocket() {
+    return this.websocketSV.listen( WebsocketEventType.REACT, this.currentUser._id ).subscribe( (x: {
+      conversation: ConversationInterface,
+      messageId: string,
+      reaction: ReactionInterface
+    }) => {
+      if (x.conversation._id === this.currentConversation._id) {
+        this.reactionSV.appendReactionFromWebSocket({
+          messageId: x.messageId,
+          reaction: x.reaction
+        });
+      }
     });
   }
 
@@ -108,13 +138,19 @@ export class ConversationComponent implements OnInit, OnDestroy {
   }
 
   onReact(msgId: string, reaction: ReactionInterface) {
-    this.reactionSV.react({
+    const data = {
       messageId: msgId,
       reaction: {
         ...reaction,
         by: this.currentUser
       }
-    }).action();
+    };
+    this.reactionSV.react(data).action();
+    this.sendReactionViaWebSocket(data);
+  }
+
+  isTemporaryId(id: string) {
+    return id.split('temp_').length > 1;
   }
 
   ngOnDestroy() {
