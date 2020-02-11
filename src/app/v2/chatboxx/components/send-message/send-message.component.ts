@@ -164,15 +164,31 @@ export class SendMessageComponent implements OnInit, OnDestroy {
         message,
       }
     ).subscribe( (x: any) => {
-      this.conversationSV.actionUpdateTemporaryID({
-        temporary: tempMessageId,
-        permanent: x.data
-      });
+        this.updateTemporaryID({
+          temporary: tempMessageId,
+          permanent: x.data
+        });
     });
 
     this.createNotifications();
     this.form.get('message').patchValue('');
     this.messageElement.nativeElement.focus();
+  }
+
+  private updateTemporaryID(params) {
+    this.conversationSV.actionUpdateTemporaryID(params);
+    this.selectedConversation.members.forEach( (u: any) => {
+      if (this.currentUser._id !== u._id) {
+        this.websocketSV.dispatch({
+          id: u._id,
+          type: WebsocketEventType.UPDATE_TEMPORARY_ID,
+          data: {
+            conversation: this.selectedConversation,
+            id: params
+          }
+        });
+      }
+    });
   }
 
   private createNotifications() {

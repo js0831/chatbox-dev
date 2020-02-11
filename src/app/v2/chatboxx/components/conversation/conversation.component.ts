@@ -44,7 +44,8 @@ export class ConversationComponent implements OnInit, OnDestroy {
     this.subs = [
       this.watchConversationState(),
       this.watchMessageWebSocket(),
-      this.watchMessageReactWebSocket()
+      this.watchMessageReactWebSocket(),
+      this.watchUpdateTempIdWebSocket()
     ];
   }
 
@@ -117,6 +118,15 @@ export class ConversationComponent implements OnInit, OnDestroy {
           messageId: x.messageId,
           reaction: x.reaction
         });
+      }
+    });
+  }
+
+  private watchUpdateTempIdWebSocket() {
+    return this.websocketSV.listen( WebsocketEventType.UPDATE_TEMPORARY_ID, this.currentUser._id )
+    .subscribe( (x: any) => {
+      if (x.conversation._id === this.currentConversation._id) {
+        this.conversationSV.actionUpdateTemporaryID(x.id);
       }
     });
   }
