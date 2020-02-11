@@ -1,0 +1,16 @@
+export enum ReactionsType {
+  HAIZT = 'HAIZT',
+  SHIT = 'SHIT',
+  FU = 'FU',
+  ROCK = 'ROCK',
+  CRYING = 'CRYING',
+  ANGRY = 'ANGRY',
+  SHOCKED = 'SHOCKED',
+  CLAP = 'CLAP',
+  LOVE = 'LOVE',
+  LAUGH = 'LAUGH',
+  AGREE = 'AGREE',
+  DISAGREE = 'DISAGREE',
+  TOUNGE = 'TOUNGE',
+  THINKING = 'THINKING',
+}

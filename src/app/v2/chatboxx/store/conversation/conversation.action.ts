@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { ReactionInterface } from 'src/app/v2/shared/interfaces/reaction.interface';
 
 export const CONVERSATION_LIST_LOAD = '[Conversation] list load';
 export const CONVERSATION_LIST_LOAD_FINISH = '[Conversation] list load finish';
@@ -21,6 +22,8 @@ export const CONVERSATION_LOAD_PREVIOUS_MESSAGES_FINISH = '[Conversation] Load p
 export const CONVERSATION_GROUP_USER_REMOVE = '[Conversation] Group user remove';
 export const CONVERSATION_GROUP_USER_REMOVE_FINISH = '[Conversation] Group user remove finish';
 export const CONVERSATION_GROUP_RENAME = '[Conversation] group rename';
+export const CONVERSATION_MESSAGE_REACT = '[Conversation] Message react';
+export const CONVERSATION_MESSAGE_REACT_FINISH = '[Conversation] Message react finish';
 
 export class ConversationListLoad implements Action {
     readonly type = CONVERSATION_LIST_LOAD;
@@ -127,6 +130,16 @@ export class ConversationGroupRename implements Action {
   constructor(public payload?: any) {}
 }
 
+export class ConversationMessageReact implements Action {
+  readonly type = CONVERSATION_MESSAGE_REACT;
+  constructor(public payload?: any) {}
+}
+
+export class ConversationMessageReactFinish implements Action {
+  readonly type = CONVERSATION_MESSAGE_REACT_FINISH;
+  constructor(public payload?: any) {}
+}
+
 export type Actions =
 | ConversationListLoad
 | ConversationListLoadFinish
@@ -148,4 +161,6 @@ export type Actions =
 | ConversationLoadPreviousMessagesFinish
 | ConversationGroupUserRemove
 | ConversationGroupUserRemoveFinish
-| ConversationGroupRename;
+| ConversationGroupRename
+| ConversationMessageReact
+| ConversationMessageReactFinish;

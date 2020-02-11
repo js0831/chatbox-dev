@@ -15,8 +15,8 @@
       </div>
       <div class="content">
         <span [innerHTML]="msg.message"></span>
-        <app-react [ngClass]="{'you': isYou(msg.from._id)}"></app-react>
-        <app-reactions [ngClass]="{'you': isYou(msg.from._id)}"></app-reactions>
+        <app-react (onselect)="onReact(msg._id, $event)" [ngClass]="{'you': isYou(msg.from._id)}"></app-react>
+        <app-reactions [reactions]="msg.reactions"  [ngClass]="{'you': isYou(msg.from._id)}"></app-reactions>
       </div>
 
 

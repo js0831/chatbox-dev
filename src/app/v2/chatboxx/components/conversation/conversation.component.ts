@@ -9,6 +9,8 @@ import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service'
 import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 import { ConversationInterface } from 'src/app/v2/shared/interfaces/conversation.interface';
 import { JkAlertService } from 'jk-alert';
+import { ReactionInterface } from 'src/app/v2/shared/interfaces/reaction.interface';
+import { ReactionService } from 'src/app/v2/shared/services/reaction.service';
 
 @Component({
   selector: 'app-conversation',
@@ -33,7 +35,8 @@ export class ConversationComponent implements OnInit, OnDestroy {
     private sessionSV: SessionService,
     private elRef: ElementRef,
     private websocketSV: WebSocketService,
-    private jkAlert: JkAlertService
+    private jkAlert: JkAlertService,
+    private reactionSV: ReactionService
   ) { }
 
   ngOnInit() {
@@ -102,6 +105,16 @@ export class ConversationComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.elRef.nativeElement.scrollTop = 999999;
     });
+  }
+
+  onReact(msgId: string, reaction: ReactionInterface) {
+    this.reactionSV.react({
+      messageId: msgId,
+      reaction: {
+        ...reaction,
+        by: this.currentUser
+      }
+    }).action();
   }
 
   ngOnDestroy() {

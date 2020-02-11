@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { switchMap, map } from 'rxjs/operators';
 import * as actions from './conversation.action';
 import { ConversationService } from 'src/app/v2/shared/services/conversation.service';
+import { ReactionService } from 'src/app/v2/shared/services/reaction.service';
 
 
 @Injectable()
@@ -12,7 +13,8 @@ export class ConversationEffects {
 
     constructor(
         private action$: Actions,
-        private convoSV: ConversationService
+        private convoSV: ConversationService,
+        private reactSV: ReactionService
     ) { }
 
     @Effect() loadList: Observable<Action> = this.action$.pipe(
@@ -109,6 +111,25 @@ export class ConversationEffects {
           }).http().pipe(
             map( res => {
               return new actions.ConversationLoadPreviousMessagesFinish(res);
+            })
+          );
+      })
+    );
+
+
+    @Effect() messageReact: Observable<Action> = this.action$.pipe(
+      ofType(actions.CONVERSATION_MESSAGE_REACT),
+      switchMap( (action: actions.ConversationMessageReact) => {
+          const payload = action.payload;
+          return this.reactSV.react({
+            messageId: payload.messageId,
+            reaction: {
+              by: payload.reaction.by._id,
+              reaction: payload.reaction.reaction
+            }
+          }).http().pipe(
+            map( res => {
+              return new actions.ConversationMessageReactFinish(action.payload);
             })
           );
       })

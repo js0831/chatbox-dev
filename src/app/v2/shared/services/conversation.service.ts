@@ -12,6 +12,8 @@ import { PaginationInterface } from '../interfaces/pagination.interface';
 import { MessageInterface } from '../interfaces/message.interface';
 import { UserInterface } from '../interfaces/user.interface';
 import { stringify } from 'querystring';
+import { ReactionsType } from '../enums/reaction.enum';
+import { ReactionInterface } from '../interfaces/reaction.interface';
 
 
 @Injectable({
@@ -187,6 +189,4 @@ export class ConversationService {
       }
     };
   }
-
-
 }

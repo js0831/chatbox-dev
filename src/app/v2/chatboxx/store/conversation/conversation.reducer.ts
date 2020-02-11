@@ -238,6 +238,46 @@ export function conversationReducer(state = initialState, action: actions.Action
                   }
                 };
                 break;
+            case actions.CONVERSATION_MESSAGE_REACT:
+              returnState = {
+                ...state,
+                action: {
+                  name: type,
+                }
+              };
+              break;
+
+            case actions.CONVERSATION_MESSAGE_REACT_FINISH:
+              returnState = {
+                ...state,
+                action: {
+                  name: type,
+                },
+                conversation: {
+                  ...state.conversation,
+                  messages: state.conversation.messages.map( m => {
+                    if (m._id === payload.messageId) {
+                      if (!m.reactions) { m.reactions = []; }
+
+                      let exist = false;
+                      m.reactions.map( x => {
+                        const { reaction } = payload;
+                        if (x.by._id === reaction.by._id) {
+                          x.reaction = reaction.reaction;
+                          x.emoji = reaction.emoji;
+                          exist = true;
+                        }
+                        return x;
+                      });
+                      if (!exist) {
+                        m.reactions.push(payload.reaction);
+                      }
+                    }
+                    return m;
+                  })
+                }
+              };
+              break;
         default:
             returnState = state;
             break;
