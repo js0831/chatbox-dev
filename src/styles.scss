@@ -91,6 +91,12 @@ update width and min width
 
 app-conversation{
   .message{
+    .content span{
+      a{
+        font-weight: 500;
+        color: #00668e;
+      }
+    }
     .reply-message{
       padding: .5rem;
       background: #cacaca; // #6dc37a;

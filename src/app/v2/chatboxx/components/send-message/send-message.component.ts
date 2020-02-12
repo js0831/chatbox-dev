@@ -131,7 +131,8 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     ) { return; }
 
     const tempMessageId = `temp_${new Date().getTime().toString()}`;
-    let message = this.form.value.message;
+
+    let message = this.transformExternalLinks(this.form.value.message);
 
     if (this.reply) {
       message = `
@@ -162,6 +163,17 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     this.form.get('message').patchValue('');
     this.messageElement.nativeElement.focus();
     this.conversationSV.actionMessageReply(null);
+  }
+
+  transformExternalLinks(msg) {
+    const arrayMsg = msg.split(' ').map( x => {
+      if (x.indexOf('.') > 1 && x.slice(-1) !== '.') {
+        const https = (x.indexOf('http://') === 0 || x.indexOf('https://') === 0) ? '' : '//';
+        return `<a href="${https}${x}" target="_blank">${x}</a>`;
+      }
+      return x;
+    });
+    return arrayMsg.join(' ');
   }
 
   private saveMessageOnDB(message, tempID) {
