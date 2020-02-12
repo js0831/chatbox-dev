@@ -21,7 +21,11 @@
           (onselect)="onReact(msg._id, $event)"
           [ngClass]="{'you': isYou(msg.from._id)}"></app-react>
 
-        <app-reactions [reactions]="msg.reactions"  [ngClass]="{'you': isYou(msg.from._id)}"></app-reactions>
+        <app-reactions
+          *ngIf="messageIdToReloadReactions !== msg._id"
+          [reactions]="msg.reactions"
+          [ngClass]="{'you': isYou(msg.from._id)}"></app-reactions>
+
       </div>
 
 

@@ -29,6 +29,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
     page: 1,
     limit: 10
   };
+  messageIdToReloadReactions = '';
 
   constructor(
     private conversationSV: ConversationService,
@@ -114,6 +115,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
       reaction: ReactionInterface
     }) => {
       if (x.conversation._id === this.currentConversation._id) {
+        this.reloadMessageReactions(x.messageId);
         this.reactionSV.appendReactionFromWebSocket({
           messageId: x.messageId,
           reaction: x.reaction
@@ -148,6 +150,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
   }
 
   onReact(msgId: string, reaction: ReactionInterface) {
+    this.reloadMessageReactions(msgId);
     const data = {
       messageId: msgId,
       reaction: {
@@ -157,6 +160,13 @@ export class ConversationComponent implements OnInit, OnDestroy {
     };
     this.reactionSV.react(data).action();
     this.sendReactionViaWebSocket(data);
+  }
+
+  private reloadMessageReactions(messageId) {
+    this.messageIdToReloadReactions = messageId;
+    setTimeout( x => {
+      this.messageIdToReloadReactions = null;
+    }, 250);
   }
 
   isTemporaryId(id: string) {

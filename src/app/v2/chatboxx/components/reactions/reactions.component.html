@@ -1,6 +1,17 @@
-<ul class="reactions">
+<!-- <ul class="reactions">
   <li *ngFor="let r of reactions">
     <span>{{r.emoji}}</span>
     <label>{{ isYou(r.by._id) ? 'You' : r.by.firstname }}</label>
+  </li>
+</ul> -->
+
+<ul class="reactions">
+  <li *ngFor="let r of reactionsFormatted">
+    <span>{{r.reaction.emoji}}</span>
+    <label>
+      <span *ngFor="let u of r.reactors">
+        {{u.firstname}}
+      </span>
+    </label>
   </li>
 </ul>

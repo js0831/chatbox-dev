@@ -6,6 +6,11 @@
   &.you{
     left:.5rem;
     right: initial;
+
+    label{
+      left: -15px;
+      right: initial;
+    }
   }
 }
 
@@ -53,15 +58,28 @@
       display: none;
       position: absolute;
       bottom: -4.25rem;
+      right: -15px;
       font-size: 1.2rem;
-      text-transform: uppercase;
       margin: auto;
-      background: #eee;
+      background: #8a8a8a;
       padding: 1px 10px;
       border-radius: 14px;
-      font-weight: 600;
-      color: #333;
+      font-weight: 500;
+      color: #fff;
       width: max-content;
+      text-transform: capitalize;
+
+      span:not(:first-child){
+        &:before{
+          content: "";
+          width: 5px;
+          height: 5px;
+          background: #545454;
+          display: inline-block;
+          border-radius: 50%;
+          margin: 0 2px 1px 3px;
+        }
+      }
     }
   }
 }
