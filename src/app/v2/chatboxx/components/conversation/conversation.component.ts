@@ -76,6 +76,10 @@ export class ConversationComponent implements OnInit, OnDestroy {
           this.messages.push(newMsg);
           this.moveScrollToBottom();
           break;
+
+        case actions.CONVERSATION_MESSAGE_REACT_FINISH:
+          this.messageIdToReloadReactions = null;
+          break;
         default:
           break;
       }
@@ -115,7 +119,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
       reaction: ReactionInterface
     }) => {
       if (x.conversation._id === this.currentConversation._id) {
-        this.reloadMessageReactions(x.messageId);
+        this.messageIdToReloadReactions = x.messageId;
         this.reactionSV.appendReactionFromWebSocket({
           messageId: x.messageId,
           reaction: x.reaction
@@ -150,7 +154,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
   }
 
   onReact(msgId: string, reaction: ReactionInterface) {
-    this.reloadMessageReactions(msgId);
+    this.messageIdToReloadReactions = msgId;
     const data = {
       messageId: msgId,
       reaction: {
@@ -160,13 +164,6 @@ export class ConversationComponent implements OnInit, OnDestroy {
     };
     this.reactionSV.react(data).action();
     this.sendReactionViaWebSocket(data);
-  }
-
-  private reloadMessageReactions(messageId) {
-    this.messageIdToReloadReactions = messageId;
-    setTimeout( x => {
-      this.messageIdToReloadReactions = null;
-    }, 250);
   }
 
   isTemporaryId(id: string) {
