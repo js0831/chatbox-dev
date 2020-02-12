@@ -37,11 +37,13 @@
 .reactions{
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   position: absolute;
   top: 0;
   right: 0;
   z-index: 2;
+  width: 80vw;
+  flex-wrap: wrap !important;
 
   li{
     width: 3rem;
