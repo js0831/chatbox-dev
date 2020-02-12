@@ -13,6 +13,7 @@ import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum
 import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type.enum';
 import { EmojiService } from '../emoji-picker/emoji-picker.service';
 import { EmojiInterface } from '../emoji-picker/emoji.interface';
+import { MessageInterface } from 'src/app/v2/shared/interfaces/message.interface';
 
 @Component({
   selector: 'app-send-message',
@@ -29,6 +30,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   typing = '';
   typingTimerView: any;
   typingTimer: any;
+  reply: MessageInterface;
   caret: {
     start: number,
     end: number
@@ -87,6 +89,10 @@ export class SendMessageComponent implements OnInit, OnDestroy {
           this.selectedConversation = x.conversation.selected;
           this.messageElement.nativeElement.focus();
           break;
+        case actions.CONVERSATION_MESSAGE_REPLY:
+          this.reply = x.conversation.reply;
+          this.messageElement.nativeElement.focus();
+          break;
         default:
           break;
       }
@@ -125,7 +131,18 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     ) { return; }
 
     const tempMessageId = `temp_${new Date().getTime().toString()}`;
-    const message = this.form.value.message;
+    let message = this.form.value.message;
+
+    if (this.reply) {
+      message = `
+        <div class="reply-message">
+          <strong>${this.reply.from.firstname}:</strong>
+          <p>${this.reply.message}</p>
+        <span>invi</span></div>
+        ${message}
+      `;
+    }
+
     const messageData = {
       from: this.currentUser,
       message,
@@ -133,6 +150,36 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     };
 
     // send to websocket
+    this.sendMessageViaWebSocket(messageData, tempMessageId);
+    // append to msgs list
+    this.conversationSV.actionSendMessage({
+      ...messageData,
+      _id: tempMessageId
+    });
+    this.saveMessageOnDB(message, tempMessageId);
+
+    this.createNotifications();
+    this.form.get('message').patchValue('');
+    this.messageElement.nativeElement.focus();
+    this.conversationSV.actionMessageReply(null);
+  }
+
+  private saveMessageOnDB(message, tempID) {
+    this.conversationSV.sendMessage(
+      this.selectedConversation._id,
+      {
+        from: this.currentUser._id,
+        message,
+      }
+    ).subscribe( (x: any) => {
+        this.updateTemporaryID({
+          temporary: tempID,
+          permanent: x.data
+        });
+    });
+  }
+
+  private sendMessageViaWebSocket(messageData, tempID) {
     this.selectedConversation.members.forEach( (u: any) => {
       if (this.currentUser._id !== u._id) {
         this.websocketSV.dispatch({
@@ -142,37 +189,12 @@ export class SendMessageComponent implements OnInit, OnDestroy {
             conversation: this.selectedConversation,
             message: {
               ...messageData,
-              _id: tempMessageId
+              _id: tempID
             }
           }
         });
       }
     });
-
-
-    // append to msgs list
-    this.conversationSV.actionSendMessage({
-      ...messageData,
-      _id: tempMessageId
-    });
-
-    // save on DB
-    this.conversationSV.sendMessage(
-      this.selectedConversation._id,
-      {
-        from: this.currentUser._id,
-        message,
-      }
-    ).subscribe( (x: any) => {
-        this.updateTemporaryID({
-          temporary: tempMessageId,
-          permanent: x.data
-        });
-    });
-
-    this.createNotifications();
-    this.form.get('message').patchValue('');
-    this.messageElement.nativeElement.focus();
   }
 
   private updateTemporaryID(params) {

@@ -76,6 +76,10 @@ export class ConversationService {
     this.store.dispatch(new actions.ConversationMessageUpdateTemporaryId(params));
   }
 
+  actionMessageReply(params: MessageInterface) {
+    this.store.dispatch(new actions.ConversationMessageReply(params));
+  }
+
   getPreviousMessage(params: {id: string, pagination: PaginationInterface}) {
     return {
       http: (): Observable<ResponseInterface<MessageInterface[]>> => {

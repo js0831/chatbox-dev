@@ -25,10 +25,11 @@
           *ngIf="messageIdToReloadReactions !== msg._id"
           [reactions]="msg.reactions"
           [ngClass]="{'you': isYou(msg.from._id)}"></app-reactions>
-
       </div>
 
-
+      <svg class="reply" (click)="reply(msg)">
+        <use xlink:href="assets/images/icons.svg#icon-reply"></use>
+      </svg>
   </div>
 </ng-container>
 

@@ -1,0 +1,11 @@
+<div *ngIf="replyTo">
+
+  <label>Replying to <strong>{{replyTo?.from.firstname}}</strong></label>
+  <p [innerHTML]="replyTo?.message"></p>
+
+
+  <svg (click)="cancel()">
+    <use xlink:href="assets/images/icons.svg#icon-clearclose"></use>
+  </svg>
+
+</div>

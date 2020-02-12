@@ -11,7 +11,7 @@
 html{
     font-size: 62.5%;
 
-    
+
     @media (max-width:414px) {
         font-size: 58%;
     };
@@ -88,3 +88,37 @@ Todo
 ADD TITLE ON JK ALERT
 update width and min width
 */
+
+app-conversation{
+  .message{
+    .reply-message{
+      padding: .5rem;
+      background: #cacaca; // #6dc37a;
+      color: #929292; //#fff
+      font-size: 1.2rem;
+      font-style: italic;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+
+      > strong{
+        display: block;
+        font-style: normal;
+      }
+
+      > p{
+        padding-left: 1rem;
+      }
+
+      > span{
+        display: none;
+      }
+    }
+
+    &.you{
+      .reply-message{
+        background: #6dc37a;
+        color:#fff
+      }
+    }
+  }
+}

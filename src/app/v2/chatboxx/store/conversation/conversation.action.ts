@@ -25,6 +25,7 @@ export const CONVERSATION_GROUP_RENAME = '[Conversation] group rename';
 export const CONVERSATION_MESSAGE_REACT = '[Conversation] Message react';
 export const CONVERSATION_MESSAGE_REACT_FINISH = '[Conversation] Message react finish';
 export const CONVERSATION_MESSAGE_UPDATE_TEMPORARY_ID = '[Conversation] Message update temporary id';
+export const CONVERSATION_MESSAGE_REPLY = '[Conversation] Message reply';
 
 export class ConversationListLoad implements Action {
     readonly type = CONVERSATION_LIST_LOAD;
@@ -146,6 +147,11 @@ export class ConversationMessageUpdateTemporaryId implements Action {
   constructor(public payload?: any) {}
 }
 
+export class ConversationMessageReply implements Action {
+  readonly type = CONVERSATION_MESSAGE_REPLY;
+  constructor(public payload?: any) {}
+}
+
 export type Actions =
 | ConversationListLoad
 | ConversationListLoadFinish
@@ -170,4 +176,5 @@ export type Actions =
 | ConversationGroupRename
 | ConversationMessageReact
 | ConversationMessageReactFinish
-| ConversationMessageUpdateTemporaryId;
+| ConversationMessageUpdateTemporaryId
+| ConversationMessageReply;

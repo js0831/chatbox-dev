@@ -170,6 +170,21 @@ export class ConversationComponent implements OnInit, OnDestroy {
     return id.split('temp_').length > 1;
   }
 
+  reply(msg: MessageInterface) {
+    const clone = {...msg, ...{}};
+    const finalMsg = this.removeExistingRepliedMessage(clone.message);
+    clone.message = finalMsg;
+    this.conversationSV.actionMessageReply(clone);
+  }
+
+  private removeExistingRepliedMessage(message) {
+    const split = message.split('<span>invi</span></div>');
+    if (split.length > 1) {
+      return split[1].trim();
+    }
+    return message;
+  }
+
   ngOnDestroy() {
     this.subs.forEach( x => x.unsubscribe());
   }

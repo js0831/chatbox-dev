@@ -13,7 +13,8 @@
     position: relative;
 
     &:hover{
-      app-react{
+      app-react,
+      .reply{
         display: block;
       }
     }
@@ -89,9 +90,39 @@
               right: 15px;
               left: initial;
           }
+
+          .reply-message{
+            padding: .5rem;
+            background: #6dc37a;
+            font-size: 1.25rem;
+            font-style: italic;
+          }
         }
 
+        .reply{
+          right: initial;
+          left: 0;
+          transform: scaleX(-1);
+        }
+    }
 
+    .reply{
+      display: none;
+      width: 3rem;
+      height: 3rem;
+      position: absolute;
+      top: 35px;
+      bottom: 0;
+      margin: auto;
+      cursor: pointer;
+      transition: all .25s ease;
+      right: 0;
+      left: initial;
+
+      &:hover{
+        width: 4rem;
+        height: 4rem;
+      }
     }
 }
 .loadPrevious{

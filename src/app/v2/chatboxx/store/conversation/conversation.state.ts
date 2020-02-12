@@ -10,6 +10,7 @@ export interface ConversationState {
         type: ConversationType,
         list: ConversationInterface[],
         selected?: ConversationInterface,
-        messages?: MessageInterface[]
+        messages?: MessageInterface[],
+        reply?: MessageInterface,
     };
 }

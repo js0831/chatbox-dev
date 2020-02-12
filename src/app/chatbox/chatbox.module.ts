@@ -27,7 +27,7 @@ import { UserFilterPipe } from '../shared/pipes/user-filter.pipe';
     SendMessageComponent,
     ActiveFriendComponent,
     MessageNotificationComponent,
-    UserFilterPipe
+    UserFilterPipe,
   ],
   imports: [
     CommonModule,
