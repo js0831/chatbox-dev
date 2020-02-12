@@ -78,7 +78,9 @@ export class ConversationComponent implements OnInit, OnDestroy {
           break;
 
         case actions.CONVERSATION_MESSAGE_REACT_FINISH:
-          this.messageIdToReloadReactions = null;
+          setTimeout( y => {
+            this.messageIdToReloadReactions = null;
+          }, 100);
           break;
         default:
           break;
@@ -107,7 +109,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
     .subscribe( (x: {
       message: MessageInterface
     }) => {
-      this.messages.push(x.message);
+      this.conversationSV.actionSendMessage(x.message);
       this.moveScrollToBottom();
     });
   }
