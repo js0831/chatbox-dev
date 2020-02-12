@@ -88,13 +88,20 @@ Todo
 ADD TITLE ON JK ALERT
 update width and min width
 */
-
+app-reply{
+  img{
+    display: block;
+  }
+}
 app-conversation{
   .message{
     .content span{
       a{
         font-weight: 500;
         color: #00668e;
+      }
+      img{
+        display: block;
       }
     }
     .reply-message{

@@ -132,7 +132,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
     const tempMessageId = `temp_${new Date().getTime().toString()}`;
 
-    let message = this.transformExternalLinks(this.form.value.message);
+    let message = this.transformMessageContainsLinkAndImages(this.form.value.message);
 
     if (this.reply) {
       message = `
@@ -165,13 +165,24 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     this.conversationSV.actionMessageReply(null);
   }
 
-  transformExternalLinks(msg) {
+  transformMessageContainsLinkAndImages(msg) {
     const arrayMsg = msg.split(' ').map( x => {
-      if (x.indexOf('.') > 1 && x.slice(-1) !== '.') {
+      const text = x.trim();
+      // if external link
+      if (
+          text.indexOf('.') > 1 &&
+          text.slice(-1) !== '.' &&
+          !text.slice(-4).match(/\.(jpg|jpeg|png|gif)$/)
+        ) {
         const https = (x.indexOf('http://') === 0 || x.indexOf('https://') === 0) ? '' : '//';
-        return `<a href="${https}${x}" target="_blank">${x}</a>`;
+        return `<a href="${https}${text}" target="_blank">${text}</a>`;
       }
-      return x;
+
+      // if image
+      if (!!text.slice(-4).match(/\.(jpg|jpeg|png|gif)$/)) {
+        return `<img src="${text}">`;
+      }
+      return text;
     });
     return arrayMsg.join(' ');
   }
