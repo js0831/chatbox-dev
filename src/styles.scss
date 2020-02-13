@@ -102,6 +102,9 @@ app-conversation{
       }
       img{
         display: block;
+        width: 100%;
+        max-width: 30rem;
+        margin: auto;
       }
     }
     .reply-message{
