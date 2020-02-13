@@ -11,7 +11,8 @@ import {
   HttpResponse,
   HttpUserEvent,
   HttpEvent,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpHeaders
 } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 // import { AuthService } from 'src/app/pages/login/auth.service';
@@ -40,6 +41,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     const loadingType = req.headers.get('loading') || 'default';
     const assetData = req.headers.get('assets') ? req.headers.get('assets') : 'false';
+    const externalApi = req.headers.get('external') ? req.headers.get('external') : 'false';
 
     this.loading = this.loading || this.injector.get(JkWaitService);
     this.jkAlert = this.jkAlert || this.injector.get(JkAlertService);
@@ -50,11 +52,15 @@ export class HttpInterceptorService implements HttpInterceptor {
     }
 
     const token = this.sessionSV.data ? this.sessionSV.data.token : '';
-    const finalurl = assetData === 'true' ? req.url : `${environment.apiURL}${req.url}`;
+    const finalurl = (assetData === 'true' || externalApi === 'true') ? req.url : `${environment.apiURL}${req.url}`;
+    const authorizationHeader = externalApi === 'true' ? {} : {Authorization : `Bearer ${token}`};
+
+    req = req.clone({ headers: req.headers.delete('external', 'true') });
+    req = req.clone({ headers: req.headers.delete('loading', 'background') });
+
     const withTokenRequest = req.clone({
       setHeaders: {
-        Authorization : `Bearer ${token}`,
-        // 'Content-Type': 'application/json'
+        ...authorizationHeader
       },
       url: finalurl
     });

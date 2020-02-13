@@ -1,19 +1,29 @@
-<form [formGroup]="form" (submit)="sendMessage()">
+<form *ngIf="!isGlyph" [formGroup]="form" (submit)="onSendMessage()">
     <textarea
         id="message"
         #message
         (keyup)="userIsTyping($event)"
         (blur)="onBlur($event)"
         formControlName="message" placeholder="Message"
-      ></textarea>
+    ></textarea>
 </form>
+
+<app-giphy
+  (onclose)="openGlyph(false)"
+  (onselect)="selectGif($event)"
+  *ngIf="isGlyph"></app-giphy>
 <div>
 
     <app-emoji-picker field="message"></app-emoji-picker>
+
     <svg>
         <use xlink:href="assets/images/icons.svg#icon-collectionsphoto_library"></use>
     </svg>
 
-    <a class="send" (click)="sendMessage()">Send</a>
+    <svg (click)="openGlyph(true)">
+      <use xlink:href="assets/images/icons.svg#icon-document-file-gif"></use>
+    </svg>
+
+    <a class="send" (click)="onSendMessage()">Send</a>
 </div>
 <span class="typing" *ngIf="typing">{{typing}} is typing . . .</span>

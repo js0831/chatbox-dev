@@ -26,6 +26,7 @@ import { EmojiFilterPipe } from './components/emoji-picker/emoji-filter.pipe';
 import { ReactComponent } from './components/react/react.component';
 import { ReactionsComponent } from './components/reactions/reactions.component';
 import { ReplyComponent } from './components/reply/reply.component';
+import { GiphyComponent } from './components/giphy/giphy.component';
 
 
 
@@ -55,7 +56,8 @@ import { ReplyComponent } from './components/reply/reply.component';
     EmojiFilterPipe,
     ReactComponent,
     ReactionsComponent,
-    ReplyComponent
+    ReplyComponent,
+    GiphyComponent
   ],
   imports: [
     CommonModule,

@@ -35,8 +35,9 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     start: number,
     end: number
   };
+  isGlyph = false;
 
-  @ViewChild('message', {static: true}) messageElement: ElementRef;
+  @ViewChild('message', {static: false}) messageElement: ElementRef;
 
   constructor(
     private conversationSV: ConversationService,
@@ -71,7 +72,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   private appendEmoji(emoji: EmojiInterface) {
     const newValue = this.emoji.newValue(this.form.value.message, emoji.code, this.caret);
     this.form.get('message').patchValue(newValue);
-    this.messageElement.nativeElement.focus();
+    this.focusMessageInput();
 
     setTimeout( x => {
       this.messageElement.nativeElement.setSelectionRange(
@@ -87,16 +88,32 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       switch (x.action.name) {
         case actions.CONVERSATION_SELECT:
           this.selectedConversation = x.conversation.selected;
-          this.messageElement.nativeElement.focus();
+          this.focusMessageInput();
           break;
         case actions.CONVERSATION_MESSAGE_REPLY:
           this.reply = x.conversation.reply;
-          this.messageElement.nativeElement.focus();
+          this.focusMessageInput();
           break;
         default:
           break;
       }
     });
+  }
+
+  private focusMessageInput() {
+    setTimeout( x => {
+      this.messageElement.nativeElement.focus();
+    }, 500);
+  }
+
+  openGlyph(value) {
+    this.isGlyph = value;
+  }
+
+  selectGif(event: any) {
+    this.isGlyph = false;
+    const gif = `<img src="${event.original}">`;
+    this.sendMessage(gif);
   }
 
   private watchWebSocketTyping() {
@@ -123,17 +140,15 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  sendMessage() {
+  onSendMessage() {
     if (
       this.form.value.message.trim().length === 0 ||
       this.form.invalid ||
       !this.selectedConversation
     ) { return; }
 
-    const tempMessageId = `temp_${new Date().getTime().toString()}`;
 
     let message = this.transformMessageContainsLinkAndImages(this.form.value.message);
-
     if (this.reply) {
       message = `
         <div class="reply-message">
@@ -143,13 +158,17 @@ export class SendMessageComponent implements OnInit, OnDestroy {
         ${message}
       `;
     }
+    this.sendMessage(message);
+  }
 
+  private sendMessage(message: string) {
     const messageData = {
       from: this.currentUser,
       message,
       date: new Date().toString()
     };
 
+    const tempMessageId = `temp_${new Date().getTime().toString()}`;
     // send to websocket
     this.sendMessageViaWebSocket(messageData, tempMessageId);
     // append to msgs list
@@ -161,11 +180,11 @@ export class SendMessageComponent implements OnInit, OnDestroy {
 
     this.createNotifications();
     this.form.get('message').patchValue('');
-    this.messageElement.nativeElement.focus();
+    this.focusMessageInput();
     this.conversationSV.actionMessageReply(null);
   }
 
-  transformMessageContainsLinkAndImages(msg) {
+  private transformMessageContainsLinkAndImages(msg) {
     const arrayMsg = msg.split(' ').map( x => {
       const text = x.trim();
       // if external link
@@ -260,7 +279,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   userIsTyping(e) {
     if (e.which === 13) {
       e.preventDefault();
-      this.sendMessage();
+      this.onSendMessage();
       return;
     }
 

@@ -1,0 +1,25 @@
+<svg class="close" (click)="close()">
+  <use xlink:href="assets/images/icons.svg#icon-clearclose"></use>
+</svg>
+
+<div class="search">
+  <input type="text" placeholder="Search" (keyup)="iSearch()" [(ngModel)]="searchKey">
+  <svg>
+      <use xlink:href="assets/images/icons.svg#icon-search"></use>
+  </svg>
+</div>
+
+<div class="list-container custom-scroll">
+  <ul class="list">
+    <li (click)="select(g)" *ngFor="let g of gifs">
+      <img [src]="g.preview">
+    </li>
+    <li (click)="more()">
+      MORE
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="loading" class="loading">
+  loading...
+</div>
