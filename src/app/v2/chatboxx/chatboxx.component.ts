@@ -18,7 +18,7 @@ export class ChatboxxComponent implements OnInit, OnDestroy {
   showFriends = false;
   subs: Subscription[];
   currentUser: UserInterface;
-  onlineUsers: string[] = [];
+  onlineUsers: UserInterface[] = [];
 
   constructor(
     private actionSV: ActionService,
@@ -54,7 +54,7 @@ export class ChatboxxComponent implements OnInit, OnDestroy {
       WebsocketEventType.OO_ONLINE_AKO,
       this.currentUser._id
     ).subscribe( (data: any) => {
-      this.userSV.actionUserOnline(data);
+      this.appendNewUserOnline(data);
     });
   }
 
@@ -62,22 +62,35 @@ export class ChatboxxComponent implements OnInit, OnDestroy {
     return this.websocketSV.listen(
       WebsocketEventType.ONLINE_KABA,
       this.currentUser._id
-    ).subscribe( (id: any) => {
-      this.userSV.actionUserOnline({
-        id,
+    ).subscribe( (user: UserInterface) => {
+
+      this.appendNewUserOnline({
+        user,
         online: true,
       });
-      this.ooOnlineAko(id);
+
+      this.ooOnlineAko(user);
     });
   }
 
-  ooOnlineAko(id) {
-    if (id === this.currentUser._id) { return; }
+  private appendNewUserOnline(data) {
+    // avoid duplicate
+    if (data.online) {
+      if (this.onlineUsers.filter(u => u._id === data.user._id).length > 0) {
+        return;
+      }
+    }
+
+    this.userSV.actionUserOnline(data);
+  }
+
+  ooOnlineAko(user: UserInterface) {
+    if (user._id === this.currentUser._id) { return; }
     this.websocketSV.dispatch({
-      id,
+      id: user._id,
       type: WebsocketEventType.OO_ONLINE_AKO,
       data: {
-        id: this.currentUser._id,
+        user: this.currentUser,
         online: true
       }
     });

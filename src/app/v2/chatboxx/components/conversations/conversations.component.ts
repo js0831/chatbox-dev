@@ -28,7 +28,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   notifications: NotificationInterface[] = [];
   searchKey = '';
   profilePictures: any = [];
-  onlineUsers: string[] = [];
+  onlineUsers: UserInterface[] = [];
 
   constructor(
     private conversationSV: ConversationService,
@@ -60,7 +60,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   }
 
   isOnline(id) {
-    return this.onlineUsers.indexOf(id) >= 0;
+    return this.onlineUsers.filter( x => x._id === id).length > 0;
   }
 
   private watchOnlineUsers() {
@@ -75,7 +75,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         this.websocketSV.dispatch({
           id: u._id,
           type: WebsocketEventType.ONLINE_KABA,
-          data: this.currentUser._id
+          data: this.currentUser
         });
       });
     });

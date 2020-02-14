@@ -23,6 +23,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   selectedConversation: ConversationInterface;
   currentUser: UserInterface;
   profilePictures: any = [];
+  onlineUsers: UserInterface[] = [];
 
   constructor(
     private conversationSV: ConversationService,
@@ -35,13 +36,24 @@ export class MembersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
-      this.watchConversationState()
+      this.watchConversationState(),
+      this.watchOnlineUsers()
     ];
   }
 
   private getProfilePictures() {
     this.profilePictures = this.members.map( m => {
       return this.userSV.getProfilePicture(m._id);
+    });
+  }
+
+  isOnline(id) {
+    return this.onlineUsers.filter( x => x._id === id).length > 0;
+  }
+
+  private watchOnlineUsers() {
+    return this.userSV.friendState.subscribe( x => {
+      this.onlineUsers = x.users.onlines;
     });
   }
 

@@ -49,7 +49,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   currentUser: UserInterface;
   isAdmin = false;
   profilePicture: any[] = [];
-  onlineUsers: string[] = [];
+  onlineUsers: UserInterface[] = [];
 
   constructor(
     private actionSV: ActionService,
@@ -148,7 +148,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   }
 
   isOnline(id) {
-    return this.onlineUsers.indexOf(id) >= 0;
+    return this.onlineUsers.filter( x => x._id === id).length > 0;
   }
 
   private watchAction() {

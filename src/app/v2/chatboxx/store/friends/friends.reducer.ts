@@ -54,10 +54,9 @@ export function friendReducer(state = initialState, action: actions.Actions) {
             };
             break;
         case actions.FRIEND_USER_ONLINE:
-          const onlines = payload.online ?
-            [...state.users.onlines, payload.id] :
-            state.users.onlines.filter( x => x !== payload.id);
-
+          const online = [...state.users.onlines, payload.user];
+          const offline = state.users.onlines.filter( x => x._id !== payload.user._id);
+          const onlines = payload.online ? online : offline;
           returnState = {
               action: {
                   name: type

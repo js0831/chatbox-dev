@@ -23,6 +23,7 @@
           </label>
 
           <div *ngIf="isAdmin && currentUser._id !== m._id" class="action">
+              <span class="status" [ngClass]="{'online' : isOnline(m._id)}">[ {{isOnline(m._id) ? 'Online' : 'Offline'}} ]</span>
               <button (click)="remove(m)">Remove</button>
           </div>
       </li>

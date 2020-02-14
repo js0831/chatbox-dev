@@ -121,7 +121,7 @@ export class UserService {
   }
 
   actionUserOnline(params: {
-    id: string,
+    user: UserInterface,
     online: boolean
   }) {
     this.store.dispatch(new actions.FriendUserOnline(params));

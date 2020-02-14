@@ -93,6 +93,17 @@
           .action{
               margin-left: auto;
 
+              .status{
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #848484;
+                letter-spacing: 2px;
+
+                &.online{
+                  color: #46e246;
+                }
+              }
+
               button{
                   padding: .5rem;
                   border: none;

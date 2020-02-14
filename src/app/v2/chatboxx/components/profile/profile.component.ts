@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   currentUser: UserInterface;
-  onlineUsers: string[];
+  onlineUsers: UserInterface[];
   showAction = false;
   profilePicture: any;
   actions: DropdownActionInterface[] = [
@@ -103,11 +103,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private websocketLogout() {
     this.onlineUsers.forEach(u => {
+      alert(u);
       this.websocketSV.dispatch({
-        id: u,
+        id: u._id,
         type: WebsocketEventType.OO_ONLINE_AKO,
         data: {
-          id: this.currentUser._id,
+          user: this.currentUser,
           online: false
         }
       });
