@@ -15,12 +15,13 @@
     [src]="profilePicture[i]"
     alt="" class="avatar"
     onerror="this.src='./assets/images/avatar.svg'">
-
 </div>
 
 <div class="pm" *ngIf="selectedConversation.type === 'PERSONAL'">
     <h1 class="title">{{friend?.firstname}} {{friend?.lastname}}</h1>
-    <label>Online</label>
+    <label [ngClass]="{'online': isOnline(friend._id)}">
+      {{isOnline(friend._id) ? 'Online' : 'Offline'}}
+    </label>
 </div>
 <div class="group" *ngIf="selectedConversation.type === 'GROUP'">
   <div #groupName (blur)="updateName()" [attr.contenteditable]="isAdmin" class="title">

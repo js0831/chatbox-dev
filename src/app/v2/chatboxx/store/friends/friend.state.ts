@@ -10,5 +10,6 @@ export interface FriendState {
         list: UserInterface[],
         pagination: PaginationInterface,
         search?: string;
+        onlines?: string[];
     };
 }

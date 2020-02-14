@@ -11,6 +11,8 @@ import { NotificationInterface } from 'src/app/v2/shared/interfaces/notification
 import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum';
 import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { UserService } from 'src/app/v2/shared/services/user.service';
+import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
+import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 
 @Component({
   selector: 'app-conversations',
@@ -26,13 +28,15 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   notifications: NotificationInterface[] = [];
   searchKey = '';
   profilePictures: any = [];
+  onlineUsers: string[] = [];
 
   constructor(
     private conversationSV: ConversationService,
     private sessionSV: SessionService,
     private notificationSV: NotificationService,
     private actionSV: ActionService,
-    private userSV: UserService
+    private userSV: UserService,
+    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
@@ -40,7 +44,8 @@ export class ConversationsComponent implements OnInit, OnDestroy {
 
     this.subs = [
       this.watchConversationState(),
-      this.watchNotificationState()
+      this.watchNotificationState(),
+      this.watchOnlineUsers()
     ];
 
     this.conversationSV.getConversations({
@@ -52,6 +57,28 @@ export class ConversationsComponent implements OnInit, OnDestroy {
         page: 0
       }
     }).action();
+  }
+
+  isOnline(id) {
+    return this.onlineUsers.indexOf(id) >= 0;
+  }
+
+  private watchOnlineUsers() {
+    return this.userSV.friendState.subscribe( x => {
+      this.onlineUsers = x.users.onlines;
+    });
+  }
+
+  private checkWhosOnline() {
+    this.conversations.forEach( c => {
+      c.members.forEach( (u: any) => {
+        this.websocketSV.dispatch({
+          id: u._id,
+          type: WebsocketEventType.ONLINE_KABA,
+          data: this.currentUser._id
+        });
+      });
+    });
   }
 
   private getProfilePictures() {
@@ -106,6 +133,7 @@ export class ConversationsComponent implements OnInit, OnDestroy {
           this.filterConversationMembers(x.conversation.list);
           this.openConversationFromNotifaction();
           this.getProfilePictures();
+          this.checkWhosOnline();
           if (x.conversation.list.length > 0) {
             this.selectConversation(x.conversation.list[0]);
           }

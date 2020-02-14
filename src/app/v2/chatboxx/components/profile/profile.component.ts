@@ -10,6 +10,8 @@ import { NotificationType } from 'src/app/v2/shared/enums/notification-type.enum
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/v2/shared/services/user.service';
+import { WebSocketService } from 'src/app/v2/shared/services/web-socket.service';
+import { WebsocketEventType } from 'src/app/v2/shared/enums/websocket-event-type.enum';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   currentUser: UserInterface;
+  onlineUsers: string[];
   showAction = false;
   profilePicture: any;
   actions: DropdownActionInterface[] = [
@@ -44,16 +47,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private actionSV: ActionService,
     private sessionSV: SessionService,
     private router: Router,
-    private userSV: UserService
+    private userSV: UserService,
+    private websocketSV: WebSocketService
   ) { }
 
   ngOnInit() {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
-      this.watchAction()
+      this.watchAction(),
+      this.watchOnlineUsers()
     ];
 
     this.profilePicture = this.userSV.getProfilePicture(this.currentUser._id);
+  }
+
+  private watchOnlineUsers() {
+    return this.userSV.friendState.subscribe( x => {
+      this.onlineUsers = x.users.onlines;
+    });
   }
 
   private watchAction() {
@@ -76,6 +87,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   action(value: string) {
     switch (value) {
       case 'LOGOUT':
+        this.websocketLogout();
         this.sessionSV.logout();
         this.router.navigate(['v2']);
         break;
@@ -87,6 +99,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  private websocketLogout() {
+    this.onlineUsers.forEach(u => {
+      this.websocketSV.dispatch({
+        id: u,
+        type: WebsocketEventType.OO_ONLINE_AKO,
+        data: {
+          id: this.currentUser._id,
+          online: false
+        }
+      });
+    });
   }
 
   updateProfilePicture() {

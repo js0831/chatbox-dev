@@ -120,6 +120,13 @@ export class UserService {
     return this.store.select('friendState');
   }
 
+  actionUserOnline(params: {
+    id: string,
+    online: boolean
+  }) {
+    this.store.dispatch(new actions.FriendUserOnline(params));
+  }
+
   stateGetFriends(params: {
     id: string,
     type: FriendsType,

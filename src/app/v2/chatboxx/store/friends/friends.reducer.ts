@@ -13,7 +13,8 @@ const initialState: FriendState = {
             page: 0,
             limit: 10,
             total: 0
-        }
+        },
+        onlines: []
     }
 };
 
@@ -52,6 +53,21 @@ export function friendReducer(state = initialState, action: actions.Actions) {
                 }
             };
             break;
+        case actions.FRIEND_USER_ONLINE:
+          const onlines = payload.online ?
+            [...state.users.onlines, payload.id] :
+            state.users.onlines.filter( x => x !== payload.id);
+
+          returnState = {
+              action: {
+                  name: type
+              },
+              users: {
+                  ...state.users,
+                  onlines,
+              }
+          };
+          break;
         default:
             returnState = state;
             break;

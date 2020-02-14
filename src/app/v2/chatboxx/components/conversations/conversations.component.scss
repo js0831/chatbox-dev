@@ -108,7 +108,13 @@
                 display: inline-block;
                 border-radius: 50%;
                 margin-right: .5rem;
-                background: #46e246;
+                background: #8a8a8a;
+            }
+
+            &.online{
+              &:before{
+                  background: #46e246;
+              }
             }
         }
     }

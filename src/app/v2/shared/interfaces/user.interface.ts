@@ -7,4 +7,5 @@ export interface UserInterface {
     lastname?: string;
     invites?: UserInterface[];
     friendRequest?: UserInterface[];
+    online?: boolean;
 }

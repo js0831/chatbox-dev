@@ -49,6 +49,7 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   currentUser: UserInterface;
   isAdmin = false;
   profilePicture: any[] = [];
+  onlineUsers: string[] = [];
 
   constructor(
     private actionSV: ActionService,
@@ -62,7 +63,8 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
     this.currentUser = this.sessionSV.data.user;
     this.subs = [
       this.watchConversationState(),
-      this.watchAction()
+      this.watchAction(),
+      this.watchOnlineUsers()
     ];
     this.appendDeleteGroupAction();
   }
@@ -137,6 +139,16 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
     this.actionSV.dispatch({
       action: 'MENU_SHOW'
     });
+  }
+
+  private watchOnlineUsers() {
+    return this.userSV.friendState.subscribe( x => {
+      this.onlineUsers = x.users.onlines;
+    });
+  }
+
+  isOnline(id) {
+    return this.onlineUsers.indexOf(id) >= 0;
   }
 
   private watchAction() {
