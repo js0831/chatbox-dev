@@ -27,6 +27,7 @@ import { ReactComponent } from './components/react/react.component';
 import { ReactionsComponent } from './components/reactions/reactions.component';
 import { ReplyComponent } from './components/reply/reply.component';
 import { GiphyComponent } from './components/giphy/giphy.component';
+import { SendPhotoComponent } from './components/send-photo/send-photo.component';
 
 
 
@@ -57,7 +58,8 @@ import { GiphyComponent } from './components/giphy/giphy.component';
     ReactComponent,
     ReactionsComponent,
     ReplyComponent,
-    GiphyComponent
+    GiphyComponent,
+    SendPhotoComponent
   ],
   imports: [
     CommonModule,

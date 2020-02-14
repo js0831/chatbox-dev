@@ -14,6 +14,7 @@ import { ConversationType } from 'src/app/v2/shared/interfaces/conversation.type
 import { EmojiService } from '../emoji-picker/emoji-picker.service';
 import { EmojiInterface } from '../emoji-picker/emoji.interface';
 import { MessageInterface } from 'src/app/v2/shared/interfaces/message.interface';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-send-message',
@@ -207,6 +208,12 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       return text;
     });
     return arrayMsg.join(' ');
+  }
+
+  onImageUpload(e) {
+    const src = `${environment.apiURL}user/${e}`;
+    const img = `<img src="${src}">`;
+    this.sendMessage(img);
   }
 
   private saveMessageOnDB(message, tempID) {

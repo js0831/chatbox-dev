@@ -4,6 +4,7 @@ import { ActionService } from 'src/app/v2/shared/services/action.service';
 import { UserService } from 'src/app/v2/shared/services/user.service';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 import { UserInterface } from 'src/app/v2/shared/interfaces/user.interface';
+import { UploadService } from 'src/app/v2/shared/services/upload.service';
 
 @Component({
   selector: 'app-profile-picture-update',
@@ -21,7 +22,8 @@ export class ProfilePictureUpdateComponent implements OnInit {
     private alertSV: JkAlertService,
     private actionSV: ActionService,
     private userSV: UserService,
-    private sessionSV: SessionService
+    private sessionSV: SessionService,
+    private uploadSV: UploadService
   ) { }
 
   ngOnInit() {
@@ -36,7 +38,7 @@ export class ProfilePictureUpdateComponent implements OnInit {
     });
   }
 
-  onFileChanged(e) {
+  async onFileChanged(e) {
     if ( !e.target.files ) {return; }
     this.selectedFile = e.target.files[0];
     if (!this.isValid(this.selectedFile)) {
@@ -44,61 +46,31 @@ export class ProfilePictureUpdateComponent implements OnInit {
       this.valid = false;
       return;
     }
-    this.preview(e.target.files);
+    this.imgURL = await this.uploadSV.previewData(e.target.files);
     this.valid = true;
   }
 
   isValid(file) {
-    const mimeType = file.type;
-    if (mimeType.match(/image\/*/) == null) {
-      this.alertSV.error('Invalid file type');
-      return false;
-    }
-
-    const size = this.formatBytes(file.size);
-    const sizeNumber = parseFloat(size.split(' ')[0]);
-    if (
-      !(size.indexOf('KB') >= 0 || size.indexOf('Bytes') >= 0) ||
-      (size.indexOf('KB') >= 0 && sizeNumber > 250)
-    ) {
-      this.alertSV.error('File size exceeds to 250KB');
+    const result = this.uploadSV.isValidFile(file);
+    if (!result.valid) {
+      this.alertSV.error(result.message);
       return false;
     }
     return true;
   }
 
-  preview(files) {
-    if (files.length === 0) { return; }
-
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = (event) => {
-      this.imgURL = reader.result;
-    };
-  }
-
   upload() {
     if (!this.valid) { return; }
 
-    const uploadData = new FormData();
-    uploadData.append('file', this.selectedFile, this.selectedFile.name);
-    this.userSV.updateProfilePicture({
+    this.uploadSV.upload({
       id: this.currentUser._id,
-      file: uploadData
+      file: this.selectedFile
     }).subscribe( x => {
       this.actionSV.dispatch({
         action: 'PROFILE_PICTURE_UPDATE'
       });
       this.close();
     });
-  }
 
-  formatBytes(bytes, decimals = 2) {
-      if (bytes === 0) { return '0 Bytes'; }
-      const k = 1024;
-      const dm = decimals < 0 ? 0 : decimals;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 }

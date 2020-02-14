@@ -25,15 +25,15 @@
         padding: 1rem 0 0;
         user-select: none;
 
-        app-emoji-picker{
-          margin-right: .5rem;
+        app-emoji-picker, app-send-photo{
+          margin-right: 1.5rem;
         }
         svg{
             cursor: pointer;
             width: 2.5rem;
             height: 2.5rem;
             fill: #fff;
-            margin-right: .5rem;
+            margin-right: 1.5rem;
         }
 
         .send{

@@ -1,0 +1,21 @@
+:host{
+  position: relative;
+  display: inline-block;
+  margin: 0;
+}
+svg{
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  fill: #fff;
+  pointer-events: none;
+}
+input{
+  width: 2.5rem;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  height: 2.5rem;
+  z-index: 1;
+}

@@ -17,9 +17,7 @@
 
     <app-emoji-picker (click)="openGlyph(false)" field="message"></app-emoji-picker>
 
-    <svg>
-        <use xlink:href="assets/images/icons.svg#icon-uploadphoto"></use>
-    </svg>
+    <app-send-photo (onupload)="onImageUpload($event)"></app-send-photo>
 
     <svg (click)="openGlyph(true, 'gifs')">
       <use xlink:href="assets/images/icons.svg#icon-gif"></use>

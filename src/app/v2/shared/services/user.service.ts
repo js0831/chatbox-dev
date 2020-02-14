@@ -130,14 +130,6 @@ export class UserService {
     this.store.dispatch(new actions.FriendLoadUserList({id, type, pagination, search}));
   }
 
-  updateProfilePicture(params: {
-    id: string,
-    file: FormData
-  }) {
-    const boundary = new Date().getTime();
-    return this.http.post(`user/upload/${params.id}`, params.file);
-  }
-
   getProfilePicture(userId: string) {
     const url = `${environment.apiURL}user/${userId}.jpg?t=${new Date().getTime()}`;
     return this.domSanitizer.bypassSecurityTrustResourceUrl(url);
