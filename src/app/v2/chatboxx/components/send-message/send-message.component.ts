@@ -36,6 +36,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     end: number
   };
   isGlyph = false;
+  glyphType = 'gifs';
 
   @ViewChild('message', {static: false}) messageElement: ElementRef;
 
@@ -75,6 +76,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     this.focusMessageInput();
 
     setTimeout( x => {
+      if (!this.messageElement) { return; }
       this.messageElement.nativeElement.setSelectionRange(
         this.caret.start + 2,
         this.caret.start + 2,
@@ -106,8 +108,9 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  openGlyph(value) {
+  openGlyph(value, type) {
     this.isGlyph = value;
+    this.glyphType = type;
   }
 
   selectGif(event: any) {

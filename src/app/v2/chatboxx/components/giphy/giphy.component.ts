@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -6,10 +6,11 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './giphy.component.html',
   styleUrls: ['./giphy.component.scss']
 })
-export class GiphyComponent implements OnInit {
+export class GiphyComponent implements OnInit, OnChanges {
 
   @Output() onselect: EventEmitter<any> = new EventEmitter<any>();
   @Output() onclose: EventEmitter<any> = new EventEmitter<any>();
+  @Input() type = 'gifs';
 
   searchKey = '';
   searchTimer: any;
@@ -17,7 +18,7 @@ export class GiphyComponent implements OnInit {
   gifs = [];
 
   apiKey = '1qS9Bv3tBBzmr3uQr3GpGG32yLQ83Bzf';
-  limit = 10;
+  limit = 13;
   offset = 0;
 
   constructor(
@@ -28,6 +29,13 @@ export class GiphyComponent implements OnInit {
     this.getGifs();
   }
 
+  ngOnChanges() {
+    this.offset = 0;
+    this.searchKey = '';
+    this.gifs = [];
+    this.getGifs();
+  }
+
   more() {
     this.offset += this.limit;
     this.getGifs();
@@ -35,8 +43,8 @@ export class GiphyComponent implements OnInit {
 
   getGifs() {
     this.loading = true;
-    const type = this.searchKey.trim().length > 0 ? `search?q=${this.searchKey}&` : 'trending?';
-    const url = `https://api.giphy.com/v1/gifs/${type}api_key=${this.apiKey}&limit=${this.limit}&offset=${this.offset}`;
+    const query = this.searchKey.trim().length > 0 ? `search?q=${this.searchKey}&` : 'trending?';
+    const url = `https://api.giphy.com/v1/${this.type}/${query}api_key=${this.apiKey}&limit=${this.limit}&offset=${this.offset}`;
     this.http.get(url, {
       headers: {
         external: 'true',
@@ -45,7 +53,7 @@ export class GiphyComponent implements OnInit {
     }).subscribe( (x: any) => {
       const results = x.data.map( g => {
         return {
-          preview: g.images.preview_gif.url,
+          preview: g.images.preview_gif.url  || g.images.original_still.url ,
           original: g.images.original.url
         };
       });

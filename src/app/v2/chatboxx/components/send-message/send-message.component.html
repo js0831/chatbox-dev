@@ -8,20 +8,25 @@
     ></textarea>
 </form>
 
-<app-giphy
-  (onclose)="openGlyph(false)"
-  (onselect)="selectGif($event)"
-  *ngIf="isGlyph"></app-giphy>
-<div>
+    <app-giphy
+      [type]="glyphType"
+      (onclose)="openGlyph(false)"
+      (onselect)="selectGif($event)"
+      *ngIf="isGlyph"></app-giphy>
+    <div>
 
-    <app-emoji-picker field="message"></app-emoji-picker>
+    <app-emoji-picker (click)="openGlyph(false)" field="message"></app-emoji-picker>
 
     <svg>
-        <use xlink:href="assets/images/icons.svg#icon-collectionsphoto_library"></use>
+        <use xlink:href="assets/images/icons.svg#icon-uploadphoto"></use>
     </svg>
 
-    <svg (click)="openGlyph(true)">
-      <use xlink:href="assets/images/icons.svg#icon-document-file-gif"></use>
+    <svg (click)="openGlyph(true, 'gifs')">
+      <use xlink:href="assets/images/icons.svg#icon-gif"></use>
+    </svg>
+
+    <svg (click)="openGlyph(true, 'stickers')">
+      <use xlink:href="assets/images/icons.svg#icon-sticker"></use>
     </svg>
 
     <a class="send" (click)="onSendMessage()">Send</a>

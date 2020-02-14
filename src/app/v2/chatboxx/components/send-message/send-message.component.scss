@@ -25,6 +25,9 @@
         padding: 1rem 0 0;
         user-select: none;
 
+        app-emoji-picker{
+          margin-right: .5rem;
+        }
         svg{
             cursor: pointer;
             width: 2.5rem;

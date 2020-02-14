@@ -14,8 +14,11 @@
     <li (click)="select(g)" *ngFor="let g of gifs">
       <img [src]="g.preview">
     </li>
-    <li (click)="more()">
+    <li *ngIf="gifs.length > 0" (click)="more()">
       MORE
+    </li>
+    <li *ngIf="gifs.length === 0">
+      No Results
     </li>
   </ul>
 </div>
