@@ -23,8 +23,12 @@ import { conversationReducer } from './v2/chatboxx/store/conversation/conversati
 import { ConversationEffects } from './v2/chatboxx/store/conversation/conversation.effects';
 import { notificationReducer } from './v2/chatboxx/store/notification/notification.reducer';
 import { NotificationEffects } from './v2/chatboxx/store/notification/notification.effects';
+import { WaitConfig } from 'jk-wait/lib/config/wait.config';
 
 const config: SocketIoConfig = { url: environment.apiURL, options: {}};
+const waitConfig: WaitConfig = {
+  type: 'SPINNER',
+};
 
 @NgModule({
   declarations: [
@@ -37,7 +41,7 @@ const config: SocketIoConfig = { url: environment.apiURL, options: {}};
     AppRoutingModule,
     LandingModule,
     ChatboxModule,
-    JkWaitModule,
+    JkWaitModule.forRoot(waitConfig),
     JkAlertModule,
     SocketIoModule.forRoot(config),
     ChatboxxModule,
