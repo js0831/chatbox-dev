@@ -22,7 +22,7 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/effects": "^8.6.0",
     "@ngrx/store": "^8.6.0",
-    "jk-alert": "0.0.4",
+    "jk-alert": "0.0.5",
     "jk-wait": "0.0.3",
     "ngx-socket-io": "^3.0.1",
     "rxjs": "~6.4.0",

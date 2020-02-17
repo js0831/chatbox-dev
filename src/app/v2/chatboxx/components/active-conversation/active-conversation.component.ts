@@ -180,7 +180,11 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   }
 
   private leaveGroup() {
-    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+    this.alertSV.confirm(
+      'Are you sure?',
+      ['Yes', 'No'],
+      `Leave Group ${this.selectedConversation.name}?`
+    ).then( x => {
       if (x === 0) {
         this.conversationSV.leaveGroup({
           user: this.currentUser._id,
@@ -191,7 +195,11 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   }
 
   private deleteGroup() {
-    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+    this.alertSV.confirm(
+      'Are you sure?',
+      ['Yes', 'No'],
+      `Delete Group ${this.selectedConversation.name}?`
+    ).then( x => {
       if (x === 0) {
         this.conversationSV.deleteGroup(this.selectedConversation._id).action();
       }
@@ -199,7 +207,10 @@ export class ActiveConversationComponent implements OnInit, OnDestroy {
   }
 
   private unfriendUser() {
-    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+    this.alertSV.confirm('Are you sure?',
+    ['Yes', 'No'],
+    `Unfriend ${this.friend.firstname}?`
+  ).then( x => {
       if (x === 0) {
         this.userSV.unfriend(this.friend._id, this.currentUser._id).subscribe( (res: any) => {
           this.conversationSV.actionRemoveConversation(res.data._id);

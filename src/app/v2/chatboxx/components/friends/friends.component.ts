@@ -108,7 +108,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
         this.cancelInvitation(user._id);
         break;
       case 'unfriend':
-        this.unfriendUser(user._id);
+        this.unfriendUser(user);
         break;
       default:
         this.respondToFriendRequest(user._id, action);
@@ -184,11 +184,15 @@ export class FriendsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private unfriendUser(id: string) {
-    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+  private unfriendUser(user: UserInterface) {
+    this.alertSV.confirm(
+      'Are you sure?',
+      ['Yes', 'No'],
+      `Unfriend ${user.firstname}?`
+    ).then( x => {
       if (x === 0) {
-        this.userSV.unfriend(id, this.currentUser._id).subscribe( (res: any) => {
-          this.disableActionButton(id);
+        this.userSV.unfriend(user._id, this.currentUser._id).subscribe( (res: any) => {
+          this.disableActionButton(user._id);
 
           if (this.selectedConversation.type === ConversationType.PERSONAL) {
             this.conversationSV.actionRemoveConversation(res.data._id);
@@ -199,7 +203,11 @@ export class FriendsComponent implements OnInit, OnDestroy {
   }
 
   private cancelInvitation(id: string) {
-    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+    this.alertSV.confirm(
+      'Are you sure?',
+      ['Yes', 'No'],
+      `Cancel Invitation`,
+    ).then( x => {
       if (x === 0) {
         this.userSV.cancelInvite(this.currentUser._id, id).subscribe( res => {
           this.disableActionButton(id);

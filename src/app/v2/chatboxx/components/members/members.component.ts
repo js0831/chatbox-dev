@@ -74,7 +74,11 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   remove(m: UserInterface) {
-    this.alertSV.confirm('Are you sure?', ['Yes', 'No']).then( x => {
+    this.alertSV.confirm(
+      'Are you sure?',
+      ['Yes', 'No'],
+      `Remove ${m.firstname}?`
+    ).then( x => {
       if (x === 0) {
         this.conversationSV.removeUserOnGroup({
           user: m._id,
