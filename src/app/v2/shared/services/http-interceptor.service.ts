@@ -19,7 +19,6 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { JkWaitService } from 'jk-wait';
 import { JkAlertService } from 'jk-alert';
-import { UserService } from 'src/app/landing/user.service';
 import { SessionService } from 'src/app/v2/shared/services/session.service';
 
 @Injectable()
