@@ -89,7 +89,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       case 'LOGOUT':
         this.websocketLogout();
         this.sessionSV.logout();
-        this.router.navigate(['v2']);
+        this.router.navigate(['']);
         break;
       case 'FRIENDS':
         this.actionSV.dispatch({action: 'FRIENDS_SHOW', data: {

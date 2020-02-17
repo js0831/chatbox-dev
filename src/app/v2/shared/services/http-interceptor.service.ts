@@ -98,7 +98,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       case 403:
         this.jkAlert.error('Session Expired');
         this.sessionSV.logout();
-        this.route.navigate(['v2']);
+        this.route.navigate(['']);
         break;
       case 400:
         const constraits = response.error.message[0].constraints;

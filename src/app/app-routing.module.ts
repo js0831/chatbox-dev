@@ -8,12 +8,12 @@ import { HomeGuard } from './v2/shared/guards/home.guard';
 
 const routes: Routes = [
   {
-    path: 'v2',
+    path: '',
     canActivate: [HomeGuard],
     component: HomeComponent
   },
   {
-    path: 'v2/chat',
+    path: 'chat',
     canActivate: [AuthGuard],
     component: ChatboxxComponent
   }

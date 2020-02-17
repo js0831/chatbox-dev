@@ -20,7 +20,7 @@ export class HomeGuard implements CanActivate {
       // authorised so return true
       return true;
     }
-    this.router.navigate(['v2/chat']);
+    this.router.navigate(['chat']);
     return false;
   }
 

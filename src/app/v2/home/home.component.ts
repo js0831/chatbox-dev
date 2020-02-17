@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
     }).subscribe( x => {
       session.user = x.data;
       this.sessionSV.save(session);
-      this.router.navigate(['v2/chat']);
+      this.router.navigate(['chat']);
     });
   }
 
