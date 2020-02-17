@@ -109,7 +109,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  openGlyph(value, type) {
+  openGlyph(value, type?: string) {
     this.isGlyph = value;
     this.glyphType = type;
   }
