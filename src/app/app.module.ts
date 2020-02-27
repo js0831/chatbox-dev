@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JkWaitModule } from 'jk-wait';
 import { JkAlertModule } from 'jk-alert';
+import { IloginButtonModule } from 'ilogin-button';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -39,6 +40,9 @@ const waitConfig: WaitConfig = {
     AppRoutingModule,
     JkWaitModule.forRoot(waitConfig),
     JkAlertModule,
+    IloginButtonModule.forRoot({
+      appId: environment.appId
+    }),
     SocketIoModule.forRoot(config),
     ChatboxxModule,
 

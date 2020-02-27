@@ -22,6 +22,7 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/effects": "^8.6.0",
     "@ngrx/store": "^8.6.0",
+    "ilogin-button": "0.0.1",
     "jk-alert": "0.0.5",
     "jk-wait": "0.0.3",
     "ngx-socket-io": "^3.0.1",

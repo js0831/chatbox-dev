@@ -24,30 +24,8 @@ export class HomeComponent implements OnInit {
     console.log(this.sessionSV.data);
   }
 
-  login() {
-    this.win = window.open(
-      environment.loginURL,
-      'Login' ,
-      'dialog=yes,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no');
-  }
-
-  @HostListener('window:message', ['$event'])
-  onMessage(event) {
-    this.listentoWindowMessage(event);
-  }
-
-  private listentoWindowMessage(event: any) {
-    const action = event.data.action;
-    switch (action) {
-      case 'SSO_PAGE_LOADED':
-        this.submitAppID();
-        break;
-      case 'LOGIN':
-        this.saveUserSession(event.data.data.data);
-        break;
-      default:
-        break;
-    }
+  onSuccess(e) {
+    this.saveUserSession(e);
   }
 
   private saveUserSession(data: any) {
@@ -81,12 +59,5 @@ export class HomeComponent implements OnInit {
       this.sessionSV.save(session);
       this.router.navigate(['chat']);
     });
-  }
-
-  private submitAppID() {
-    this.win.postMessage({
-        action: 'SUBMIT_APP_ID',
-        data: environment.appId,
-    }, environment.loginURL);
   }
 }

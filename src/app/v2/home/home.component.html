@@ -1,10 +1,9 @@
 <div class="home">
-    
-    <div> 
+
+    <div>
         <img src="assets/images/logo.svg" alt="">
         <h1>Hi!</h1>
     </div>
 
-    <button (click)="login()">Sign In</button>
-
+    <jk-ilogin-button (onsuccess)="onSuccess($event)" [label]="'Sign In'"></jk-ilogin-button>
 </div>
